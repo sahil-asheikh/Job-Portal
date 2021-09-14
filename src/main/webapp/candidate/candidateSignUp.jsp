@@ -13,11 +13,12 @@
 <html>
     <head>
         <%@include file="head.jsp" %>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/select2/css/select2.min.css"/>
-        <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/
+        <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/>
         <script src="../assets/myjs/cities.js"></script>
         <link rel="stylesheet" href="../assets/mycss/sweetalert.css" type="text/css"/>
         <script src="../assets/myjs/sweetalert.js" type="text/javascript"></script>
@@ -48,15 +49,16 @@
 
                             
                             <div class="form-group">
-                                <input class="form-control" type="text" name="txtEmailId" required placeholder="Enter Your email id" autocomplete="off">
+                                <input class="form-control" type="email" name="txtEmailId" required placeholder="Enter Your email id" autocomplete="off">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" type="text" name="txtPassword" required placeholder="Enter Your password" autocomplete="off">
+                                <input class="form-control" type="password" name="txtPassword" required placeholder="Enter Your password" autocomplete="off">
                             </div>
                             <div class="form-group pt-2 mt-2">
                     <button class="btn btn-block btn-primary btn-xl" type="submit" onclick="return candidateValidation();">Register Here</button>
 <!--                                                    <button class="btn btn-space btn-danger mt-2" type="reset">Reset</button>-->
                     <span>${param.message}</span>
+                    <span>${param.msg}</span>
 
                 </div>
                            

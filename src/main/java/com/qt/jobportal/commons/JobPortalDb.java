@@ -16,8 +16,8 @@ import java.sql.SQLException;
 public class JobPortalDb {
 
     private static final String DATABASE = JobPortalDb.class.getSimpleName().toLowerCase();
- //   private static final String DBURL = "jdbc:mysql://103.159.239.52/" + DATABASE +"?"  // server db test
-    private static final String DBURL = "jdbc:mysql://localhost/" + DATABASE +"?"
+    //   private static final String DBURL = "jdbc:mysql://103.159.239.52/" + DATABASE +"?"  // server db test
+    private static final String DBURL = "jdbc:mysql://localhost/" + DATABASE + "?"
             + "noAccessToProcedureBodies=true&"
             + "autoReconnect=true&"
             + "autoReconnectForPools=true&"
@@ -26,8 +26,8 @@ public class JobPortalDb {
             + "maxPoolSize=10&"
             + "idleConnectionTestPeriod=3600&"
             + "testConnectionOnCheckIn=true";
-  //  private static final String LOCAL_DB_USER = "jp-manager";
-  //  private static final String LOCAL_DB_PASS = "Job@1234";
+//      private static final String LOCAL_DB_USER = "jp-manager";
+//      private static final String LOCAL_DB_PASS = "Job@1234";
     private static final String LOCAL_DB_USER = "root";
     private static final String LOCAL_DB_PASS = "admin";
 

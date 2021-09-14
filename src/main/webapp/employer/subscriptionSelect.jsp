@@ -50,7 +50,8 @@
                         <div class="pricing-table pricing-table-warning">
                             <div class="pricing-table-title yellowEffect"><%= subscription.getTitle()%></div>
                             <div class="card-divider card-divider-xl"></div>
-                            <div class="pricing-table-price "><span class="currency">&#8377;</span><span class="value yellowEffect"><%= emp.getBalance() %></span><span class="frecuency"></span></div>
+                            <!--<div class="pricing-table-price "><span class="currency">&#8377;</span><span class="value yellowEffect"><%= emp.getBalance() %></span><span class="frecuency"></span></div>-->
+                            <div class="pricing-table-price "><span class="currency">&#8377;</span><span class="value yellowEffect"><%= subscription.getPrice() %></span><span class="frecuency"></span></div>
                             <div class="card-divider card-divider-xl"></div>
                             <ul class="pricing-table-features">
                                 <li class="yellowEffect2"><%= subscription.getActive_job_limit()%> Jobs Posting</li>

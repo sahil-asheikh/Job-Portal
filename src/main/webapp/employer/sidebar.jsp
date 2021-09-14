@@ -64,7 +64,7 @@
 
                         <li class="<%= (pageName.equals("subscriptionSelect")) ? "active" : ""%>" ><a href="subscriptionSelect.jsp " ><i class="icon mdi mdi-face"></i><span>My Plan</span></a>
                         </li>
-                        <li class="<%= (pageName.equals("employerWallet")) ? "active" : ""%>"><a href="employerWallet.jsp?eid=<%= session.getAttribute("EmployerId")%> "><i class="fa fa-google-wallet mr-2" aria-hidden="true"></i><span>Wallet </span></a>
+                        <li class="<%= (pageName.equals("employerWallet")) ? "active" : ""%>"><a href="employerWallet.jsp?eid=<%= session.getAttribute("EmployerId")%>"><i class="fa fa-google-wallet mr-2" aria-hidden="true"></i><span>Wallet </span></a>
                         </li>
                            <li><a href="../EmployerController?action=logout"><i class="icon mdi mdi-home"></i><span>Logout</span></a>
                         </li>

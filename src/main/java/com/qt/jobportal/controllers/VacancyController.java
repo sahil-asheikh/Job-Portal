@@ -7,8 +7,12 @@ package com.qt.jobportal.controllers;
 
 import com.qt.jobportal.beans.TblVacancy;
 import com.qt.jobportal.commons.Utils;
+import com.qt.jobportal.models.Subscription;
+import static com.qt.jobportal.models.Subscription.empDeduction;
 import com.qt.jobportal.models.Vacancy;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -40,6 +44,9 @@ public class VacancyController extends HttpServlet {
                 break;
             case "delete":
                 doDelete(request, response);
+                break;
+            case "visibility":
+                jobVisibility(request, response);
                 break;
             default:
                 break;
@@ -76,14 +83,14 @@ public class VacancyController extends HttpServlet {
 //          String jobskillList=request.getParameter("txtSkillSet");
 //            String[] list = jobskillList.split("");
 //           vacancy.setSkillSet(Arrays.toString(list));
-         vacancy.setSkillSet(request.getParameter("txtSkillSet"));
+        vacancy.setSkillSet(request.getParameter("txtSkillSet"));
         vacancy.setJobTiming(request.getParameter("txtJobTiming"));
         vacancy.setInterviewDetails(request.getParameter("txtInterviewDetail"));
         vacancy.setCompanyName(request.getParameter("txtCompanyName"));
         vacancy.setContactPerson(request.getParameter("txtContactPerson"));
         vacancy.setPhoneNo(request.getParameter("txtPhoneNumber"));
         vacancy.setEmailId(request.getParameter("txtEmailId"));
-      
+
         msg = model.update(vacancy);
         response.sendRedirect("employer/vacancyselect.jsp?message=" + msg);
 
@@ -111,11 +118,10 @@ public class VacancyController extends HttpServlet {
     }// </editor-fold>
 
     private void insertVacancy(HttpServletRequest request, HttpServletResponse response) throws IOException {
-  
+
         String publicId = Utils.generatePublicId(30);
         vacancy.setVacancyPublicId(publicId);
-       
-        
+
         vacancy.setEmployerId(request.getParameter("employerId"));
         System.err.println(request.getParameter("employerId"));
         vacancy.setTitle(request.getParameter("txtTitle"));
@@ -140,9 +146,44 @@ public class VacancyController extends HttpServlet {
         vacancy.setEmailId(request.getParameter("txtEmailId"));
 
         msg = model.insert(vacancy);
-        
-            
-        response.sendRedirect("employer/vacancy.jsp?message=" + msg);
+
+        response.sendRedirect("employer/vacancyselect.jsp?message=" + msg);
+    }
+
+    private void jobVisibility(HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, IOException {
+
+        String vid = request.getParameter("vid");
+        int status = Integer.parseInt(request.getParameter("status"));
+        String empID = request.getParameter("empID");
+        int empDeduction = Subscription.empDeduction(empID);
+        int empBalance = Subscription.empBalance(empID);
+
+        try {
+            if (status == 1) {
+                if (empBalance >= empDeduction) {
+                    TblVacancy tblVacancy = new TblVacancy();
+                    tblVacancy.setJobStatus(status);
+                    tblVacancy.setVacancyPublicId(vid);
+
+                    Vacancy vacancy = new Vacancy();
+                    msg = vacancy.jobVisibility(tblVacancy);
+                } else {
+                    msg = "You don't have sufficient balance to activate this job";
+                }
+            } else {
+                TblVacancy tblVacancy = new TblVacancy();
+                tblVacancy.setJobStatus(status);
+                tblVacancy.setVacancyPublicId(vid);
+
+                Vacancy vacancy = new Vacancy();
+                msg = vacancy.jobVisibility(tblVacancy);
+            }
+
+        } catch (Exception e) {
+            msg = "Error occured because of " + e.getMessage();
+        } finally {
+            response.sendRedirect("employer/vacancyselect.jsp?vid=" + request.getParameter("vid") + "&message=" + msg);
+        }
     }
 
 }

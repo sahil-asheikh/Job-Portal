@@ -672,5 +672,32 @@ public class Vacancy {
         }
         return arrayList;
     }
+    
+    public String jobVisibility(TblVacancy vacancy) {
+        con = JobPortalDb.connectDb();
+        try {
+                sql = "UPDATE tblvacancy SET job_status = ? WHERE vacancy_id = ?";
+                cs = con.prepareCall(sql);
+                cs.setInt(1, vacancy.getJobStatus());
+                cs.setString(2, vacancy.getVacancyPublicId());
+                int rows = cs.executeUpdate();
+
+                if (rows >= 1) {
+                    message = "Visibility has been changed";
+                }
+        } catch (SQLException e) {
+            message = "Unable to visibility because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
+        }
+        return message;
+    }
 
 }

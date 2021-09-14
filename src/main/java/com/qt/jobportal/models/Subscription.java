@@ -11,6 +11,7 @@ import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.JobPortalDb;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -159,7 +160,7 @@ public class Subscription {
         con = JobPortalDb.connectDb();
         ArrayList<TblSubscription> arrayList = new ArrayList<>();
         try {
-            sql = "select * from " + TABLENAME + " limit 4";
+            sql = "select * from " + TABLENAME + " where visibility  limit 4";
             cs = con.prepareCall(sql);
             rs = cs.executeQuery();
             while (rs.next()) {
@@ -332,8 +333,93 @@ public class Subscription {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
         System.out.println("bal : " + balance);
         return balance;
     }
+
+    public static String empSubscID(String empID) {
+        String empSubID = null;
+        Connection con = JobPortalDb.connectDb();
+        String sqlQuery = "select subscription_id from tblemployer where employer_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlQuery);
+            ps.setString(1, empID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                empSubID = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return empSubID;
+    }
+
+    public static int empDeduction(String empId) {
+        int empDeduction = 0;
+        String empSubscID = Subscription.empSubscID(empId);
+        Connection con = JobPortalDb.connectDb();
+        String sqlQuery = "SELECT response_deduction FROM tblsubscription where subscription_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlQuery);
+            ps.setString(1, empSubscID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                empDeduction = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return empDeduction;
+    }
+    
+    public static int empBalance (String empId) {
+        int empBalance = 0;
+        Connection con = JobPortalDb.connectDb();
+        String sqlQuery = "select balance from tblemployer where employer_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlQuery);
+            ps.setString(1, empId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                empBalance = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return empBalance;
+    }
+    
 }

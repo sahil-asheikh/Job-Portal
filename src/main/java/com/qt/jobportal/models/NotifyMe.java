@@ -5,13 +5,9 @@
  */
 package com.qt.jobportal.models;
 
-import com.qt.jobportal.beans.TblEmployer;
-import com.qt.jobportal.beans.TblJobActivity;
 import com.qt.jobportal.beans.TblNotify;
 import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.JobPortalDb;
-import static com.qt.jobportal.models.EmployerModel.TABLENAME;
-import static com.qt.jobportal.models.JobActivity.TABLENAME;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -31,20 +27,55 @@ public class NotifyMe {
     CallableStatement cs = null;
 
     public String insert(TblNotify notifyme) {
+
+        boolean checkEmail = checkEmail(notifyme.getEmailId());
         con = JobPortalDb.connectDb();
+
+        if (checkEmail) {
+            message = "<span class=\"text-danger font-bold\"> You have already subscribed to our services </span>";
+        } else {
+            try {
+                sql = "insert into tblnotifyme(notify_public_id, name, job_category, email)values (?,?,?,?)";
+                cs = con.prepareCall(sql);
+                cs.setString(1, notifyme.getNotifyPublicId());
+                cs.setString(2, notifyme.getName());
+                cs.setString(3, notifyme.getJobCategory());
+                cs.setString(4, notifyme.getEmailId());
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "<span class=\"text-success font-bold\"> Subscriber Added </span>";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        }
+
+        return message;
+
+    }
+
+    public boolean checkEmail(String email) {
+        con = JobPortalDb.connectDb();
+        sql = "SELECT * FROM tblnotifyme where email = ?";
+        boolean check = false;
+
         try {
-            sql = "insert into tblnotifyme(notify_public_id, name, job_category, email)values (?,?,?,?)";
             cs = con.prepareCall(sql);
-            cs.setString(1, notifyme.getNotifyPublicId());
-            cs.setString(2, notifyme.getName());
-            cs.setString(3, notifyme.getJobCategory());
-            cs.setString(4, notifyme.getEmailId());
-            int rows = cs.executeUpdate();
-            if (rows >= 1) {
-                message = "<span class=\"text-success font-bold\"> Subscriber Added </span>";
+            cs.setString(1, email);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                check = true;
             }
         } catch (SQLException e) {
-            message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            message = e.getMessage();
         } finally {
             try {
                 if (con != null) {
@@ -55,8 +86,7 @@ public class NotifyMe {
             }
         }
 
-        return message;
-
+        return check;
     }
 
     //select notify subscriber

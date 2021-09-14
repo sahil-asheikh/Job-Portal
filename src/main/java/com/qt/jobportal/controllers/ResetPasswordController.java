@@ -44,9 +44,9 @@ public class ResetPasswordController extends HttpServlet {
                     candidatePasswordReset(request, response);
                     break;
                 case "employerOTP":
-                  employeeVerifyOTP(request, response);
+                    employeeVerifyOTP(request, response);
                     break;
-                case "employerRP": 
+                case "employerRP":
                     employerPasswordReset(request, response);
                     break;
                 default:
@@ -78,17 +78,17 @@ public class ResetPasswordController extends HttpServlet {
     private void candidateSendOTP(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String message = "";
-        int status = 0 ;
+        int status = 0;
         try {
             String phone = request.getParameter("txtPhone");
-         status = candidate.sendOtp(phone, request);  
-          
+            status = candidate.sendOtp(phone, request);
+
         } catch (Exception e) {
             message = e.getMessage();
         } finally {
             String location;
-            if (status == 1 ) {
-                message = "Phone Number Verified!" ;
+            if (status == 1) {
+                message = "Phone Number Verified!";
                 location = "candidate/otpVerification.jsp?phMsg=" + message;
             } else {
                 message = "No candidate found with provided phone number !";
@@ -101,67 +101,64 @@ public class ResetPasswordController extends HttpServlet {
     private void candidateVerifyOTP(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String message = "";
-        int status =0 ;
+        int status = 0;
         try {
 
             String OTP = request.getParameter("txtOTP");
-           status = candidate.verifyOtp(OTP, response);    // uncomment this 
+            status = candidate.verifyOtp(OTP, response);    // uncomment this 
         } catch (RuntimeException e) {
             message = e.getMessage();
         } finally {
             String location;
             if (status == 1) {
-                message = "OTP Verified Successfull !" ;
+                message = "OTP Verified Successfull !";
                 location = "candidate/createPassword.jsp?msg=" + message;
             } else {
-                message = "Incorrect OTP !" ;
-                location = "candidate/otpVerification.jsp?veriMsg=" + message + "&phMsg=Phone Number Verified!" ;
+                message = "Incorrect OTP !";
+                location = "candidate/otpVerification.jsp?veriMsg=" + message + "&phMsg=Phone Number Verified!";
             }
             response.sendRedirect(location);
         }
     }
 
-   
-
     private void candidatePasswordReset(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-     
+
         String message = "";
         try {
-                HttpSession session=request.getSession(); 
-              String phoneFromSession = (String) session.getAttribute("phoneInSession");
-              String newPassword =  request.getParameter("txtNewPass");
-           message = candidate.resetPassword(phoneFromSession, newPassword);    ///////////////////////////
+            HttpSession session = request.getSession();
+            String phoneFromSession = (String) session.getAttribute("phoneInSession");
+            String newPassword = request.getParameter("txtNewPass");
+            message = candidate.resetPassword(phoneFromSession, newPassword);    ///////////////////////////
         } catch (RuntimeException e) {
             message = e.getMessage();
         } finally {
             String location;
             if ("New Password Created, Please Login".equals(message)) {
-                location = "candidateLogin.jsp?newPass=" + message;
+//                location = "candidateLogin.jsp?newPass=" + message;
+                location = "candidateLogin.jsp?msg=" + message;
             } else {
                 location = "candidate/createPassword.jsp?msg=" + message;
             }
             response.sendRedirect(location);
         }
-        
-          }
-    
-    //////////////////////////////////////Employer/////////////////////////////////////////////////
 
-    private void employeeSendOTP(HttpServletRequest request, HttpServletResponse response)throws IOException {
+    }
+
+    //////////////////////////////////////Employer/////////////////////////////////////////////////
+    private void employeeSendOTP(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String message = "";
-        int status =0 ;
+        int status = 0;
         try {
-
             String phone = request.getParameter("txtPhone");
-        
-         status = employer.sendOtp(phone, request);   
+            status = employer.sendOtp(phone, request);
         } catch (RuntimeException e) {
             message = e.getMessage();
         } finally {
             String location;
-            if (status == 1 ) {
-                message = "Phone Number Verified!" ;
+            if (status == 1) {
+//                message = "Phone Number Verified!";
+                message = "Enter OTP";
                 location = "employer/otpVerification.jsp?phMsg=" + message;
             } else {
                 message = "No employer found with provided phone number !";
@@ -169,42 +166,43 @@ public class ResetPasswordController extends HttpServlet {
             }
             response.sendRedirect(location);
         }
+
     }
 
-    private void employeeVerifyOTP(HttpServletRequest request, HttpServletResponse response)throws IOException {
+    private void employeeVerifyOTP(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String message = "";
-        int status =0 ;
+        int status = 0;
         try {
 
             String OTP = request.getParameter("txtOTP");
-          status = employer.verifyOtp(OTP, response);    // uncomment this 
+            status = employer.verifyOtp(OTP, response);    // uncomment this 
         } catch (RuntimeException e) {
             message = e.getMessage();
         } finally {
             String location;
             if (status == 1) {
-                message = "OTP Verified Successfull !" ;
+                message = "OTP Verified Successfull !";
                 location = "employer/createPassword.jsp?msg=" + message;
             } else {
-                message = "Incorrect OTP !" ;
-                location = "employer/otpVerification.jsp?veriMsg=" + message + "&phMsg=Phone Number Verified!" ;
+                message = "Incorrect OTP !";
+//                location = "employer/otpVerification.jsp?veriMsg=" + message + "&phMsg=Phone Number Verified!";
+                location = "employer/otpVerification.jsp?veriMsg=" + message ;
             }
             response.sendRedirect(location);
         }
     }
 
+    private void employerPasswordReset(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
 
-    private void employerPasswordReset(HttpServletRequest request, HttpServletResponse response)throws IOException, SQLException {
-     
         String message = "";
         try {
-                HttpSession session=request.getSession(); 
-              String phoneFromSession = (String) session.getAttribute("phoneInSession");
-              System.out.println(phoneFromSession);
-              String newPassword =  request.getParameter("txtNewPass");
-          
-           message = employer.resetPassword(phoneFromSession, newPassword); 
+            HttpSession session = request.getSession();
+            String phoneFromSession = (String) session.getAttribute("phoneInSession");
+            System.out.println(phoneFromSession);
+            String newPassword = request.getParameter("txtNewPass");
+
+            message = employer.resetPassword(phoneFromSession, newPassword);
         } catch (RuntimeException e) {
             message = e.getMessage();
         } finally {
@@ -216,9 +214,7 @@ public class ResetPasswordController extends HttpServlet {
             }
             response.sendRedirect(location);
         }
-        
-          }
-    
 
+    }
 
 }

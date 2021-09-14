@@ -1,9 +1,3 @@
-<%-- 
-    Document   : candidateWallet2
-    Created on : 7 May, 2020, 1:08:38 AM
-    Author     : Zoya
---%>
-
 <%@page import="com.qt.jobportal.beans.tblSubscriptionCandidate"%>
 <%@page import="com.qt.jobportal.models.SubscriptionCandidateModel"%>
 <%@page import="com.qt.jobportal.beans.TblSubscription"%>
@@ -37,20 +31,56 @@
 
         </style>
     </head>
+
     <body>
         <%
-            boolean checkSubscription = CandidateModel.checkCandidateSubscription(String.valueOf(session.getAttribute("CandidateId")));
-        %>
+            CandidateModel candMol = new CandidateModel();
+            TblCandidate bean = candMol.selectById(String.valueOf(session.getAttribute("CandidateId")));
+
+            JobActivity jobMod = new JobActivity();
+            ArrayList<TblJobActivity> beans = jobMod.selectByCandidateIds(String.valueOf(session.getAttribute("CandidateId")));
+
+            SubscriptionCandidateModel subMol = new SubscriptionCandidateModel();
+            tblSubscriptionCandidate subscription = subMol.selectById(bean.getSubscriptionId());
+
+        %>   
         <div class="be-wrapper">
-            <%@include file="navbar.jsp" %>
-            <%@include file="sidebar.jsp" %>
+
+            <!--NAV BAR-->
+            <nav class="navbar navbar-expand fixed-top be-top-header">
+                <div class="container-fluid">
+                    <div class="be-navbar-header"><a class="navbar-brand" href="index.html"></a>
+                    </div>
+                    <div class="page-title"><span>Job Portal</span></div> ${param.message}
+                    <div class="be-right-navbar">
+                        <ul class="nav navbar-nav float-right be-user-nav">
+                            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><img src="../assets/img/avatar.png" alt="Avatar"><span class="user-name"><%=session.getAttribute("CandidateName")%> </span></a>
+                                <div class="dropdown-menu" role="menu">     
+                                    <div class="user-info">
+                                        <div class="user-name"><%= session.getAttribute("CandidateName")%></div>
+                                        <div class="user-position online">Available</div>
+                                    </div><a class="dropdown-item" href="profile.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                        <span class="icon mdi mdi-face"></span>Account</a>
+                                    <a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Settings</a>
+                                    <a class="dropdown-item" href="passwordUpdate.jsp?id=<%= session.getAttribute("CandidateId")%>"><span class="icon mdi mdi-settings"></span>Change Password</a>
+                                    <a class="dropdown-item" href="../CandidateController?action=logout">
+                                        <span class="icon mdi mdi-power"></span>Logout</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!--SIDE BAR-->
+
+            <!--SIDE BAR-->
+
             <div class="be-content">
-
-
                 <div class="container">
 
                     <%
-                        if (!checkSubscription) {
+                        if (bean.getSubscriptionId().equals(null) || bean.getSubscriptionId().equals("null") || bean.getSubscriptionId().equals("")) {
                     %>
                     <div class="row">
                         <div class="col-sm-12 mt-2">
@@ -67,16 +97,6 @@
                     </div>
                     <%
                     } else {
-
-                        CandidateModel candMol = new CandidateModel();
-                        TblCandidate bean = candMol.selectById(String.valueOf(session.getAttribute("CandidateId")));
-
-                        JobActivity jobMod = new JobActivity();
-                        ArrayList<TblJobActivity> beans = jobMod.selectByCandidateIds(String.valueOf(session.getAttribute("CandidateId")));
-
-                        SubscriptionCandidateModel subMol = new SubscriptionCandidateModel();
-                        tblSubscriptionCandidate subscription = subMol.selectById(bean.getSubscriptionId());
-
                     %>
 
                     <div class="row">
@@ -182,6 +202,7 @@
                 </div>
             </div>
         </div>
+
 
 
 

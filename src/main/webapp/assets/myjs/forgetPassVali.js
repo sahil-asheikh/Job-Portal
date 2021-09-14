@@ -5,9 +5,9 @@
  */
 
 function ForgetPassValidation() {
-    
-     var mobPattern = /^[789]{1}[0-9]{9}$/;
-     
+
+    var mobPattern = /^[789]{1}[0-9]{9}$/;
+
     //phone number
     if (frm.txtPhone.value === "") {
         swal("Mobile !", "Please enter mobile number", "error");

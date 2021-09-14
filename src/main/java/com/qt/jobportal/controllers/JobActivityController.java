@@ -7,6 +7,9 @@ package com.qt.jobportal.controllers;
 
 import com.qt.jobportal.beans.TblJobActivity;
 import com.qt.jobportal.models.JobActivity;
+import com.qt.jobportal.models.Subscription;
+import com.qt.jobportal.models.SubscriptionCandidateModel;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,21 +35,20 @@ public class JobActivityController extends HttpServlet {
             case "apply":
                 activityApply(request, response);
                 break;
-
             case "save":
                 activityInsert(request, response);
                 break;
-
             case "favCompany":
                 activityInsert(request, response);
                 break;
-
             case "updateActivity":
                 activityUpdate(request, response);
                 break;
-
             case "delete":
                 vacancyDelete(request, response);
+                break;
+            case "deleteActivity":
+                deleteActivity(request, response);
                 break;
             default:
                 break;
@@ -110,7 +112,7 @@ public class JobActivityController extends HttpServlet {
         boolean check = jobAct.checkJobActivity(request.getParameter("candidateid"), activity, request.getParameter("vacancyid"));
 
         if (check) {
-            msg = "Activity is already present";
+            msg = "Activity of Job is added";
         } else {
 
             beans.setActivity(activity);
@@ -129,54 +131,76 @@ public class JobActivityController extends HttpServlet {
             String vacancyId = request.getParameter("vacancyid");
         }
 
-//        response.sendRedirect("jobDetails.jsp?id=" + vacancyId + "&message=" + msg);
-        response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("candidateid") + "&message=" + msg);
+        response.sendRedirect("jobDetails.jsp?id=" + request.getParameter("vacancyid") + "&message=" + msg);
+//        response.sendRedirect("jobDetails.jsp?id=" + request.getParameter("vacancyid") + "&msg=" + msg);
+
     }
 
     private void activityApply(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         beans.setCandidateId(request.getParameter("candidateid"));
         int activity = 0;
         if (request.getParameter("action").equals("apply")) {
             activity = 1;
         }
 
-        beans.setActivity(activity);
-        beans.setJobTitle(request.getParameter("title"));
-        beans.setEmployerName(request.getParameter("employername"));
-        beans.setVacancyId(request.getParameter("vacancyid"));
-        beans.setCandidateId(request.getParameter("candidateid"));
-        beans.setDeduction(Integer.parseInt(request.getParameter("deduction")));
-        beans.setDeduction_type(Integer.parseInt(request.getParameter("deduction_type")));
-        beans.setEmployerId(request.getParameter("employerId"));
-        beans.setEmpDeduction(Integer.parseInt(request.getParameter("empDeduction")));
-        beans.setEmpDeduction_type(Integer.parseInt(request.getParameter("empdeduction_type")));
-        beans.setJobTitle(request.getParameter("jobtitle"));
-        beans.setEmployerName(request.getParameter("empname"));
-        String vacancyId = request.getParameter("vacancyid");
+        JobActivity jobAct = new JobActivity();
+        boolean check = jobAct.checkJobActivity(request.getParameter("candidateid"), activity, request.getParameter("vacancyid"));
 
-        msg = model.insert(beans);
+        if (check) {
+            msg = "Applied for Job";
+        } else {
+            beans.setActivity(activity);
+            beans.setJobTitle(request.getParameter("title"));
+            beans.setEmployerName(request.getParameter("employername"));
+            beans.setVacancyId(request.getParameter("vacancyid"));
+            beans.setCandidateId(request.getParameter("candidateid"));
+            
+            
+//            beans.setDeduction(Integer.parseInt(request.getParameter("deduction")));
+            beans.setDeduction(SubscriptionCandidateModel.deduction(request.getParameter("candidateid")));
+            
+            
+            beans.setDeduction_type(Integer.parseInt(request.getParameter("deduction_type")));
+            beans.setEmployerId(request.getParameter("employerId"));
+            beans.setEmpDeduction(Subscription.empDeduction(request.getParameter("employerId")));
+            beans.setEmpDeduction_type(Integer.parseInt(request.getParameter("empdeduction_type")));
+            beans.setJobTitle(request.getParameter("jobtitle"));
+            beans.setEmployerName(request.getParameter("empname"));
 
-//        response.sendRedirect("jobDetails.jsp?id=" + vacancyId + "&message=" + msg);
-        response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("candidateid") + "&message=" + msg);
+            msg = model.insert(beans);
+        }
 
+        response.sendRedirect("jobDetails.jsp?id=" + request.getParameter("vacancyid") + "&message=" + msg);
     }
 
     private void activityUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int activity = 0;
         if (request.getParameter("action").equals("updateActivity")) {
             activity = 1;
+        }
+
+        JobActivity jobAct = new JobActivity();
+        boolean check = jobAct.checkJobActivity(request.getParameter("candidateid"), activity, request.getParameter("vacancyid"));
+        String vacancyId = request.getParameter("vacancyid");
+
+        if (check) {
+            msg = "Applied for Job";
+        } else {
+
+            beans.setActivity(activity);
+            beans.setCandidateId(request.getParameter("candidateid"));
+            beans.setJobTitle(request.getParameter("title"));
+            beans.setEmployerId(request.getParameter("employerId"));
+            beans.setEmployerName(request.getParameter("employername"));
+            beans.setVacancyId(request.getParameter("vacancyid"));
+
+            msg = model.insertSave(beans);
 
         }
 
-        beans.setEmployerName(request.getParameter("employername"));
-        beans.setActivity(activity);
-        beans.setVacancyId(request.getParameter("vacancyid"));
+        response.sendRedirect("candidate/candidateAccount.jsp?vacancyid=" + vacancyId + "&message=" + msg);
+//        response.sendRedirect("candidate/candidateAccount.jsp?vacancyid=" + vacancyId + "&msg=" + msg);
 
-        msg = model.updateActivity(beans);
-        String vacancyId = request.getParameter("vacancyid");
-
-        response.sendRedirect("applyNow.jsp?vacancyid=" + vacancyId + "&message=" + msg);
     }
 
     private void vacancyDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -188,6 +212,31 @@ public class JobActivityController extends HttpServlet {
             msg = model.delete(beans);
             response.sendRedirect("candidate/appliedJob.jsp?message=" + msg);
         }
+    }
+
+    private void deleteActivity(HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, IOException {
+
+        int activity = Integer.parseInt(request.getParameter("activity"));
+
+        JobActivity jobAct = new JobActivity();
+        boolean check = jobAct.checkJobActivity(request.getParameter("candidateid"), activity, request.getParameter("vacancyid"));
+        String vacancyId = request.getParameter("vacancyid");
+
+        if (!check) {
+            msg = "Job is not available";
+        } else {
+
+            beans.setActivity(activity);
+            beans.setCandidateId(request.getParameter("candidateid"));
+            beans.setVacancyId(request.getParameter("vacancyid"));
+
+            msg = model.deleteActivity(beans);
+
+        }
+
+        response.sendRedirect("candidate/candidateAccount.jsp?vacancyid=" + vacancyId + "&message=" + msg);
+//        response.sendRedirect("candidate/candidateAccount.jsp?vacancyid=" + vacancyId + "&msg=" + msg);
+
     }
 
 }

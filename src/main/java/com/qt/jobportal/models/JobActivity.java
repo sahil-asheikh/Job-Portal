@@ -51,6 +51,7 @@ public class JobActivity {
     }
 
     public String insert(TblJobActivity activities) {
+
         con = JobPortalDb.connectDb();
 
         Task:
@@ -63,7 +64,6 @@ public class JobActivity {
 
                     sql = "call spJobTx(?,?,?,?,?,?,?,?,?,?)";
                     cs = con.prepareCall(sql);
-
                     cs.setString(1, activities.getCandidateId());
                     cs.setInt(2, activities.getDeduction());
                     cs.setInt(3, activities.getDeduction_type());
@@ -77,10 +77,7 @@ public class JobActivity {
 
                     int rows = cs.executeUpdate();
                     if (rows >= 1) {
-
-                        if (rows >= 1) {
-                            message = "<span class=\"text-success font-bold\">Applied for Job</span>";
-                        }
+                        message = "<span class=\"text-success font-bold\">Applied for Job</span>";
                     }
 
                 } catch (SQLException e) {
@@ -108,7 +105,6 @@ public class JobActivity {
     }
 
     public String insertSave(TblJobActivity activities) {
-        con = JobPortalDb.connectDb();
 
         Task:
         if (null == existance.doCheckExistanceOf(TABLENAME, null)) {
@@ -116,31 +112,36 @@ public class JobActivity {
         } else {
             switch (existance.doCheckExistanceOf(TABLENAME, null)) {
                 case "exist":
+                    con = JobPortalDb.connectDb();
                     try {
-                    sql = "insert into tbljobactivity(candidate_id,activity, job_title,employer_id, employer_name,vacancy_id)values (?,?,?,?,?,?)";
-                    cs = con.prepareCall(sql);
-                    cs.setString(1, activities.getCandidateId());
-                    cs.setInt(2, activities.getActivity());
-                    cs.setString(3, activities.getJobTitle());
-                    cs.setString(4, activities.getEmployerId());
-                    cs.setString(5, activities.getEmployerName());
-                    cs.setString(6, activities.getVacancyId());
-                    int rows = cs.executeUpdate();
-                    if (rows >= 1) {
-                        message = "<span class=\"text-success font-bold\">Activity of Job is added</span>";
-                    }
-                } catch (SQLException e) {
-                    message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
-                } finally {
-                    try {
-                        if (con != null) {
-                            con.close();
+                        sql = "insert into tbljobactivity(candidate_id,activity, job_title,employer_id, employer_name,vacancy_id)values (?,?,?,?,?,?)";
+                        cs = con.prepareCall(sql);
+                        cs.setString(1, activities.getCandidateId());
+                        cs.setInt(2, activities.getActivity());
+                        cs.setString(3, activities.getJobTitle());
+                        cs.setString(4, activities.getEmployerId());
+                        cs.setString(5, activities.getEmployerName());
+                        cs.setString(6, activities.getVacancyId());
+                        int rows = cs.executeUpdate();
+                        if (rows == 1) {
+                            if (activities.getActivity() == 2) {
+                                message = "<span class=\"text-success font-bold\">Saved</span>";
+                            } else if (activities.getActivity() == 3) {
+                                message = "<span class=\"text-success font-bold\">Liked</span>";
+                            }
                         }
                     } catch (SQLException e) {
-                        message = e.getMessage();
+                        message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+                    } finally {
+                        try {
+                            if (con != null) {
+                                con.close();
+                            }
+                        } catch (SQLException e) {
+                            message = e.getMessage();
+                        }
                     }
-                }
-                break;
+                    break;
 
                 case "not_exist":
                     create();
@@ -197,7 +198,6 @@ public class JobActivity {
         con = JobPortalDb.connectDb();
         ArrayList<TblJobActivity> arrayList = new ArrayList<>();
         try {
-
             //  sql = "select * from " + TABLENAME + " where candidate_id = ? and activity = ? ";
             sql = "select * from " + TABLENAME + " where activity = ? and candidate_id = ?";
             cs = con.prepareCall(sql);
@@ -591,13 +591,13 @@ public class JobActivity {
         boolean check = false;
         con = JobPortalDb.connectDb();
         sql = "SELECT * FROM tbljobactivity where candidate_id = ? and activity = ? and vacancy_id = ?";
-        
+
         try {
             cs = con.prepareCall(sql);
             cs.setString(1, cid);
             cs.setInt(2, activity);
             cs.setString(3, vid);
-            
+
             rs = cs.executeQuery();
             if (rs.next()) {
                 check = true;
@@ -606,13 +606,49 @@ public class JobActivity {
             message = e.getMessage();
         } finally {
             try {
-
-            } catch (Exception e) {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
                 message = e.getMessage();
             }
         }
 
         return check;
+    }
+
+    public String deleteActivity(TblJobActivity jobActivity) {
+
+        con = JobPortalDb.connectDb();
+        sql = "DELETE FROM tbljobactivity WHERE candidate_id = ? and activity = ? and vacancy_id = ?";
+
+        try {
+            cs = con.prepareCall(sql);
+            cs.setString(1, jobActivity.getCandidateId());
+            cs.setInt(2, jobActivity.getActivity());
+            cs.setString(3, jobActivity.getVacancyId());
+
+            int i = cs.executeUpdate();
+
+            if (i == 1) {
+                message = "Activity Deleted";
+            } else {
+                message = "Error while deleting activity...";
+            }
+
+        } catch (Exception e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                message = e.getMessage();
+            }
+        }
+
+        return message;
     }
 
 }

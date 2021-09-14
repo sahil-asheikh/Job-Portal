@@ -4,7 +4,6 @@
     Author     : LENOVO
 --%>
 
-<%@page import="com.qt.jobportal.models.Subscription"%>
 <%@page import="com.qt.jobportal.models.JobActivity"%>
 <%@page import="com.qt.jobportal.models.SubscriptionCandidateModel"%>
 <%@page import="com.qt.jobportal.commons.Utils"%>
@@ -22,10 +21,13 @@
         <%
             Vacancy vacmod = new Vacancy();
             TblVacancy vacancy = vacmod.selectById(request.getParameter("id"));
+//            TblVacancy vacancy = vacmod.selectById("vLXaEpOHfZqmjrj9lf1Qip9A1Stjzf");
 
             CandidateModel candidate = new CandidateModel();
             TblCandidate beanCandidate = candidate.selectById(String.valueOf(session.getAttribute("CandidateId")));
-            boolean validCandidateChecked = CandidateModel.checkValidCandidate(String.valueOf(session.getAttribute("CandidateId")));
+//            TblCandidate beanCandidate = candidate.selectById("jwyyVMTtjzQUwhAcYpsA1aDbc8V3e8");
+            boolean validCandidateChecked = candidate.checkValidCandidate(request.getParameter(String.valueOf(session.getAttribute("CandidateId"))));
+//            boolean validCandidateChecked = candidate.checkValidCandidate("jwyyVMTtjzQUwhAcYpsA1aDbc8V3e8");
 
         %>
 
@@ -245,7 +247,6 @@
                                             <br>
 
                                             <%
-                                                System.out.println("CANDIDATE STATUS: " + validCandidateChecked);
                                                 if (validCandidateChecked) {
                                             %>
                                             <center>
@@ -330,22 +331,24 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <div class="container" style="border: ridge">
-                                                                    <div class="col-sm-9">
-                                                                        <h5><%= (beanCandidate.getFullName() == null || beanCandidate.getFullName() == "null" || beanCandidate.getFullName() == "") ? "" : beanCandidate.getFullName()%></h5>
-                                                                        <h5><%= (beanCandidate.getEmailId() == null || beanCandidate.getEmailId() == "null" || beanCandidate.getEmailId() == "") ? "" : beanCandidate.getEmailId()%></h5>
 
-                                                                        <h5><%= (beanCandidate.getEmailId() == null || beanCandidate.getEmailId() == "null" || beanCandidate.getEmailId() == "") ? "" : beanCandidate.getEmailId()%></h5>
-                                                                        <h5><%= (beanCandidate.getPhone_No() == null || beanCandidate.getPhone_No() == "null" || beanCandidate.getPhone_No() == "") ? "" : beanCandidate.getPhone_No()%></h5>
-                                                                        <h5><%= (beanCandidate.getState() == null || beanCandidate.getState() == "null" || beanCandidate.getState() == "") ? "" : beanCandidate.getState()%></h5>
+                                                                <div class="container" style="border: ridge">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-9">
+                                                                            <h4> <%= beanCandidate.getFullName()%></h4> 
+                                                                            <h5> <%= beanCandidate.getEmailId()%></h5>
+                                                                            <h5><%= beanCandidate.getPhone_No()%></h5>
+                                                                            <h5><%= beanCandidate.getState()%></h5>
+                                                                        </div>
                                                                     </div>
                                                                     <br>
-                                                                    <!--                                                                    <h5>Internship Training Details with Company Name</h5>
-                                                                                                                                        <h5>College Details</h5>-->
+                                                                    <h5>Internship Training Details with Company Name</h5>
+                                                                    <h5>College Details</h5>
+
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <a class="btn btn-primary" href="JobActivityController?action=apply&id=<%= vacancy.getVacancyPublicId()%>&candidateid=<%= beanCandidate.getCandPublicId()%>&deduction=<%= SubscriptionCandidateModel.deduction(beanCandidate.getSubscriptionId())%>&deduction_type=1&employerId=<%= vacancy.getEmployerId()%>&empdeduction_type=2&empname=<%= vacancy.getCompanyName()%>&jobtitle=<%= vacancy.getTitle()%>&candidateid=<%=beanCandidate.getCandPublicId()%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>">
+                                                                <a class="btn btn-primary" href="JobActivityController?action=apply&id=<%= vacancy.getVacancyPublicId()%>&candidateid=<%= beanCandidate.getCandPublicId()%>&deduction=<%= SubscriptionCandidateModel.deduction(beanCandidate.getSubscriptionId())%>&deduction_type=1&employerId=<%= vacancy.getEmployerId()%>&empDeduction=20&empdeduction_type=2&empname=<%= vacancy.getCompanyName()%>&jobtitle=<%= vacancy.getTitle()%>&candidateid=<%=beanCandidate.getCandPublicId()%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>">
                                                                     Apply Now
                                                                 </a>
                                                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

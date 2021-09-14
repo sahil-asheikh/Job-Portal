@@ -56,26 +56,16 @@
     </head>
     <body>
 
-
-
-
         <div class="be-wrapper">
             <%@ include file = "navbar.jsp" %>
-            <%@include file="sidebar.jsp" %>
+            <%@ include file="sidebar.jsp" %>
 
             <%
                 CandidateModel candMol = new CandidateModel();
                 TblCandidate bean = candMol.selectById(String.valueOf(session.getAttribute("CandidateId")));
-
-//                TblCandidateDetails candidateDetails = candMol.selectCandidateDetailsById(String.valueOf(session.getAttribute("CandidateId")));
                 TblCandidateDetails candidateDetails = CandidateModel.selectCandDet(session.getAttribute("CandidateId").toString());
-
-                //                 System.out.println(bean.getSerialNo());
-                //                 System.out.println(bean.getException());
                 System.out.println(candidateDetails.getExperience());
-
             %>
-
 
             <div class="be-content">
                 <div class="main-content container-fluid">
@@ -92,6 +82,7 @@
 
                                         <div class="nick"><span class="mdi mdi-account">&nbsp;<%= bean.getEmailId()%></span> </div>
                                         <p class="text-success text-right">${param.message}</p>
+                                        <p class="text-success text-right">${param.msg}</p>
                                     </div>
 
                                     <div class="row user-display-details">
@@ -116,7 +107,7 @@
                                                 boolean checkResume = CandidateModel.resumeAvailable(session.getAttribute("CandidateId").toString());
                                                 if (checkResume) {
                                             %>
-                                            <a class="btn btn-secondary btn-sm btn-info " data-toggle="modal" data-target="#resume_update" type="button"   href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                            <a class="btn btn-secondary btn-sm btn-info " data-toggle="modal" data-target="#resume_update" type="button"   href="#">
                                                 <div class="icon-sm">
                                                     <span class="mdi mdi-edit"> Edit Resume</span>
                                                 </div>
@@ -124,7 +115,7 @@
                                             <%
                                             } else {
                                             %>
-                                            <a class="btn btn-secondary btn-sm btn-info " data-toggle="modal" data-target="#resume_upload" type="button"   href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                            <a class="btn btn-secondary btn-sm btn-info " data-toggle="modal" data-target="#resume_upload" type="button"   href="#">
                                                 <div class="icon-sm">
                                                     <span class="mdi mdi-edit"> Upload Resume</span>
                                                 </div>
@@ -164,7 +155,7 @@
                         <div class="card card-border card-contrast">
                             <div class="card-header card-header-contrast">About Me &nbsp;<span class="icon mdi mdi-account"></span>
                                 <div class="tools">
-                                    <a  data-toggle="modal" data-target="#modalAboutMe" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                    <a  data-toggle="modal" data-target="#modalAboutMe" type="button" href="#">
                                         <div class="icon-sm">
                                             <span class="icon mdi mdi-edit btn-space text-primary  md-trigger" data-modal="summaryModalId" title="Add Summary"></span>
                                         </div>
@@ -187,7 +178,7 @@
                         <div class="card card-border card-contrast">
                             <div class="card-header card-header-contrast">Job Role &nbsp;<span class="icon mdi mdi-account"></span>
                                 <div class="tools">
-                                    <a  data-toggle="modal" data-target="#modalJobRole" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                    <a  data-toggle="modal" data-target="#modalJobRole" type="button" href="#">
                                         <div class="icon-sm">
                                             <span class="icon mdi mdi-edit btn-space text-primary  md-trigger" data-modal="summaryModalId" title="Add Job Role"></span>
                                         </div>
@@ -213,7 +204,7 @@
                                 <blockquote class="blockquote">
                                     <div class="icon-container">
 
-                                        <a  data-toggle="modal" data-target="#modalEducation" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                        <a  data-toggle="modal" data-target="#modalEducation" type="button" href="#">
                                             <div class="icon-sm">
                                                 <i class="icon"><span class="mdi mdi-plus md-trigger" data-modal="form-primary-3"></span></i>
                                             </div>
@@ -233,7 +224,7 @@
                             <div class="card-header card-header-contrast">Education &nbsp;<span class="icon mdi mdi-graduation-cap"></span>
                                 <div class="tools">
 
-                                    <a  data-toggle="modal" data-target="#modalEducation" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                    <a  data-toggle="modal" data-target="#modalEducation" type="button" href="#">
                                         <div class="icon-sm">
                                             <i class="icon">
 
@@ -277,7 +268,7 @@
                                 <blockquote class="blockquote">
                                     <div class="icon-container">
 
-                                        <a  data-toggle="modal" data-target="#modalExperience" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                        <a  data-toggle="modal" data-target="#modalExperience" type="button" href="#">
                                             <div class="icon-sm">
                                                 <i class="icon"><span class="mdi mdi-plus md-trigger" data-modal="form-primary-3"></span></i>
                                             </div>
@@ -299,7 +290,7 @@
                             <div class="card-header card-header-contrast card-header-featured">Experience &nbsp;<span class="icon mdi mdi-case"></span>
                                 <div class="tools">
 
-                                    <a  data-toggle="modal" data-target="#modalExperience" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                    <a  data-toggle="modal" data-target="#modalExperience" type="button" href="#">
                                         <div class="icon-sm">
                                             <i class="icon">
 
@@ -333,10 +324,6 @@
                     </div>
 
                     <%}%>
-
-                    <!--===============================================================================================================================================-->
-                    <!--ERROR FOUND-->
-                    <!--===============================================================================================================================================-->
 
                     <!--Skills-->
                     <%if (bean.getSkillSet() == null || bean.getSkillSet().equals("") || bean.getSkillSet().equals("null")) {%>
@@ -382,9 +369,6 @@
 
                             <div class="card-body">
                                 <blockquote class="blockquote">
-                                    <!--===============================================================================================================================================-->
-                                    <!--ERROR FOUND-->
-                                    <!--===============================================================================================================================================-->
                                     <table  class="table">
                                         <tbody>
                                             <tr>
@@ -436,7 +420,7 @@
                             <div class="card-header card-header-contrast card-header-featured">Personal Details &nbsp;<i class="icon mdi mdi-graduation-cap"></i>
                                 <div class="tools">
 
-                                    <a  data-toggle="modal" data-target="#modalPersonal" type="button" href="uploadResume.jsp?id=<%= session.getAttribute("CandidateId")%>">
+                                    <a  data-toggle="modal" data-target="#modalPersonal" type="button" href="#">
                                         <div class="icon-sm">
                                             <i class="icon">
 
@@ -558,7 +542,7 @@
                                 <div class="form-group row">
                                     <label class="col-3 col-lg-2 col-form-label text-right" >Select Your Resume</label>
                                     <div class="col-9 col-lg-10">
-                                        <input class="form-control" name="resumeFile"  type="file" >
+                                        <input class="form-control" name="resumeFile"  type="file" required="">
                                     </div>
                                 </div>
                             </div>
@@ -618,7 +602,7 @@
                             <div class="modal-body">
                                 <div class="form-group row">
                                     <div class="col-9 col-lg-10">
-                                        <textarea class="form-control" name="aboutMe" placeholder="Write about yourself..." rows="3"><%= (candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId"))) == ("null")) || (candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId"))) == ("")) || (candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId"))) == (null)) ? "" : candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId")))%></textarea>
+                                        <textarea class="form-control" required="" name="aboutMe" placeholder="Write about yourself..." rows="3"><%= (candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId"))) == ("null")) || (candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId"))) == ("")) || (candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId"))) == (null)) ? "" : candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId")))%></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -762,7 +746,7 @@
                                                 </select>
                                                 <br>
 
-                                                <textarea class="form-control" name="aboutexperianceDetail" placeholder="Write about yourself experience..." rows="3"><%= (candidateDetails.getExperienceDetails() == ("null")) || (candidateDetails.getExperienceDetails() == ("")) || (candidateDetails.getExperienceDetails() == (null)) ? "" : candidateDetails.getExperienceDetails()%></textarea>
+                                                <textarea class="form-control" required="" name="aboutexperianceDetail" placeholder="Write about yourself experience..." rows="3"><%= (candidateDetails.getExperienceDetails() == ("null")) || (candidateDetails.getExperienceDetails() == ("")) || (candidateDetails.getExperienceDetails() == (null)) ? "" : candidateDetails.getExperienceDetails()%></textarea>
 
                                                 <br>
                                                 <br>
@@ -872,45 +856,62 @@
                                                 <br>
 
                                                 <div id="dynamicExperience"></div>
-                                                <!--===================================================================================================================-->
-                                                <!--BUG FOUND-->
-                                                <!--===================================================================================================================-->
-
-                                                <!--<select onchange="print_city('state', this.selectedIndex);" id ="sts" name="txtState" class="form-control form-control-sm" required></select>-->
-                                                <input type="text" class="form-control" placeholder="Enter your State" name="txtState" value="<%= ((bean.getState() == null || bean.getState() == "null" || bean.getState() == "") ? "" : bean.getState())%>" required="">
-                                                <br>
-
-                                                <!--<select id="state" class="form-control form-control-sm" required name="txtCity"></select>-->
-                                                <input type="text" class="form-control" placeholder="Enter your City" name="txtCity" value="<%= ((bean.getCity() == null || bean.getCity() == "null" || bean.getCity() == "") ? "" : bean.getCity())%>" required="">
-                                                <br>
-
-                                                <!--===================================================================================================================-->
-                                                <!--//BUG FOUND-->
-                                                <!--===================================================================================================================-->
 
                                                 <input type="text" class="form-control" placeholder="Enter your address" name="address" value="<%= ((bean.getAddress() == null) ? "" : bean.getAddress())%>" required="">
                                                 <br>
+
+
+                                                <%
+                                                    if (((bean.getState() == null || bean.getState() == "null" || bean.getState() == "")) && ((bean.getCity() == null || bean.getCity() == "null" || bean.getCity() == ""))) {
+                                                %>
+                                                <select onchange="print_city('state', this.selectedIndex);" id ="sts" name="txtState" class="form-control form-control-sm" required></select>
+                                                <br>
+
+                                                <select id="state" class="form-control form-control-sm" required name="txtCity"></select>
+                                                <br>
+
+                                                <%
+                                                } else {
+                                                %>
+                                                <input type="text" class="form-control" placeholder="Enter your State" name="txtState" value="<%= ((bean.getState() == null || bean.getState() == "null" || bean.getState() == "") ? "" : bean.getState())%>" required="">
+                                                <br>
+
+                                                <input type="text" class="form-control" placeholder="Enter your City" name="txtCity" value="<%= ((bean.getCity() == null || bean.getCity() == "null" || bean.getCity() == "") ? "" : bean.getCity())%>" required="">
+                                                <br>
+                                                <%
+                                                    }
+                                                %>
 
                                                 <h4 style="font-weight: bold">Select your gender</h4>
                                                 <div class="form-check">
 
                                                     <%
+                                                        if (((bean.getGender() == null || bean.getGender() == "null" || bean.getGender() == ""))) {
+                                                    %>
+                                                    <input type="radio" id="male" name="gender" value="Male" required="" >
+                                                    <label  for="male">Male</label><br>
+
+                                                    <input type="radio" id="female" name="gender" value="Female" required="" >
+                                                    <label for="female">Female</label><br>
+                                                    <%
+                                                    } else {
                                                         if (bean.getGender().equals("Male")) {
-                                                            System.err.println("CONDITION CHECK BEGU: " + bean.getGender());
                                                     %>
                                                     <input type="radio" id="male" name="gender" value="Male" required="" checked="">
                                                     <label  for="male">Male</label><br>
 
                                                     <input type="radio" id="female" name="gender" value="Female" required="" >
                                                     <label for="female">Female</label><br>
+
                                                     <%
                                                     } else if (bean.getGender().equals("Female")) {
                                                     %>
                                                     <input type="radio" id="male" name="gender" value="Male" required="" >
                                                     <label  for="male">Male</label><br>
 
-                                                    <input type="radio" id="male" name="gender" value="Female" required="" checked="">
+                                                    <input type="radio" id="female" name="gender" value="Female" required="" checked="">
                                                     <label for="female">Female</label><br>
+
                                                     <%
                                                     } else {
                                                     %>
@@ -920,6 +921,7 @@
                                                     <input type="radio" id="female" name="gender" value="Female" required="" >
                                                     <label for="female">Female</label><br>
                                                     <%
+                                                            }
                                                         }
                                                     %>
 
@@ -939,6 +941,8 @@
                 </div>
             </div>
             <!-- /Modal to open personal info update button-->
+            
+        </div>
 
 
 

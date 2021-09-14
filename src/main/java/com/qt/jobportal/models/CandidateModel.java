@@ -8,7 +8,6 @@ package com.qt.jobportal.models;
 import com.qt.jobportal.beans.TblCandidate;
 import com.qt.jobportal.beans.TblCandidateDetails;
 import com.qt.jobportal.beans.TblCandidatePlan;
-import com.qt.jobportal.beans.TblSystemSetting;
 import com.qt.jobportal.beans.tblSubscriptionCandidate;
 import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.GenerateOTP;
@@ -66,7 +65,6 @@ public class CandidateModel {
     }
 
     public String insert(TblCandidate bn) {
-        System.out.println("We are here");
         con = JobPortalDb.connectDb();
         Task:
         if (null == existance.doCheckExistanceOf(TABLENAME, null)) {
@@ -542,12 +540,20 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
         return status;
     }
 
     public int doVerifyCredentials(String phone, String password, HttpServletRequest request) {
-
+        con = JobPortalDb.connectDb();
         int status = 0;
         session = request.getSession();
         sql = "select Id,candidate_id, fullName, phone_no, password from " + TABLENAME + " where phone_no = '" + phone + "'";
@@ -581,7 +587,7 @@ public class CandidateModel {
     }
 
     public void doIncreamentAttempts(int id) {
-
+        con = JobPortalDb.connectDb();
         try {
             cs = con.prepareCall("{call spIncreamentWrongAttempts(?,?)}");
             cs.setString(1, TABLENAME);
@@ -589,24 +595,42 @@ public class CandidateModel {
             cs.executeUpdate();
         } catch (SQLException e) {
             System.out.println("exception because of Incrementing : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
     }
 
     public void resetLoginCount(int id) {
+        con = JobPortalDb.connectDb();
         sql = "update " + TABLENAME + " set attempts = 0 where id = " + id;
         try {
             cs = con.prepareCall(sql);
             cs.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage() + "com.qt.jobportal.models.candidate.resetLoginCount()");
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
     }
 
     public String updatePassword(TblCandidate bn) {
-        con = JobPortalDb.connectDb();
         try {
             if (fetchPassword(bn.getCandPublicId()).equals(bn.getValidPassword())) {
-                sql = "update " + TABLENAME + " set  password=? where candidate_id = ? ";
+                con = JobPortalDb.connectDb();
+//                sql = "update " + TABLENAME + " set  password=? where candidate_id = ? ";
+                sql = "UPDATE tblcandidate SET password = ? WHERE candidate_id = ?";
                 cs = con.prepareCall(sql);
                 cs.setString(1, bn.getNewPassword());
                 cs.setString(2, bn.getCandPublicId());
@@ -617,7 +641,6 @@ public class CandidateModel {
                 }
             } else {
                 message = "Old Password does not match";
-
             }
         } catch (SQLException e) {
             message = "Unable to Update password because of : " + e.getMessage() + " | At : " + this.getClass().getName();
@@ -635,6 +658,7 @@ public class CandidateModel {
     }
 
     public String fetchPassword(String id) {
+        con = JobPortalDb.connectDb();
         String pass = null;
         try {
             sql = "select password from " + TABLENAME + " where candidate_id = ?";
@@ -646,6 +670,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
         System.out.println("Pass : " + pass);
         return pass;
@@ -655,7 +687,7 @@ public class CandidateModel {
     public String insertSummary(TblCandidateDetails bn) {
         //   isEmpty(publicID,"columnName","tableName")
         boolean isExist = isEmpty(bn.getCandPublicId(), "summary", "tblcandidatedetails");
-
+        con = JobPortalDb.connectDb();
         if (isExist == true) {
             // if candidate id exist 
             try {
@@ -707,23 +739,11 @@ public class CandidateModel {
     }
 
     public String experienceDetail(TblCandidateDetails bn) {
-        con = JobPortalDb.connectDb();
-        int isExistCand = 0;
-
-        try {
-            sql = "select candidate_id from tblcandidatedetails where candidate_id = ?";
-            cs = con.prepareCall(sql);
-            cs.setString(1, bn.getCandPublicId());
-            rs = cs.executeQuery();
-            while (rs.next()) {
-                isExistCand = 1;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
 
         //   isEmpty(publicID,"columnName","tableName")
         boolean isExist = isEmpty(bn.getCandPublicId(), "experience_details", "tblcandidatedetails");
+
+        con = JobPortalDb.connectDb();
 
         if (isExist == true) {
             // if candidate Exp aleady Exist Thn UPDATE
@@ -800,6 +820,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
         return summary;
 
@@ -823,6 +851,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
         return experience;
 
@@ -924,6 +960,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
 
         return result;
@@ -986,8 +1030,12 @@ public class CandidateModel {
         } catch (SQLException e) {
             message = "Unable to Update Password because of : " + e.getMessage() + " | At : " + this.getClass().getName();
         } finally {
-            if (con != null) {
-                con.close();
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
             }
         }
         return message;
@@ -1008,6 +1056,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
 
         return exist;
@@ -1028,6 +1084,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
 
         return exist;
@@ -1149,6 +1213,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
 
         if (jobRole == null) {
@@ -1236,6 +1308,14 @@ public class CandidateModel {
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
 
         return isEmpty;
@@ -1318,6 +1398,13 @@ public class CandidateModel {
                     status = true;
                 }
             }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1335,6 +1422,13 @@ public class CandidateModel {
             if (rs.next()) {
                 fileName = rs.getString(1);
             }
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1350,6 +1444,13 @@ public class CandidateModel {
             ps.setString(1, "");
             ps.setString(2, userId);
             stat = ps.executeUpdate();
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1370,7 +1471,13 @@ public class CandidateModel {
             if (rs.next()) {
                 path = "D:QaswaTech\\WORKSPACE\\files\\" + rs.getString(1);
             }
-
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1473,10 +1580,8 @@ public class CandidateModel {
 //    method to update the experiance details
     public String updateExperinceDetails(TblCandidateDetails candidate) {
 
-        con = JobPortalDb.connectDb();
-
         boolean isExist = isEmpty(candidate.getCandPublicId(), "experience_details", "tblcandidatedetails");
-
+        con = JobPortalDb.connectDb();
         if (isExist == true) {
             // if candidate id exist 
             try {
@@ -1530,45 +1635,12 @@ public class CandidateModel {
             }
         }
 
-        /*
-        try {
-
-            sql = "UPDATE tblcandidatedetails SET experience = ?, experience_details = ? WHERE candidate_id = ?";
-            cs = con.prepareCall(sql);
-            cs.setString(1, candidate.getExperience());
-            cs.setString(2, candidate.getExperienceDetails());
-            cs.setString(3, candidate.getCandPublicId());
-
-            System.out.println("EXP: " + candidate.getExperience());
-            System.out.println("EXP: " + candidate.getExperienceDetails());
-            System.out.println("EXP: " + candidate.getCandPublicId());
-
-            int rows = cs.executeUpdate();
-            if (rows >= 1) {
-                message = "Changes Saved";
-            } else {
-                message = "Error while saving the experience details";
-            }
-
-        } catch (Exception e) {
-            message = "Unable to Change because of : " + e.getMessage() + " | At : " + this.getClass().getName();
-        } finally {
-            try {
-                if (con != null) {
-                    con.close();
-                }
-            } catch (Exception e) {
-                message = e.getMessage();
-            }
-        }
-         */
         return message;
 
     }
 
 //    method to update the skill set
     public String insertJobSkills(TblCandidate bn) {
-        System.out.println("We are here");
         con = JobPortalDb.connectDb();
         Task:
         if ("exist".equals(existance.doCheckExistanceOf("tbljobrole", null))) {
@@ -1611,9 +1683,9 @@ public class CandidateModel {
             ps.setString(1, candidate.getEnglishSkill());
             ps.setString(2, candidate.getSkillSet());
             ps.setString(3, candidate.getCandPublicId());
-            
+
             int i = ps.executeUpdate();
-            
+
             if (i == 1) {
                 msg = "Skills has been saved";
             } else {
@@ -1623,12 +1695,72 @@ public class CandidateModel {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (con != null) {
-                con.close();
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 
         return msg;
+    }
+
+    public static boolean checkValidCandidate(String cid) {
+        Connection con = JobPortalDb.connectDb();
+        String sql = "SELECT * FROM tblcandidate where candidate_id = ?";
+        boolean status = false;
+        try {
+            PreparedStatement ps = con.prepareCall(sql);
+            ps.setString(1, cid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                status = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return status;
+    }
+
+    public static boolean checkCandidateSubscription(String cid) {
+        Connection con = JobPortalDb.connectDb();
+        String sql = "select subscription_id from tblcandidate where candidate_id = ?";
+        boolean status = false;
+        try {
+            PreparedStatement ps = con.prepareCall(sql);
+            ps.setString(1, cid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+//                status = true;
+                System.out.println("SUBSCRIPTION ID: " + rs.getString(1));
+                if (rs.getString(1) == null || rs.getString(1) == "null" || rs.getString(1) == "") {
+                    status = false;
+                } else {
+                    status = true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return status;
     }
 
 }

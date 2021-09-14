@@ -22,7 +22,6 @@
         <div class="be-wrapper">
             <div class="be-content">
                 <div class="main-content container">
-                   
                     <div class="container col-sm-5 mt-4 ">
                          <div class="card card-contrast">
                             <div class="card-header  card-header-contrast "><span class="text-info"><b>Forget Password</b></span>
@@ -38,6 +37,7 @@
                                         </div>
                                         <p class="text-right text-danger">
                                             ${param.msg}
+                                            ${param.message}
                                         </p>
                                         <div class="form-group">
                                             <p class="text-right">

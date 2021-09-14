@@ -34,7 +34,6 @@
 
 
                         <!--activites menu-->
-
                         <li class="<%= (pageName.equals("candidateAccount")) ? "active" : ""%>"><a href="candidateAccount.jsp"><i class="icon mdi mdi-face"></i><span>Activities</span></a>
                                                    </li>
                                                    <li class="<%= (pageName.equals("candidateWallet")) ? "active" : ""%>"><a href="candidateWallet.jsp "><i class="fa fa-google-wallet" aria-hidden="true"></i><span> &nbsp; &nbsp;Wallet </span></a>

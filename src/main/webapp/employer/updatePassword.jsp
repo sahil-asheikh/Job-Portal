@@ -54,9 +54,14 @@
                     <div class="card card-border-color card-border-color-primary">
                         <div class="card-header card-header-divider">Update Password<span class="card-subtitle"></span></div>
                         <div class="card-body">
+                            <%
+                                String empId = request.getParameter("id");
+                            %>
                             <form action="../EmployerController" method="post" name="frm">
                                 <input type="hidden" name="action" value="updatePassword">
-                                <input type="hidden" name="id" value="${param.id}">
+                                <!--<input type="hidden" name="id" value="${param.id}">-->
+                                <input type="hidden" name="empId" value="<%= empId %>">
+                                
                                 <div class="form-group row">
                                     <label class="col-3 col-lg-2 col-form-label text-right" >Password</label>
                                     <div class="col-9 col-lg-10">

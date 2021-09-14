@@ -89,23 +89,23 @@
                                     String msg = "insuffient balance";
                                 }
                             %>
-                            <h4> <a href="#" ><i class="fa fa-plus-circle">&nbsp; Add cover latter</i></a></h4>
-                            <div class="be-checkbox custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="check1">
-                                <label class="custom-control-label" for="check1">candidate_id
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                                </label>
-                            </div>
-                            <div class="be-checkbox custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="check2">
-                                <label class="custom-control-label" for="check2">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                                </label>
-                            </div>
+                            <!--<h4> <a href="#" ><i class="fa fa-plus-circle">&nbsp; Add cover latter</i></a></h4>
+                                <div class="be-checkbox custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="check1">
+                                    <label class="custom-control-label" for="check1">candidate_id
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                        when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                                    </label>
+                                </div>
+                                <div class="be-checkbox custom-control custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" id="check2">
+                                    <label class="custom-control-label" for="check2">
+                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                        when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                                    </label>
+                                </div>-->
                         </div>
                     </div>
                 </div>

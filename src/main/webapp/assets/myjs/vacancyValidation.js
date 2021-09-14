@@ -303,7 +303,7 @@ function vacancyValidation() {
      
      // Job Address Validation 
      if (frm.txtJobAddress.value === "") {
-     alert("Job Address Should Not Blank");
+//     alert("Job Address Should Not Blank");
      swal("Address !", " Please Enter Address", "error");
      frm.txtJobAddress.focus();
      return false;

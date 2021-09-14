@@ -265,6 +265,14 @@ public class SubscriptionCandidateModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
         }
         System.out.println("bal : " + balance);
         return balance;
@@ -386,26 +394,52 @@ public class SubscriptionCandidateModel {
         return i;
     }
 
-    public static int deduction(String subscriptionId) {
-        int deduction = 0;
+    public static String candidateSubscID(String candID) {
+        String candidateSubscID = null;
         Connection con = JobPortalDb.connectDb();
-        String sqlQuery = "SELECT per_apply_price FROM tblsubscriptioncandidate where subscriptioncandidate_id = ?";
+        String sqlQuery = "select subscription_id from tblcandidate where candidate_id = ?";
         try {
             PreparedStatement ps = con.prepareStatement(sqlQuery);
-            ps.setString(1, subscriptionId);
+            ps.setString(1, candID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                deduction = rs.getInt(1);
+                candidateSubscID = rs.getString(1);
             }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
                 if (con != null) {
                     con.close();
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return candidateSubscID;
+    }
+
+    public static int deduction(String candID) {
+        int deduction = 0;
+        String candidateSubscID = SubscriptionCandidateModel.candidateSubscID(candID);
+        Connection con = JobPortalDb.connectDb();
+        String sqlQuery = "SELECT per_apply_price FROM tblsubscriptioncandidate where subscriptioncandidate_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sqlQuery);
+            ps.setString(1, candidateSubscID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                deduction = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

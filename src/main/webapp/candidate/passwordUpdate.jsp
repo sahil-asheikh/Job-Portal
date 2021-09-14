@@ -71,14 +71,14 @@
                                 <div class="form-group row">
                                     <label class="col-3 col-lg-2 col-form-label text-right" > New Password</label>
                                     <div class="col-9 col-lg-10">
-                                        <input class="form-control" name="newPassword" id="newPwd" type="password"  onkeyup="check1();" placeholder="Enter new password">
+                                        <input class="form-control" name="newPassword" id="newPwd" required="" type="password"  onkeyup="check1();" placeholder="Enter new password">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-3 col-lg-2 col-form-label text-right" >Confirm password</label>
                                     <div class="col-9 col-lg-10">
                                         <span id="message"></span>
-                                        <input class="form-control" name="confirmPassword" id="confirmPwd" type="password"  onkeyup="check1();" placeholder="ReEnter password">
+                                        <input class="form-control" name="confirmPassword" id="confirmPwd" required="" type="password"  onkeyup="check1();" placeholder="ReEnter password">
                                     </div>
                                 </div>
                                 <div class="col-sm-6 pl-0">

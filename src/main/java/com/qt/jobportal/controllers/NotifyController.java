@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "NotifyController", urlPatterns = {"/NotifyController"})
 public class NotifyController extends HttpServlet {
-     NotifyMe model = new NotifyMe();
+
+    NotifyMe model = new NotifyMe();
     TblNotify beans = new TblNotify();
     String msg = null;
 
@@ -33,18 +34,16 @@ public class NotifyController extends HttpServlet {
         switch (action) {
             case "insert":
                 insert(request, response);
-                 break;
+                break;
             case "delete":
                 Delete(request, response);
-
                 break;
-           
             default:
                 break;
         }
     }
-    
-     @Override
+
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
@@ -61,34 +60,34 @@ public class NotifyController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         System.out.println("hieee");
         processRequest(request, response);
     }
 
-    private void insert(HttpServletRequest request, HttpServletResponse response)throws IOException {
-         String publicId = Utils.generatePublicId(30);
+    private void insert(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String publicId = Utils.generatePublicId(30);
         beans.setNotifyPublicId(publicId);
 
         beans.setName(request.getParameter("txtName"));
-         beans.setEmailId(request.getParameter("txtEmail"));
+        beans.setEmailId(request.getParameter("txtEmail"));
         beans.setJobCategory(request.getParameter("sltCategory"));
         System.out.println("request.getParameter()");
-         
-          msg = model.insert(beans);
-        response.sendRedirect("index.jsp?message=" + msg +"#notify");
+
+        msg = model.insert(beans);
+        response.sendRedirect("index.jsp?message=" + msg + "#notify");
 
     }
-    private void Delete(HttpServletRequest request, HttpServletResponse response)throws IOException {
+
+    private void Delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         if (request.getParameter("nid") == null || request.getParameter("nid").equals("")) {
             msg = "Id should not be empty!";
         } else {
-
             beans.setNotifyPublicId(request.getParameter("nid"));
             msg = model.delete(beans);
             response.sendRedirect("admin/showNotifyMe.jsp?message=" + msg);
         }
     }
-    
+
 }

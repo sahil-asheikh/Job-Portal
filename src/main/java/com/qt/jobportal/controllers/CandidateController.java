@@ -8,21 +8,15 @@ package com.qt.jobportal.controllers;
 import com.qt.jobportal.beans.TblCandidate;
 import com.qt.jobportal.beans.TblCandidateDetails;
 import com.qt.jobportal.beans.TblCandidatePlan;
-import com.qt.jobportal.beans.tblSubscriptionCandidate;
 import com.qt.jobportal.commons.Utils;
 import com.qt.jobportal.models.CandidateModel;
 import com.qt.jobportal.models.SubscriptionCandidateModel;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -372,7 +366,7 @@ public class CandidateController extends HttpServlet {
             e.printStackTrace();
             msg = "an error occurred while saving your resume";
         } finally {
-            response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
+            response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("CandidateId") + "&message=" + msg);
         }
 
     }
@@ -416,14 +410,14 @@ public class CandidateController extends HttpServlet {
             e.printStackTrace();
             msg = "an error occurred while deleting your resume";
         } finally {
-            response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
+            response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("CandidateId") + "&message=" + msg);
         }
 
     }
 
 //    method to edit the resume
 //        in this method we'll delete the resume and then upload the new resume with the same name and update that into the database
-    private void editResume(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void editResume(HttpServletRequest request, HttpServletResponse response) throws FileNotFoundException, IOException {
 
 //        fetching the userID using session
         HttpSession session = request.getSession(false);
@@ -446,25 +440,59 @@ public class CandidateController extends HttpServlet {
 //                        if file is deleted then updating the datbase's resumePath with null value as a deleted resumePath
                         String emptyFileName = "";
                         i = CandidateModel.uploadResume(emptyFileName, userID);
-                        uploadResume(request, response);
+
+//            creating the object of Parts to get and read the resume name
+                        Part part = request.getPart("resumeFile");  //Part allows a particular implementation to use, for example, file renaming, file name fetch etc.
+                        String fileUploaded = part.getSubmittedFileName();  // getting the name of a file using Part Class
+                        System.out.println("FILE NAME: " + fileUploaded);
+
+//          Storing pdf into the
+                        if (fileUploaded != null) {
+//              invoking the method to save the file name into the database
+                            String renameFile = Utils.generatePublicId(10) + fileUploaded;
+                            i = CandidateModel.uploadResume(renameFile, userID);     // updating the file name into the database
+//              checking if file name is stored or not
+                            if (i == 1) {
+//                  file's name is stored into the database now upload the file into the folder
+//                    getting the name of the resume using Parts
+                                InputStream is = part.getInputStream(); //it is used for reading a file, image, audio, video, webpage, etc.
+                                byte[] data = new byte[is.available()]; //getting InputStream values into byte
+                                is.read(data);      // reads the resume name
+
+                                //FileOutputStream is used for writing streams of raw bytes such as image data, file data
+                                FileOutputStream fos = new FileOutputStream(path + fileUploaded);   // creating object with path and fileName parameters
+                                fos.write(data);    // storing file at the path location
+                                fos.close();    // closing the FileOutputStream
+
+//                  renaming the resume with the unique name same as stored in database i.e. fileName
+                                file = new File(path + fileUploaded);  // Create an object of the File class to Replace the file path with path of the directory
+                                File rename = new File(path + renameFile);    // Create an object of the File class to Replace the file path with path of the directory
+                                file.renameTo(rename);   //executing the file to change the name
+
+                                msg = "Resume Updated";
+
+                            } else {
+                                msg = "File not Updated";
+                            }
+                        } else {
+                            msg = "Please upload File";
+                        }
                     } else {
                         msg = "Failed to delete Resume";
-                        response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
                     }
                 } else {
                     msg = "Failed to delete Resume SQL ISSUE";
-                    response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
                 }
 
             } else {
                 msg = "Something went wrong Check";
-                response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             msg = "an error occurred while deleting your resume";
-            response.sendRedirect("candidate/profile.jsp?message=" + msg);
+        } finally {
+            response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("CandidateId") + "&message=" + msg);
         }
 
     }
@@ -539,8 +567,7 @@ public class CandidateController extends HttpServlet {
             msg = "Failed to puchase your plan";
         }
 
-        response.sendRedirect("candidate/profile.jsp?message=" + msg);
-//        response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
+        response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("candidateId") + "&message=" + msg);
 
     }
 
@@ -654,10 +681,10 @@ public class CandidateController extends HttpServlet {
         String jobSkills[] = request.getParameterValues("txtSkillSet");
 
         String skill = "";
-        for (String sk  : jobSkills) {
+        for (String sk : jobSkills) {
             skill += sk;
         }
-        
+
         try {
             TblCandidate candidate = new TblCandidate();
             candidate.setEnglishSkill(englishSkills);

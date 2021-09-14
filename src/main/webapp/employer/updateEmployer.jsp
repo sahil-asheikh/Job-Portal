@@ -14,7 +14,7 @@
     <head>
         <meta name="description" content="">
         <title>Employer</title>
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/datatables/datatables.net-bs4/css/dataTables.bootstrap4.css"/>
@@ -33,16 +33,15 @@
     <body>
 
         <%
-        
-       
+
             EmployerModel em = new EmployerModel();
-        //    TblEmployer employer = em.selectById(request.getParameter("eid"));
-          TblEmployer employer = em.selectById(String.valueOf(session.getAttribute("EmployerId")));
-        
+            //    TblEmployer employer = em.selectById(request.getParameter("eid"));
+            TblEmployer employer = em.selectById(String.valueOf(session.getAttribute("EmployerId")));
+
 
         %>
 
-        
+
         <div class="be-wrapper">
 
             <%@include file="navbar.jsp" %>
@@ -93,21 +92,21 @@
                                                 </div>
 
                                                 <div class="form-row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label >Password</label>
-                                                            <input class="form-control form-control-sm" name="txtPassword"  value="<%=  employer.getPassword()%>">
-                                                        </div>
-                                                    </div>                          
-                                                
-                                                       
+                                                    <!--                                                    <div class="col-md-6">
+                                                                                                            <div class="form-group">
+                                                                                                                <label >Password</label>
+                                                                                                                <input class="form-control form-control-sm" name="txtPassword"  value="<%=  employer.getPassword()%>">
+                                                                                                            </div>
+                                                                                                        </div>-->
+
+
                                                     <div class="col-md-6">
                                                         <p class="mt-5">
                                                             <button class="btn btn-space btn-primary" type="submit">Update</button>
                                                             <button class="btn btn-space btn-secondary">Cancel</button>
                                                         </p>
                                                     </div>
-                                                       
+
                                                 </div>
                                             </form>
                                         </div>

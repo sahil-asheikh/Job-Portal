@@ -6,10 +6,12 @@
 package com.qt.jobportal.models;
 
 import com.qt.jobportal.beans.TblEmployer;
+import com.qt.jobportal.beans.TblEmployerDetails;
 import com.qt.jobportal.beans.TblSubscription;
 import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.GenerateOTP;
 import com.qt.jobportal.commons.JobPortalDb;
+import com.qt.jobportal.commons.Utils;
 import java.io.IOException;
 //import static java.lang.ref.Cleaner.create;
 import java.sql.CallableStatement;
@@ -126,15 +128,15 @@ public class EmployerModel {
     public String update(TblEmployer employer) {
         con = JobPortalDb.connectDb();
         try {
-            sql = "update " + TABLENAME + " set company_name=? , contact_person=? , phone_no=? , email_id=? , password=? , job_address=?  where id = ?";
+//            sql = "update " + TABLENAME + " set company_name=? , contact_person=? , phone_no=? , email_id=? , job_address=?  where id = ?";
+            sql = "update " + TABLENAME + " set company_name=? , contact_person=? , phone_no=? , email_id=? , job_address=?  where employer_id = ?";
             cs = con.prepareCall(sql);
             cs.setString(1, employer.getCompanyName());
             cs.setString(2, employer.getContactPerson());
             cs.setString(3, employer.getPhoneNo());
             cs.setString(4, employer.getEmailId());
-            cs.setString(5, employer.getPassword());
-            cs.setString(6, employer.getJobAddress());
-            cs.setInt(7, employer.getId());
+            cs.setString(5, employer.getJobAddress());
+            cs.setString(6, employer.getCompanyPublicId());
             int rows = cs.executeUpdate();
             if (rows >= 1) {
                 message = "Update Employer Successfully";
@@ -318,6 +320,7 @@ public class EmployerModel {
     public int doLogin(TblEmployer employer, HttpServletRequest request) {
         int status = 0;
         int authStatus = doCheckLoginAccess(employer.getPhoneNo());
+        System.out.println("LOGIN STATUS: " + authStatus);
         switch (authStatus) {
             case -1:
                 status = -1;
@@ -340,24 +343,34 @@ public class EmployerModel {
     public int doCheckLoginAccess(String phone) {
         con = JobPortalDb.connectDb();
         int status = -1;
-        sql = "select Authentication from " + TABLENAME + " where phone_no = '" + phone + "'";
+        sql = "select authentication from tblemployer where phone_no = ?";
         try {
             cs = con.prepareCall(sql);
+            cs.setString(1, phone);
             rs = cs.executeQuery();
             if (rs.next()) {
                 status = rs.getInt(1);
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
         return status;
     }
 
     public int doVerifyCredentials(String phone, String password, HttpServletRequest request) {
-
+        con = JobPortalDb.connectDb();
         int status = 0;
         session = request.getSession();
-        sql = "select id,employer_id, contact_person, phone_no, password from " + TABLENAME + " where phone_no = '" + phone + "'";
+        sql = "select id, employer_id, contact_person, phone_no, password from " + TABLENAME + " where phone_no = '" + phone + "'";
         try {
             cs = con.prepareCall(sql);
             rs = cs.executeQuery(sql);
@@ -373,7 +386,7 @@ public class EmployerModel {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("com.imantimes.portal.qaswatech.models.LoginModel.doVerifyCredentials() : " + e.getMessage());
+            System.out.println("com.imantimes.portal.qaswatech.models.LoginModel.doVerifyCredentials-catch: " + e.getMessage());
         } finally {
             try {
                 if (con != null) {
@@ -387,7 +400,7 @@ public class EmployerModel {
     }
 
     public void doIncreamentAttempts(int id) {
-
+        con = JobPortalDb.connectDb();
         try {
             cs = con.prepareCall("{call spIncreamentWrongAttempts(?,?)}");
             cs.setString(1, TABLENAME);
@@ -395,24 +408,43 @@ public class EmployerModel {
             cs.executeUpdate();
         } catch (SQLException e) {
             System.out.println("exception because of Incrementing : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
     }
 
     public void resetLoginCount(int id) {
+        con = JobPortalDb.connectDb();
         sql = "update " + TABLENAME + " set attempts = 0 where id = " + id;
         try {
             cs = con.prepareCall(sql);
             cs.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage() + "com.qt.tandw.models.Client.resetLoginCount()");
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
     }
 
     public String updatePassword(TblEmployer bn) {
-        con = JobPortalDb.connectDb();
         try {
             if (fetchPassword(bn.getCompanyPublicId()).equals(bn.getValidPassword())) {
-                sql = "update " + TABLENAME + " set  password=? where employer_id = ? ";
+                con = JobPortalDb.connectDb();
+                sql = "UPDATE tblemployer SET password = ? WHERE employer_id = ?";
                 cs = con.prepareCall(sql);
                 cs.setString(1, bn.getNewPassword());
                 cs.setString(2, bn.getCompanyPublicId());
@@ -441,6 +473,7 @@ public class EmployerModel {
     }
 
     public String fetchPassword(String id) {
+        con = JobPortalDb.connectDb();
         String pass = null;
         try {
             sql = "select password from " + TABLENAME + " where employer_id = ?";
@@ -452,6 +485,15 @@ public class EmployerModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
         System.out.println("Pass : " + pass);
         return pass;
@@ -468,32 +510,32 @@ public class EmployerModel {
                 case "exist":
                     try {
 
-                        sql = "insert into " + TABLENAME + "( employer_id, company_name, phone_no, email_id, password) values (?,?,?,?,?)";
-                        cs = con.prepareCall(sql);
-                        cs.setString(1, bn.getCompanyPublicId());
-                        System.out.println(bn.getCompanyPublicId());
-                        cs.setString(2, bn.getCompanyName());
-                        cs.setString(3, bn.getPhoneNo());
-                        cs.setString(4, bn.getEmailId());
-                        cs.setString(5, bn.getPassword());
+                    sql = "insert into " + TABLENAME + "( employer_id, company_name, phone_no, email_id, password) values (?,?,?,?,?)";
+                    cs = con.prepareCall(sql);
+                    cs.setString(1, bn.getCompanyPublicId());
+                    System.out.println(bn.getCompanyPublicId());
+                    cs.setString(2, bn.getCompanyName());
+                    cs.setString(3, bn.getPhoneNo());
+                    cs.setString(4, bn.getEmailId());
+                    cs.setString(5, bn.getPassword());
 
-                        int rows = cs.executeUpdate();
-                        if (rows >= 1) {
-                            message = "<span class=\"text-success font-bold\">Details Added Successfully</span>";
-                        }
-
-                    } catch (SQLException e) {
-                        message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
-                    } finally {
-                        try {
-                            if (con != null) {
-                                con.close();
-                            }
-                        } catch (SQLException e) {
-                            message = e.getMessage();
-                        }
+                    int rows = cs.executeUpdate();
+                    if (rows >= 1) {
+                        message = "<span class=\"text-success font-bold\">Details Added Successfully</span>";
                     }
-                    break;
+
+                } catch (SQLException e) {
+                    message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+                } finally {
+                    try {
+                        if (con != null) {
+                            con.close();
+                        }
+                    } catch (SQLException e) {
+                        message = e.getMessage();
+                    }
+                }
+                break;
                 case "not_exist":
 //                    create();
                     break Task;
@@ -587,6 +629,7 @@ public class EmployerModel {
     // send otp on verified mobile number
 
     public int sendOtp(String phone, HttpServletRequest request) {
+
         int status = 0;
         int isExist = findEmployer(phone);
         if (isExist == 0) {
@@ -605,11 +648,13 @@ public class EmployerModel {
             // message = "Phone Number Verified!" ;
         }
         return status;
+
     }
 
     ///////////////////////////////////////////////////////////////
     // Verify Entered Otp  verifyOtp
     public int verifyOtp(String OTP, HttpServletResponse response) {
+
         int status = 0;
         String otpFromSession = (String) session.getAttribute("otpInSession");
         if (otpFromSession.equals(OTP)) {
@@ -623,6 +668,7 @@ public class EmployerModel {
             //  "Incorrect OTP !" ;
         }
         return status;
+
     }
     ////////////////////////////////////////////////////////////////
     // update Dealer Paswword
@@ -642,14 +688,20 @@ public class EmployerModel {
         } catch (SQLException e) {
             message = "Unable to Update because of : " + e.getMessage() + " | At : " + this.getClass().getName();
         } finally {
-            if (con != null) {
-                con.close();
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
             }
+
         }
         return message;
     }
 
     public int findEmployer(String phone) {
+
         con = JobPortalDb.connectDb();
         int exist = 0;
         String pass = null;
@@ -664,9 +716,255 @@ public class EmployerModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
 
         return exist;
+
+    }
+
+    public boolean existTblEmpDetails(String eid) {
+        boolean existTB = false;
+        con = JobPortalDb.connectDb();
+        sql = "SELECT * FROM tblemployerdetails where employer_id = ?";
+
+        try {
+
+            cs = con.prepareCall(sql);
+            cs.setString(1, eid);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                existTB = true;
+            } else {
+                existTB = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return existTB;
+    }
+
+//    method to save company summary
+    public String saveCompanySummary(TblEmployerDetails bn) {
+
+        EmployerModel empModel = new EmployerModel();
+        boolean existTB = empModel.existTblEmpDetails(bn.getEmployer_id());
+        con = JobPortalDb.connectDb();
+        if (existTB) {
+            try {
+                sql = "UPDATE tblemployerdetails SET company_summary = ? WHERE employer_id = ?";
+                cs = con.prepareCall(sql);
+                cs.setString(1, bn.getCompany_summary());
+                cs.setString(2, bn.getEmployer_id());
+
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "Details Added ";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        } else if (!existTB) {
+            try {
+                sql = "INSERT INTO tblemployerdetails (employer_detail_id, employer_id, company_summary) VALUES (?,?,?)";
+                cs = con.prepareCall(sql);
+                cs.setString(1, Utils.generatePublicId(30));
+                cs.setString(2, bn.getEmployer_id());
+                cs.setString(3, bn.getCompany_summary());
+
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "Details Added ";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        } else {
+            message = "null parameter";
+        }
+        return message;
+    }
+
+    public String saveCompanyAddress(TblEmployerDetails bn) {
+
+        EmployerModel empModel = new EmployerModel();
+        boolean existTB = empModel.existTblEmpDetails(bn.getEmployer_id());
+        con = JobPortalDb.connectDb();
+        if (existTB) {
+            try {
+                sql = "UPDATE tblemployerdetails SET company_state = ?, company_city = ?, company_address = ? WHERE employer_id = ?";
+                cs = con.prepareCall(sql);
+                cs.setString(1, bn.getCompany_state());
+                cs.setString(2, bn.getCompany_city());
+                cs.setString(3, bn.getCompany_address());
+                cs.setString(4, bn.getEmployer_id());
+
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "Details Added ";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        } else if (!existTB) {
+            try {
+                sql = "INSERT INTO tblemployerdetails (employer_detail_id, employer_id, company_state, company_city, company_address) VALUES (?,?,?,?,?)";
+                cs = con.prepareCall(sql);
+                cs.setString(1, Utils.generatePublicId(30));
+                cs.setString(2, bn.getEmployer_id());
+                cs.setString(3, bn.getCompany_state());
+                cs.setString(4, bn.getCompany_city());
+                cs.setString(5, bn.getCompany_address());
+
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "Details Added ";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        } else {
+            message = "null parameter";
+        }
+        return message;
+    }
+
+    public String saveCompanyWebsite(TblEmployerDetails bn) {
+
+        EmployerModel empModel = new EmployerModel();
+        boolean existTB = empModel.existTblEmpDetails(bn.getEmployer_id());
+        con = JobPortalDb.connectDb();
+        if (existTB) {
+            try {
+                sql = "UPDATE tblemployerdetails SET website = ? WHERE employer_id = ?";
+                cs = con.prepareCall(sql);
+                cs.setString(1, bn.getWebsite());
+                cs.setString(2, bn.getEmployer_id());
+
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "Details Added ";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        } else if (!existTB) {
+            try {
+                sql = "INSERT INTO tblemployerdetails (employer_detail_id, employer_id, website) VALUES (?,?,?)";
+                cs = con.prepareCall(sql);
+                cs.setString(1, Utils.generatePublicId(30));
+                cs.setString(2, bn.getEmployer_id());
+                cs.setString(3, bn.getWebsite());
+
+                int rows = cs.executeUpdate();
+                if (rows >= 1) {
+                    message = "Details Added ";
+                }
+            } catch (SQLException e) {
+                message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+            } finally {
+                try {
+                    if (con != null) {
+                        con.close();
+                    }
+                } catch (SQLException e) {
+                    message = e.getMessage();
+                }
+            }
+        } else {
+            message = "null parameter";
+        }
+        return message;
+    }
+
+    public TblEmployerDetails selectEmployerDetailsById(String eid) {
+        con = JobPortalDb.connectDb();
+        TblEmployerDetails employerDetails = new TblEmployerDetails();
+        try {
+            sql = "select * from tblemployerdetails where employer_id = ?";
+            cs = con.prepareCall(sql);
+            cs.setString(1, eid);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                employerDetails.setId(rs.getInt(1));
+                employerDetails.setEmployer_detail_id(rs.getString(2));
+                employerDetails.setEmployer_id(rs.getString(3));
+                employerDetails.setCompany_summary(rs.getString(4));
+                employerDetails.setWebsite(rs.getString(5));
+                employerDetails.setCompany_state(rs.getString(6));
+                employerDetails.setCompany_city(rs.getString(7));
+                employerDetails.setCompany_address(rs.getString(8));
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return employerDetails;
     }
 
 }//Admin

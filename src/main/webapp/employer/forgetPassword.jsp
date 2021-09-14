@@ -7,12 +7,25 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <html>
     <head>
-        <%@include file="head.jsp" %>
+        <%--<%@include file="head.jsp" %>--%>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="author" content="">
+        <link rel="shortcut icon" href="../assets/img/logo-fav.png">
+
         <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/datatables/datatables.net-bs4/css/dataTables.bootstrap4.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/datatables/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="../assets/css/app.css" type="text/css"/>
+
+        <!--        <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+                <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>-->
         <link rel="stylesheet" type="text/css" href="../assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/select2/css/select2.min.css"/>
-        <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/
+        <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/>
         <script src="../assets/myjs/cities.js"></script>
         <link rel="stylesheet" href="../assets/mycss/sweetalert.css" type="text/css"/>
         <script src="../assets/myjs/sweetalert.js" type="text/javascript"></script>
@@ -22,13 +35,34 @@
         <div class="be-wrapper">
             <div class="be-content">
                 <div class="main-content container">
-                   
+
                     <div class="container col-sm-5 mt-4 ">
-                         <div class="card card-contrast">
+                        <div class="card card-contrast">
                             <div class="card-header  card-header-contrast "><span class="text-info"><b>Forget Password</b></span>
                             </div>
-                            ${param.page}                           
+                            ${param.page}
                             <div class="card-body">
+                                <!--<form method="post" action="../ResetPasswordController" name="frm">
+                                    <input type="hidden" name="action" value="employerMobile">
+                                    <div class="login-form">
+                                        <div class="form-group">
+                                            <label>Registered Phone Number</label>
+                                            <input class="form-control"   name="txtPhone" type="text" placeholder="Enter Your Phone Number"  required autocsomplete="off">
+                                        </div>
+                                        <p class="text-right text-danger">
+                                ${param.msg}
+                                ${param.message}
+                            </p>
+                            <div class="form-group">
+                                <p class="text-right">
+                                    <button class="btn btn-space btn-primary "  type="submit" onclick=" return ForgetPassValidation();">
+                                        Send OTP
+                                    </button>
+                                </p>
+                            </div>
+
+                        </div>
+                    </form>-->
                                 <form method="post" action="../ResetPasswordController" name="frm">
                                     <input type="hidden" name="action" value="employerMobile">
                                     <div class="login-form">
@@ -38,15 +72,16 @@
                                         </div>
                                         <p class="text-right text-danger">
                                             ${param.msg}
+                                            ${param.message}
                                         </p>
                                         <div class="form-group">
                                             <p class="text-right">
-                                            <button class="btn btn-space btn-primary "  type="submit" onclick=" return ForgetPassValidation();">
-                                                Send OTP
-                                            </button>
+                                                <button class="btn btn-space btn-primary "  type="submit" onclick=" return ForgetPassValidation();">
+                                                    Send OTP
+                                                </button>
                                             </p>
                                         </div>
-                                       
+
                                     </div>
                                 </form>
                             </div>
@@ -56,15 +91,15 @@
             </div>
         </div>
 
-       <script src="../assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="../assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
-<script src="../assets/js/app.js" type="text/javascript"></script>
-<script src="../assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
-<script src="../assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="../assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
-<script src="../assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
-<script src="../assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
-<script src="../assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
+        <script src="../assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="../assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
+        <script src="../assets/js/app.js" type="text/javascript"></script>
+        <script src="../assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+        <script src="../assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+        <script src="../assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+        <script src="../assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+        <script src="../assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
+        <script src="../assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
 
 
     </body>

@@ -88,6 +88,7 @@
 
                                         <div  class="blockquote"><span class="mdi mdi-account">&nbsp;<%= bean.getEmailId()%></span> </div>
                                         <p class="text-success text-right">${param.msg}</p>
+                                        <p class="text-success text-right">${param.message}</p>
                                     </div>
 
                                     <div class="row">
@@ -131,9 +132,6 @@
                                 </div>
                             </div>
 
-                            <!--=================================================================================================================================================================================-->
-                            <!--=================================================================================================================================================================================-->
-
 
                             <div class="card mt-3">
                                 <div class="card-header">Profile Status</div>
@@ -168,8 +166,6 @@
                                                 if (bean.getAddress() != null && bean.getAddress() != "null" && bean.getAddress() != "") {
                                                     percentage += 10;
                                                 }
-
-
                                             %>
 
                                             <% if (percentage == 20) {%>

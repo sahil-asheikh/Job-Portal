@@ -35,7 +35,6 @@
 
         <%
             CandidateModel candidate = new CandidateModel();
-            //   TblCandidate beanCandidate = candidate.selectById("45");
             TblCandidate beanCandidate = candidate.selectById(String.valueOf(session.getAttribute("CandidateId")));
 
             Vacancy vacmod = new Vacancy();
@@ -63,47 +62,55 @@
                                         <h5><%= beanCandidate.getPhone_No()%></h5>
                                         <h5><%= beanCandidate.getState()%></h5>
                                     </div>
-                                    <div class="col-sm-3 mt-1">
+                                    <!--<div class="col-sm-3 mt-1">
                                         <a  class=" btn btn-primary"  href="candidate/candidateUpdate.jsp?id=<%= session.getAttribute("CandidateId")%>">
                                             <div class="icon-sm">
                                                 <span class="mdi mdi-edit"></span>
                                             </div>
 
                                             <a href="#" >Not you? sign out</a>
-                                    </div>
+                                    </div>-->
                                 </div>
                                 <br>
                                 <h5>Internship Trainig Details with Company Name</h5>
                                 <h5>College Details</h5>
 
                             </div>
-                            <h5><span>Attaching a resume is optional.</span> <a href="#">Apply with a different resume </a></h5>
+                            <br>
+                            <!--                            <h5><span>Attaching a resume is optional.</span> <a href="#">Apply with a different resume </a></h5>-->
                             <%
                                 Utils util = new Utils();
                                 int balance = util.fetchBalanceCand(beanCandidate.getCandPublicId(), "tblcandidate");
                                 if (balance >= 20) {
-                            %>   
-
+                            %>
                             <div class="col-12">
-                                <a class="btn btn-outline-primary btn-lg" href="JobActivityController?action=apply&id=<%= vacancy.getVacancyPublicId()%>&candidateid=<%= beanCandidate.getCandPublicId()%>&deduction=<%= SubscriptionCandidateModel.deduction(beanCandidate.getSubscriptionId()) %>&deduction_type=1&employerId=<%= vacancy.getEmployerId()%>&empDeduction=20&empdeduction_type=2&empname=<%= vacancy.getCompanyName()%>&jobtitle=<%= vacancy.getTitle()%>&candidateid=<%=beanCandidate.getCandPublicId()%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>  "  data-dismiss="modal"  >
+                                <a class="btn btn-outline-primary btn-lg" href="JobActivityController?action=apply&id=<%= vacancy.getVacancyPublicId()%>&candidateid=<%= beanCandidate.getCandPublicId()%>&deduction=<%= SubscriptionCandidateModel.deduction(beanCandidate.getSubscriptionId())%>&deduction_type=1&employerId=<%= vacancy.getEmployerId()%>&empDeduction=20&empdeduction_type=2&empname=<%= vacancy.getCompanyName()%>&jobtitle=<%= vacancy.getTitle()%>&candidateid=<%=beanCandidate.getCandPublicId()%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>  "  data-dismiss="modal"  >
                                     Apply Now
                                 </a>
-                                    
+
                                 <a class="btn btn-outline-warning btn-lg" href="JobActivityController?action=save&candidateid=<%=session.getAttribute("CandidateId")%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&employerId=<%= vacancy.getEmployerId()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>"  title="Save Job"><i class="fa fa-star mt-1 mr-1" style="font-size: 15px"></i>
                                     Save
                                 </a>
-                                    
+
                                 <a class="btn btn-outline-danger btn-lg" href="JobActivityController?action=favCompany&candidateid=<%=session.getAttribute("CandidateId")%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&employerId=<%= vacancy.getEmployerId()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>"   title="Favorite Company"><i class="fa fa-heart mt-1 mr-1" style="font-size: 15px"></i>
                                     Favorite
                                 </a>
                             </div>
-                                    
+
                             <%
-                            } else { %>
+                            } else {%>
 
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                                 Apply now
                             </button>
+
+                            <a class="btn btn-outline-warning btn-lg" href="JobActivityController?action=save&candidateid=<%=session.getAttribute("CandidateId")%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&employerId=<%= vacancy.getEmployerId()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>"  title="Save Job"><i class="fa fa-star mt-1 mr-1" style="font-size: 15px"></i>
+                                Save
+                            </a>
+
+                            <a class="btn btn-outline-danger btn-lg" href="JobActivityController?action=favCompany&candidateid=<%=session.getAttribute("CandidateId")%>&title=<%= vacancy.getTitle()%>&employername=<%= vacancy.getCompanyName()%>&employerId=<%= vacancy.getEmployerId()%>&vacancyid=<%= vacancy.getVacancyPublicId()%>"   title="Favorite Company"><i class="fa fa-heart mt-1 mr-1" style="font-size: 15px"></i>
+                                Favorite
+                            </a>
 
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -125,23 +132,23 @@
                             </div>
                             <%  }
                             %>
-                            <h4> <a href="#" ><i class="fa fa-plus-circle">&nbsp; Add cover latter</i></a></h4>
-                            <div class="be-checkbox custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="check1">
-                                <label class="custom-control-label" for="check1">candidate_id
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                                </label>
-                            </div>
-                            <div class="be-checkbox custom-control custom-checkbox">
-                                <input class="custom-control-input" type="checkbox" id="check2">
-                                <label class="custom-control-label" for="check2">
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                    when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-                                </label>
-                            </div>
+                            <!--                            <h4> <a href="#" ><i class="fa fa-plus-circle">&nbsp; Add cover latter</i></a></h4>
+                                                        <div class="be-checkbox custom-control custom-checkbox">
+                                                            <input class="custom-control-input" type="checkbox" id="check1">
+                                                            <label class="custom-control-label" for="check1">candidate_id
+                                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                                                            </label>
+                                                        </div>
+                                                        <div class="be-checkbox custom-control custom-checkbox">
+                                                            <input class="custom-control-input" type="checkbox" id="check2">
+                                                            <label class="custom-control-label" for="check2">
+                                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                                                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                                                            </label>
+                                                        </div>-->
                         </div>
                     </div>
                 </div>

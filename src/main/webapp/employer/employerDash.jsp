@@ -6,6 +6,7 @@
     Author     : win8.1
 --%>
 
+<%@page import="com.qt.jobportal.beans.TblEmployerDetails"%>
 <%@page import="com.qt.jobportal.beans.TblSubscription"%>
 <%@page import="com.qt.jobportal.models.Subscription"%>
 <%@page import="com.qt.jobportal.beans.TblEmployer"%>
@@ -57,6 +58,8 @@
 
                         EmployerModel candMol = new EmployerModel();
                         TblEmployer bean = candMol.selectById(String.valueOf(session.getAttribute("EmployerId")));
+
+                        TblEmployerDetails empDetails = candMol.selectEmployerDetailsById(String.valueOf(session.getAttribute("EmployerId")));
 
                         Subscription subMol = new Subscription();
                         TblSubscription subscription = subMol.selectById(bean.getSubscriptionId());
@@ -115,13 +118,33 @@
                             </div>
                         </div>
                     </div>
-                    <%if (bean.getSubscriptionId() == null || bean.getSubscriptionId() == "null") {%>
-                    <div class="card mt-3"> 
+
+
+                    <%
+
+                        int stat = 20;
+
+                        if (bean.getSubscriptionId() != null && bean.getSubscriptionId() != "null" && bean.getSubscriptionId() != "") {
+                            stat += 20;
+                        }
+                        if (bean.getPhoneNo() != null && bean.getPhoneNo() != "null" && bean.getPhoneNo() != "") {
+                            stat += 30;
+                        }
+                        if (empDetails.getCompany_summary() != null && empDetails.getCompany_summary() != "null" && empDetails.getCompany_summary() != "") {
+                            stat += 30;
+                        }
+                    %>
+
+
+                    <%
+                        if (bean.getSubscriptionId() == null || bean.getSubscriptionId() == "null") {
+                    %>
+                    <div class="card mt-3">
                         <div class="card-header">Profile Status</div>
                         <div class="row">
                             <div class="col-8">
                                 <div class="progress mb-4 ml-2">
-                                    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 20%;" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Completed 20%</div>
+                                    <div class="progress-bar bg-grey progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= stat%>%;" aria-valuenow="<%= stat%>" aria-valuemin="0" aria-valuemax="100">Completed <%= stat%></div>
                                 </div>
                             </div>
                             <div class="col-3">
@@ -136,18 +159,80 @@
 
                         </div>
                     </div>
-                    <%} else {%>
+                    <%
+                    } else {
+                    %>
                     <div class="card mt-3"> 
                         <div class="card-header">Profile Status</div>
                         <div class="row">
+
+                            <%
+                                if (stat == 100) {
+                            %>
+
                             <div class="col-8">
                                 <div class="progress mb-4 ml-2">
-                                    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">Completed 50%</div>
+                                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Completed 100%</div>
                                 </div>
                             </div>
-                            <div class="col-3">
-                                <a class="btn btn-primary text-light btn-sm" href="updateEmployer.jsp">Complete</a> 
+
+                            <div class="">
+                                <p class="btn-success text-light btn-sm">Completed</p>
                             </div>
+                            <%
+                            } else if (stat == 70) {
+                            %>
+                            <div class="col-8">
+                                <div class="progress mb-4 ml-2">
+                                    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= stat%>%;" aria-valuenow="<%= stat%>" aria-valuemin="0" aria-valuemax="100">Completed <%= stat%>%</div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <a class="btn btn-primary text-light btn-sm" href="profile.jsp">Complete</a> 
+                            </div>
+                            <%
+                            } else if (stat == 40) {
+                            %>
+                            <div class="col-8">
+                                <div class="progress mb-4 ml-2">
+                                    <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= stat%>%;" aria-valuenow="<%= stat%>" aria-valuemin="0" aria-valuemax="100">Completed <%= stat%>%</div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <a class="btn btn-warning text-light btn-sm" href="profile.jsp">Complete</a> 
+                            </div>
+
+                            <%
+                            } else if (stat == 20) {
+                            %>
+                            <div class="col-8">
+                                <div class="progress mb-4 ml-2">
+                                    <div class="progress-bar bg-grey progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= stat%>%;" aria-valuenow="<%= stat%>" aria-valuemin="0" aria-valuemax="100">Completed <%= stat%>%</div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <a class="btn btn-grey text-light btn-sm" href="profile.jsp">Complete</a> 
+                            </div>
+                            <%
+                            } else {
+                            %>
+
+                            <div class="col-8">
+                                <div class="progress mb-4 ml-2">
+                                    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= stat%>%;" aria-valuenow="<%= stat%>" aria-valuemin="0" aria-valuemax="100">Completed <%= stat%>%</div>
+                                </div>
+                            </div>
+
+                            <div class="col-3">
+                                <a class="btn btn-danger text-light btn-sm" href="profile.jsp">Complete</a> 
+                            </div>
+                            <%
+                                }
+                            %>
+
                             <div class="col-1"></div>
                         </div>
                     </div>     

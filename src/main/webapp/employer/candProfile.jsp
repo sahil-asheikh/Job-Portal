@@ -48,11 +48,12 @@
                                 <div class="user-display-bottom">
                                     <div class="user-display-avatar"><img src="../assets/img/avatar-150.png" alt="Avatar"></div>
                                     <div class="user-display-info">
-                                        <input type="hidden" name="CandidateId" value="<%= bean.getFullName() %>" >
-                                        <div class="name"> <%= session.getAttribute("CandidateName")%> </div>
+                                        <input type="hidden" name="CandidateId" value="<%= bean.getFullName()%>" >
+                                        <div class="name"> <%= bean.getFullName()%> </div>
 
                                         <div class="nick"><span class="mdi mdi-account">&nbsp;<%= bean.getEmailId()%></span> </div>
                                         <p class="text-success text-right">${param.message}</p>
+                                        <p class="text-success text-right">${param.msg}</p>
                                     </div>
 
                                     <div class="row user-display-details">
@@ -64,7 +65,7 @@
                                             <blockquote class="blockquote"><span class="text-info"> Job Role :</span> <%= bean.getJobRole()%> </blockquote>
                                         </div>
 
-                                        
+
                                         <br>
                                         <br>
                                         <div class="col-4 offset-10">
@@ -83,45 +84,38 @@
                     </div>
                     <div class="col-lg-10 offset-1">
                         <div class="card card-border card-contrast">
-                            <div class="card-header card-header-contrast">About Me &nbsp;<span class="icon mdi mdi-account"></span>
-                              </div>
-                             <blockquote class="blockquote">
-                            <div class="card-body">
-                                <!--                                <span class="card-subtitle">I am a web developer and designer based in Montreal - Canada, I like read books, good music and nature.</span>-->
-                                <span><%= candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId")))%></span>
-                            </div>
-                             </blockquote>
+                            <div class="card-header card-header-contrast">About Me &nbsp;<span class="icon mdi mdi-account"></span></div>
+                            <blockquote class="blockquote">
+                                <div class="card-body">
+                                    <!--                                <span class="card-subtitle">I am a web developer and designer based in Montreal - Canada, I like read books, good music and nature.</span>-->
+                                    <span><%= candMol.findCandidateSummary(String.valueOf(session.getAttribute("CandidateId")))%></span>
+                                </div>
+                            </blockquote>
                         </div>
                     </div>
-                             <div class="row">
-                            <div class="col-lg-10 offset-1">
-                                <div class="card card-contrast">
-                                    <div class="card-header card-header-contrast card-header-featured">Education &nbsp;<span class="icon mdi mdi-graduation-cap"></span></div>
-                                <%if(bean.getSubscriptionId() == null || bean.getSubscriptionId() == "null"){%>
-                                    
-                                <%}else{%>
-                                <div class="container">
-                       
-                                    <div class="card-body">
-                                         <blockquote class="blockquote">
-                                        <table  class="table">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-info">School Medium :</td>
-                                                    <td> <%= bean.getSchoolMedium()%></td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-info">Qualification :</td>
-                                                    <td> <%= bean.getQualification()%></td>
-                                                </tr>
-                                            </tbody>
-                                          </table>
-                                         </blockquote>
-                                    </div>
-                                </div>   
-                            
-                                <%}%>
+                    <div class="col-lg-10 offset-1">
+                        <div class="card card-border card-contrast">
+                            <div class="card-header card-header-contrast ">Education &nbsp;<span class="icon mdi mdi-graduation-cap"></span></div>
+                                <%if (bean.getSubscriptionId() == null || bean.getSubscriptionId() == "null") {%>
+
+                            <%} else {%>
+                            <blockquote class="blockquote">
+                                <div class="card-body">
+                                    <table  class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-info">School Medium :</td>
+                                                <td> <%= bean.getSchoolMedium()%></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-info">Qualification :</td>
+                                                <td> <%= bean.getQualification()%></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
+                            </blockquote>
+                            <%}%>
                         </div>
                     </div>
                     <div class="col-lg-10 offset-1">
@@ -129,104 +123,97 @@
                             <div class="card-header card-header-contrast">Experience &nbsp;<span class="icon mdi mdi-case"></span>
                             </div>
                             <div class="card-body">
-                                 <blockquote class="blockquote">
-                                <table  class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td> <span class=""> <%= bean.getFresherExperience()%></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span class="text-info">Experience Detail :</span><br>
-                                               <%= candMol.findCandidateExperience(String.valueOf(session.getAttribute("CandidateId")))%></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                 </blockquote>
+                                <blockquote class="blockquote">
+                                    <table  class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td><span class="text-info">Experience Year :</span></td>
+                                                <td> <span class=""> <%= ((bean.getFresherExperience() == null || bean.getFresherExperience() == "null" || bean.getFresherExperience() == "") ? "No Experience" : bean.getFresherExperience())%></span></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td><span class="text-info">Experience Detail :</span></td>
+                                                <td><%= candMol.findCandidateExperience(String.valueOf(session.getAttribute("CandidateId")))%></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </blockquote>
                             </div>
                         </div>
                     </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-10 offset-1">
-                                <div class="card card-contrast">
-                                    <div class="card-header card-header-contrast card-header-featured">Skills And Expertise &nbsp;<i class="fa fa-star"></i></div>
-                                    <div class="card-body">
-                                         <blockquote class="blockquote">
-                                        <table  class="table">
-                                            <tbody>
-                                                
-                                                <tr>
-                                                    <td class="text-info">English Skill :</td>
-                                                    <td> 
-                                                        <%= bean.getEnglishSkill()%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="text-info">Skill Set :</span><br>&nbsp;<%= bean.getSkillSet()%></td>
-                                                    <td></td>
-                                                </tr>
-                                                
-                                                 </tbody>
-                                        </table>
-                                     </blockquote></div>
-                                </div>   
-                            </div>
-                        </div>
+                    <div class="col-lg-10 offset-1">
+                        <div class="card card-contrast">
+                            <div class="card-header card-header-contrast card-header-featured">Skills And Expertise &nbsp;<i class="fa fa-star"></i></div>
+                            <div class="card-body">
+                                <blockquote class="blockquote">
+                                    <table  class="table">
+                                        <tbody>
+
+                                            <tr>
+                                                <td class="text-info">English Skill :</td>
+                                                <td> 
+                                                    <%= bean.getEnglishSkill()%>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="text-info">Skill Set :</span>&nbsp;</td>
+                                                <td><%= bean.getSkillSet()%></td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </blockquote></div>
+                        </div>   
                     </div>
-                    <div class="container">
-                        <div class="row">
                             <div class="col-lg-10 offset-1">
                                 <div class="card card-contrast">
                                     <div class="card-header card-header-contrast card-header-featured">Personal Details &nbsp;<i class="fa fa-user-circle"></i></div>
                                     <div class="card-body">
-                                         <blockquote class="blockquote">
-                                        <table  class="table">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="text-info">Phone No :</td>
-                                                    <td>
-                                                        <%= bean.getPhone_No()%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-info">Age :</td>
-                                                    <td colspan="2">
-                                                        <%= bean.getAge()%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-info">Gender :</td>
-                                                    <td colspan="2">
-                                                        <%= bean.getGender()%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-info">Address :</td>
-                                                    <td colspan="2">
-                                                        <%= bean.getAddress()%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-info">City :</td>
-                                                    <td colspan="2">
-                                                        <%= bean.getCity()%>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="text-info">State :</td>
-                                                    <td colspan="2">
-                                                        <%= bean.getState()%>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                         </blockquote>
+                                        <blockquote class="blockquote">
+                                            <table  class="table">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="text-info">Phone No :</td>
+                                                        <td>
+                                                            <%= bean.getPhone_No()%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-info">Age :</td>
+                                                        <td colspan="2">
+                                                            <%= bean.getAge()%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-info">Gender :</td>
+                                                        <td colspan="2">
+                                                            <%= bean.getGender()%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-info">Address :</td>
+                                                        <td colspan="2">
+                                                            <%= bean.getAddress()%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-info">City :</td>
+                                                        <td colspan="2">
+                                                            <%= bean.getCity()%>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-info">State :</td>
+                                                        <td colspan="2">
+                                                            <%= bean.getState()%>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </blockquote>
                                     </div>
                                 </div>   
                             </div>
-                        </div>
-
-                    </div>
                     <!-- End Main Content --->
 
                     <!-- modal starts here --> 

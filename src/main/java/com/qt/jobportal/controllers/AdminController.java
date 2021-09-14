@@ -36,7 +36,6 @@ public class AdminController extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.invalidate();
                 response.sendRedirect("adminLogin.jsp");
-
                 break;
 
             default:
@@ -83,22 +82,22 @@ public class AdminController extends HttpServlet {
 
     private void updatePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-      if (request.getParameter("newPassword").equals(request.getParameter("confirmPassword"))) {
-            String empId=request.getParameter("id");
-            
-             beans.setAdmin_id(request.getParameter("id"));
-            
+        if (request.getParameter("newPassword").equals(request.getParameter("confirmPassword"))) {
+            String empId = request.getParameter("id");
+
+            beans.setAdmin_id(request.getParameter("id"));
+
             beans.setValidPassword(request.getParameter("validPassword"));
 
             beans.setNewPassword(request.getParameter("newPassword"));
             beans.setConfirmPassword(request.getParameter("confirmPassword"));
 
             msg = model.updatePassword(beans);
-            response.sendRedirect("admin/profile.jsp?id="+empId+"message=" + msg);
+            response.sendRedirect("admin/profile.jsp?id=" + empId + "message=" + msg);
 
-        }else{
+        } else {
             msg = "Password Not Matched";
-              response.sendRedirect("admin/updatePassword.jsp?message=" + msg);
+            response.sendRedirect("admin/updatePassword.jsp?message=" + msg);
 
         }
     }

@@ -8,8 +8,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        
-        
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,10 +20,7 @@
         <link rel="stylesheet" type="text/css" href="../assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/select2/css/select2.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/>
-       
         <script src="../assets/myjs/cities.js"></script>
-
-
         <link rel="stylesheet" href="../assets/mycss/sweetalert.css" type="text/css"/>
         <script src="../assets/myjs/sweetalert.js" type="text/javascript"></script>
         <script src="../assets/myjs/vacancyValidation.js" type="text/javascript"></script>

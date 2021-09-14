@@ -6,6 +6,10 @@
 
 
 
+<%@page import="com.qt.jobportal.models.SubscriptionCandidateModel"%>
+<%@page import="com.qt.jobportal.beans.TblVacancy"%>
+<%@page import="com.qt.jobportal.models.Vacancy"%>
+<%@page import="com.qt.jobportal.commons.Utils"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.qt.jobportal.beans.TblJobActivity"%>
 
@@ -29,6 +33,11 @@
         <link rel="stylesheet" href="../assets/css/app.css" type="text/css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="assets/myjs/cities.js"></script>
+
+        <link rel="stylesheet" href="../assets/mycss/sweetalert.css" type="text/css"/>
+        <script src="../assets/myjs/sweetalert.js" type="text/javascript"></script>
+        <script src="../assets/myjs/sweetAlertDelete.js" type="text/javascript"></script>
+
     <body>
 
         <%
@@ -38,6 +47,11 @@
             ArrayList<TblJobActivity> apply = jobAct.selectByLimit(1, String.valueOf(session.getAttribute("CandidateId")));
             ArrayList<TblJobActivity> fav = jobAct.selectByLimit(3, String.valueOf(session.getAttribute("CandidateId")));
 
+            Vacancy vacmod = new Vacancy();
+            TblVacancy vacancy = vacmod.selectById(request.getParameter("id"));
+
+            CandidateModel cand = new CandidateModel();
+            TblCandidate beanCandidate = cand.selectById(String.valueOf(session.getAttribute("CandidateId")));
 
         %>
 
@@ -63,7 +77,7 @@
                                             <div class="tab-pane active" id="classic_home" role="tabpanel">
                                                 <center><h4>My  Save Jobs</h4></center>
 
-                                                <%                                for (TblJobActivity bean : save) {
+                                                <% for (TblJobActivity bean : save) {
                                                         if (bean.getSerialNo() == -1 || bean.getSerialNo() == 0) {
                                                 %>
                                                 <tr>
@@ -92,10 +106,37 @@
                                                         </div>
                                                         <div class="col-sm-5">
                                                             <br>
-                                                            <h6 class="mt-2">Moved to saved Dated on <%= bean.getCreatedAt().substring(0, 10)%></h6>
+                                                            <h6 class="mt-2">Saved on <%= bean.getCreatedAt().substring(0, 10)%></h6>
                                                         </div>
                                                         <div class="col-sm-3 mt-3 pb-2">
-                                                            <a href="../JobActivityController?action=updateActivity&employername=<%= bean.getEmployerName()%>&vacancyid=<%= bean.getVacancyId()%>" class="btn btn-outline-primary form-control">Apply</a>
+
+                                                                <!--<a type="button" href="../JobActivityController?action=updateActivity&employername=<%= bean.getEmployerName()%>&vacancyid=<%= bean.getVacancyId()%>&title=<%= bean.getJobTitle()%>&employerId=<%= bean.getEmployerId()%>&candidateid=<%= bean.getCandidateId()%>" class="btn btn-primary" title="Apply Now" >-->
+                                                            <span>
+                                                                <%
+                                                                    JobActivity jobActivityCheck = new JobActivity();
+                                                                    boolean checkActivity = jobActivityCheck.checkJobActivity(bean.getCandidateId(), 1, bean.getVacancyId());
+
+                                                                    if (checkActivity) {
+                                                                %>
+                                                                <a href="#" class="text-primary font-weight-bold text-justify" title="Already Applied" style="pointer-events: none" >
+                                                                    Applied &nbsp;
+                                                                </a>
+                                                                <%
+                                                                } else {
+                                                                %>
+                                                                <a type="button" href="../jobDetails.jsp?id=<%= bean.getVacancyId()%>" class="btn btn-primary" title="Apply Now" >
+                                                                    Apply Now
+                                                                </a>
+                                                                <%
+                                                                    }
+                                                                %>
+                                                            </span>
+                                                            <span>
+                                                                <a type="button" href="../JobActivityController?action=deleteActivity&candidateid=<%= bean.getCandidateId()%>&activity=2&vacancyid=<%= bean.getVacancyId()%> " class="btn btn-danger" title="Delete Job" onclick="return confirmDelete();">
+                                                                    Delete
+                                                                </a>
+                                                            </span>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -132,11 +173,15 @@
                                                         </div>
                                                         <div class="col-sm-5"> 
                                                             <br>
-                                                            <h6 class="mt-2">Moved to Applied  dated on <%= bean.getCreatedAt().substring(0, 10)%></h6>
+                                                            <h6 class="mt-2">Applied on <%= bean.getCreatedAt().substring(0, 10)%></h6>
                                                         </div>
                                                         <div class="col-sm-3 mt-3 pb-2">
-                                                            <a href="#" class="btn btn-outline-primary form-control">Applied</a>
-                                                            <!--<a href="../JobActivityController?action=delete&id=<%// bean.getId()%>" class="btn btn-outline-primary form-control">Applied</a>-->
+                                                            <!--                                                                <span class="btn btn-primary form-control">Applied</span>-->
+                                                            <span class="text-primary ">
+                                                                <div class="icon-sm">
+                                                                    <p class="font-weight-bold text-justify">Applied</p>
+                                                                </div>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -175,10 +220,36 @@
                                                         </div>
                                                         <div class="col-sm-5">
                                                             <br>
-                                                            <h6 class="mt-2">Moved to Favorite Dated on <%= bean.getCreatedAt().substring(0, 10)%></h6>
+                                                            <h6 class="mt-2">Favorite on <%= bean.getCreatedAt().substring(0, 10)%></h6>
                                                         </div>
                                                         <div class="col-sm-3 mt-3 pb-2">
-                                                            <a href="../JobActivityController?action=updateActivity&employername=<%= bean.getEmployerName()%>&vacancyid=<%= bean.getVacancyId()%>" class="btn btn-outline-primary form-control">Apply</a>
+
+                                                            <span>
+                                                                <%
+                                                                    JobActivity jobActivityCheck = new JobActivity();
+                                                                    boolean checkActivity = jobActivityCheck.checkJobActivity(bean.getCandidateId(), 1, bean.getVacancyId());
+
+                                                                    if (checkActivity) {
+                                                                %>
+                                                                <a href="#" class="text-primary font-weight-bold text-justify" title="Already Applied" style="pointer-events: none" >
+                                                                    Applied &nbsp;
+                                                                </a>
+                                                                <%
+                                                                } else {
+                                                                %>
+                                                                <a type="button" href="../jobDetails.jsp?id=<%= bean.getVacancyId()%>" class="btn btn-primary" title="Apply Now" >
+                                                                    Apply Now
+                                                                </a>
+                                                                <%
+                                                                    }
+                                                                %>
+                                                            </span>
+                                                            <span>
+                                                                <a type="button" href="../JobActivityController?action=deleteActivity&candidateid=<%= bean.getCandidateId()%>&activity=3&vacancyid=<%= bean.getVacancyId()%> " class="btn btn-danger" title="Delete Job" onclick="return confirmDelete();">
+                                                                    Delete
+                                                                </a>
+                                                            </span>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -195,7 +266,9 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
+
+
 
             <%@include file="footer.jsp" %>
             <script src="../assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
@@ -212,10 +285,10 @@
             <script src="../assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
             <script src="../assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
             <script type="text/javascript">
-                $(document).ready(function () {
-                    //-initialize the javascript
-                    App.dataTables();
-                });
+                                                                    $(document).ready(function () {
+                                                                        //-initialize the javascript
+                                                                        App.dataTables();
+                                                                    });
             </script>
     </body>
 </html>

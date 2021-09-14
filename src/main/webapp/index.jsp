@@ -27,7 +27,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="shortcut icon" href="assets/img/logo-fav.png">
-        <title>Beagle</title>
+        <title>Job Protal</title>
         <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" href="assets/css/app.css" type="text/css"/>
@@ -146,7 +146,6 @@
             ArrayList<Integer> membCount = member.MemberCount();
 
         %>
-        ${param.message}
         <div class="container">
             <section class="search-sec">
 
@@ -383,7 +382,6 @@
 
             <div class="row">
                 <div class="col-12">
-
                     <div class="card">
                         <div class="card-body">
                             <div id="candidatePlan">
@@ -464,18 +462,18 @@
                                     
                                         <div class="form-group">
                                             <input type="hidden" name="action" value="insert" >
-                                            <input type="text"  name="txtName" class="form-control mt-3" id="comment" placeholder="Enter Your Name">
+                                            <input type="text"  name="txtName" class="form-control mt-3" id="comment" placeholder="Enter Your Name" required="">
                                         </div>
                                 </div>
                                 <div class="col-sm-3">
                                    
                                         <div class="form-group">
-                                            <input type="email" name="txtEmail" class="form-control mt-3" id="comment" placeholder="Enter Your Email">
+                                            <input type="email" name="txtEmail" class="form-control mt-3" id="comment" placeholder="Enter Your Email" required="">
                                         </div>
                                 </div>
                                 <div class="col-sm-3">
                                             <div class="form-group row pt-1 mt-2 ml-1">
-                                                <select class="form-control" name="sltCategory">
+                                                <select class="form-control" name="sltCategory" required="">
                                                         <option disabled>Select your Category</option>
                                                         <option value="All Jobs">All jobs</option>
                                                         <option value="Developer">Developer</option>

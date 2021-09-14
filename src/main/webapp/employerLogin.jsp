@@ -7,11 +7,11 @@
 <html>
     <head>
         <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="">
-    <meta name="author" content="">
-                <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" type="text/css" href="assets/lib/datatables/datatables.net-bs4/css/dataTables.bootstrap4.css"/>
         <link rel="stylesheet" type="text/css" href="assets/lib/datatables/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"/>
@@ -32,8 +32,8 @@
                             <!--              <div class="card-header"><img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="{conf.logoWidth}" height="27"><span class="splash-description">Please enter your user information.</span></div>-->
                             <div class="card-header"><span class="text-info"><b>Employer Login</b></span></div>
                             <div class="card-body">
-${param.msg}                                
-                               
+                                ${param.msg}                                
+
                                 <form method="post" action="EmployerController" name="frm">
                                     <input type="hidden" name="action" value="login">
                                     <div class="login-form">
@@ -44,15 +44,16 @@ ${param.msg}
                                             <input class="form-control"  type="password"  name="txtPassword" placeholder="Password" required>
                                         </div>
                                         <p class="text-right text-success">${param.message}</p>
+                                        <p class="text-right text-success">${param.msg}</p>
                                         <div class="form-group row login-submit">
-                                           
+
                                             <button class="btn btn-primary btn-xl"  value="request.getParameter('id')" type="submit" data-dismiss="modal" onclick=" return LoginValidation();">
                                                 Sign in
                                             </button>
                                         </div>
                                         <div class="form-group row login-tools">
                                             <div class="col-6 login-remember">
-                                                
+
                                                 <a href="employer/employerSignUp.jsp" >Register Here</a> 
 
                                             </div>

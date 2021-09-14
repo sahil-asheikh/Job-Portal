@@ -53,6 +53,7 @@
                                         
                                         <p> ${param.page}</p>
                                         <p class="text-danger"> ${param.msg}</p>
+                                        <p class="text-danger"> ${param.message}</p>
                             <p class="text-success">${param.newPass}</p>
                                         <div class="form-group row login-submit">
                                             <!--                                            <div class="col-6">

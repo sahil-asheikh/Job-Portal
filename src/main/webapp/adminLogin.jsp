@@ -39,6 +39,7 @@
              <div class="card-header "><!--<img class="logo-img" src="assets/img/logo-xx.png" alt="logo" width="{conf.logoWidth}" height="27">-->
                  <span class="text-info"><b>Admin Login</b></span>
                  <span class="splash-description">${param.msg}</span></div>
+                 <span class="splash-description">${param.message}</span></div>
               <div class="card-body">
                 <form method="get" action="AdminController" name="frm">
                      <input type="hidden" name="action" value="login">

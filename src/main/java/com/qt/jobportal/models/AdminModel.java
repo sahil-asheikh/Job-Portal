@@ -62,6 +62,7 @@ public class AdminModel {
     }
 
     public String fetchPassword(String id) {
+        con = JobPortalDb.connectDb();
         String pass = null;
         try {
             sql = "select password from " + TABLENAME + " where admin_id = ?";
@@ -73,6 +74,15 @@ public class AdminModel {
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
         System.out.println("Pass : " + pass);
         return pass;
@@ -156,12 +166,21 @@ public class AdminModel {
             }
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
         return status;
     }
 
     public int doVerifyCredentials(String phone, String password, HttpServletRequest request) {
-
+        con = JobPortalDb.connectDb();
         int status = 0;
         session = request.getSession();
         sql = "select Id,admin_id ,Name, phone_no, password from " + TABLENAME + " where phone_no = '" + phone + "'";
@@ -194,7 +213,7 @@ public class AdminModel {
     }
 
     public void doIncreamentAttempts(int id) {
-
+        con = JobPortalDb.connectDb();
         try {
             cs = con.prepareCall("{call spIncreamentWrongAttempts(?,?)}");
             cs.setString(1, TABLENAME);
@@ -202,16 +221,35 @@ public class AdminModel {
             cs.executeUpdate();
         } catch (SQLException e) {
             System.out.println("exception because of Incrementing : " + e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
     }
 
     public void resetLoginCount(int id) {
+        con = JobPortalDb.connectDb();
         sql = "update " + TABLENAME + " set attempts = 0 where id = " + id;
         try {
             cs = con.prepareCall(sql);
             cs.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage() + "com.qt.tandw.models.Client.resetLoginCount()");
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+
         }
     }
 
