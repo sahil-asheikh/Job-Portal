@@ -13,30 +13,28 @@
 <html>
     <head>
         <%@include file="head.jsp" %>
-      <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/select2/css/select2.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/>
-        
-       <meta name="description" content="">
-        <title>View More2</title>
-         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <meta name="description" content="">
+        <title>Subscription Details</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-     </head>
+    </head>
     <body>
-        
+
         <%
-                     Subscription subscript=new Subscription();
-                     TblSubscription beanSub=subscript.selectById(request.getParameter("sid"));
-
+            Subscription subscript = new Subscription();
+            TblSubscription beanSub = subscript.selectById(request.getParameter("sid"));
         %>
-         
-    
-     <div class="be-wrapper">
-            <%@include file="navbar.jsp" %>
 
+
+        <div class="be-wrapper">
+            <%@include file="navbar.jsp" %>
             <%@include file="sidebar.jsp" %>
 
             <div class="be-content">
@@ -60,41 +58,8 @@
                                             </tr>
                                             <tr>
                                                 <td class="icon"><span class="fa fa-hourglass-end"></span></td>
-                                                <td class="item">Validity<span class="icon s7-phone"></span></td>
+                                                <td class="item">Validity in days<span class="icon s7-phone"></span></td>
                                                 <td><%= beanSub.getValidity_in_days()%></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="icon"><span class="mdi mdi-lamp"></span></td>
-                                                <td class="item">Active Limit<span class="icon s7-phone"></span></td>
-                                                <td><%= beanSub.getActive_job_limit()%></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="icon"><span class="fa fa-file-text"></span></td>
-                                                <td class="item">Response Limit<span class="icon s7-phone"></span></td>
-                                                <td><%= beanSub.getResponseLimit()%></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="icon"><span class="fa fa-database"></span></td>
-                                                <td class="item">Database Limit<span class="icon s7-phone"></span></td>
-                                                <td><%= beanSub.getDatabaseLimit()%></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    
-                            <div class="col-md-6">
-                            <div class="card card-border-color card-border-color-primary">
-                                <div class="card-header card-header-divider text-center">Additional Details</div>
-                                <div class="card-body">
-                                    <table class="table table-sm table-striped">
-                                        <tbody>
-                                            <tr>
-                                                <td class="icon"><span class="mdi mdi-phone"></span></td>
-                                                <td class="item">Phone Call Limit<span class="icon s7-phone"></span></td>
-                                                <td><%=  beanSub.getCallLimit()%></td>
                                             </tr>
                                             <tr>
                                                 <td class="icon"><span class="mdi mdi-comment-alt-text"></span></td>
@@ -102,24 +67,21 @@
                                                 <td><%=  beanSub.getSuggestion()%></td>
                                             </tr>
                                             <tr>
-                                                <td class="icon"><span class="mdi mdi-plus-square"></span></td>
-                                                <td class="item">Field 1<span class="icon s7-phone"></span></td>
-                                                <td><%=  beanSub.getJob_post_deduction()%></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="icon"><span class="mdi mdi-plus-square"></span></td>
-                                                <td class="item">Field 2<span class="icon s7-phone"></span></td>
-                                                <td><%=  beanSub.getResponse_deduction()%></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="icon"><span class="mdi mdi-plus-square"></span></td>
-                                                <td class="item">Field 3<span class="icon s7-phone"></span></td>
-                                                <td><%=  beanSub.getField3()%></td>
-                                            </tr>
-                                            <tr>
                                                 <td class="icon"><span class="fa fa-eye"></span></td>
-                                                <td class="item">Visibility<span class="icon s7-phone"></span></td>
-                                                <td><%=  beanSub.getVisibility()%></td>
+                                                <td class="item">Active/Inactive<span class="icon s7-phone"></span></td>
+                                                <td>
+                                                    <%
+                                                        if (beanSub.getVisibility() >= 1) {
+                                                    %>
+                                                    Active
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    Inactive
+                                                    <%
+                                                        }
+                                                    %>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -333,5 +295,4 @@
         <%@include file="footer.jsp" %>
     </body>
 </html>
-    
-    
+

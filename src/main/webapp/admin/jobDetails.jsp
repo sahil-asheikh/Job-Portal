@@ -284,24 +284,11 @@
                                         <div class="container">
                                             <h4><strong>Job Description</strong></h4>
                                             <p class="text-justify">
-                                                <%--Write Discription here --%> 
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-
-                                            </p>
-                                            <h4><strong>Responsibilities and Duties</strong></h4>
-                                            <p class="text-justify">
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
-
+                                                <%= vacancy.getJobDescription()%>
                                             </p>
                                             <h4><strong>Qualifications and Skills</strong></h4>
                                             <p class="text-justify">
-                                                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-                                                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                                                <%= vacancy.getMinQualification() %>
                                             </p>
                                         </div>
                                     </div>
@@ -326,7 +313,7 @@
                                                     <li><a href="#"><i class="fa fa-telegram" aria-hidden="true"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-whatsapp" aria-hidden="true"></i></a></li>
                                                     <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                                   
+
                                                 </ul>
                                             </div>
                                         </div>

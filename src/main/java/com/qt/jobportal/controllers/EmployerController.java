@@ -58,7 +58,7 @@ public class EmployerController extends HttpServlet {
             case "logout":
                 HttpSession session = request.getSession();
                 session.invalidate();
-                response.sendRedirect("employerLogin.jsp");
+                response.sendRedirect("index.jsp");
                 break;
             case "updatePassword":
                 updatePassword(request, response);

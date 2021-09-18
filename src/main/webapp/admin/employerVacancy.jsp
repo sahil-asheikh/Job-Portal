@@ -1,116 +1,154 @@
+<%-- 
+    Document   : subscriptionView
+    Created on : 17 Feb, 2020, 11:06:26 AM
+    Author     : win8.1
+--%>
 
+
+<%@page import="com.qt.jobportal.beans.tblSubscriptionCandidate"%>
+<%@page import="com.qt.jobportal.models.SubscriptionCandidateModel"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.qt.jobportal.beans.TblVacancy"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.qt.jobportal.models.Vacancy"%>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!DOCTYPE html>
+<html>
+    <head>
+        <%@include file="head.jsp" %>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/select2/css/select2.min.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/bootstrap-slider/css/bootstrap-slider.min.css"/>
+
+        <meta name="description" content="">
+        <title>Subscription Details</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    </head>
+    <body>
 
         <%
             Vacancy vacmod = new Vacancy();
             ArrayList<TblVacancy> vacc = vacmod.selectByEmployerId(request.getParameter("id"));
         %>
-    
-        <form action="../VacancyController" method="post">
-                                    
-                               
-                <div class="row">
-                      
-                      
-                    <%  for (TblVacancy vacancy : vacc) {
-                            if (vacancy.getSerialNo() == -1 || vacancy.getSerialNo() == 0) {
-                    %>
-                    <div class="col-lg-6">
-                        <div class="card card-border-color card-border-color-primary">
-                            <a href="jobDetails.jsp"> <div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-12">
-                                        <span class="splash-title pb-4"><%= vacancy.getException()%></span>
+
+
+        <div class="be-wrapper">
+
+            <%@include file="navbar.jsp" %>
+            <%@include file="sidebar.jsp" %>
+            <%-- content starts here --%>
+            <div class="be-content">
+                <div class="main-content container-fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card card-table">
+                                <div class="card-header">Vacancy Details
+                                    <div class="tools dropdown"><span class="icon mdi mdi-download"></span><a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown"><span class="icon mdi mdi-more-vert"></span></a>
+                                        <div class="dropdown-menu" role="menu"><a class="dropdown-item" href="#">Action</a><a class="dropdown-item" href="#">Another action</a><a class="dropdown-item" href="#">Something else here</a>
+                                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Separated link</a>
+                                        </div>
                                     </div>
-                                    <table class="table table-sm table-hover table-striped">
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-striped table-hover table-fw-widget" id="table3">
+                                        <thead>
+                                            <tr>
+                                                <th>Title </th>
+                                                <th>Salary</th>                  
+                                                <th>No Of Opening</th>
+                                                <th>Min Qualification </th>
+                                                <th>Experience</th>
+                                                <th>Active/Inactive</th>
+                                                <th >View</th>
+                                            </tr>
+                                        </thead>
+                                        <%  for (TblVacancy vacancy : vacc) {
+                                                if (vacancy.getSerialNo() == -1) {
+                                        %>
+                                        <tr>
+                                            <td colspan="6">
+                                                <%=  vacancy.getException()%>
+                                            </td>  
 
+                                            <%
+                                            } else if (vacancy.getSerialNo() == 0) {
+
+                                            %>
+                                        <tr>
+                                            <td colspan="6"> <%=  vacancy.getException()%>   </td>
+                                        </tr>
+                                        <%
+                                        } else {
+                                        %>
+                                        <% if (vacancy.getEmployerId() == null || vacancy.getEmployerId() == "null") {
+                                        %>
+                                        <a href="vacancy.jsp" type="button" >Post Job</a>
+                                        <%
+                                        } else {
+                                        %>
                                         <tbody>
-                                             <input type="hidden" name="id" value="<%= vacancy.getId() %>">
-                                  
-                                            <tr>
-                                                <td><div class="icon"><span class="mdi mdi-case mt-2">   <%= vacancy.getException()%>  </span></div></td>
-                                                <td <div class="icon"><span class="mdi mdi-pin mt-2 "> <%= vacancy.getException()%> </span></div></td>
+                                            <tr class="odd gradeC ">
+                                                <td><%= vacancy.getTitle()%></td>
+                                                <td><%= vacancy.getMinSalary()%>-<%= vacancy.getMaxSalary()%></td>
+                                                <td><%= vacancy.getNoOfOpening()%></td>
+                                                <td><%= vacancy.getMinQualification()%></td>
+                                                <td><%= vacancy.getExperience()%></td>
+                                                <td>
+                                                    <div class="btn-group btn-space">
+                                                        <%
+                                                            int vidStatus = vacancy.getJobStatus();
+                                                            if (vidStatus == 1) {
+                                                        %>
+                                                        <span class="text-success ">
+                                                            <div class="icon-sm">
+                                                                <p class="font-weight-bold text-justify">ACTIVE</p>
+                                                            </div>
+                                                        </span>
+                                                    </div>
+                                                    <%
+                                                    } else {
+                                                    %>
+                                                    <span class="text-danger ">
+                                                        <div class="icon-sm">
+                                                            <p class="font-weight-bold text-justify">DEACTIVATED</p>
+                                                        </div>
+                                                    </span>
+                                                    <%
+                                                        }
+                                                    %>
+                                                    </div>
+                                                </td>
 
-                                            </tr>
-                                            <tr>
-                                                <td><div><i class="fa fa-building mt-2" style="font-size: 15px"><span>  <%= vacancy.getException()%>  </span></i></div></td>
-                                                <td ><div> <i class="fa fa-rupee mt-2 " style="font-size:15px"><span>  <%= vacancy.getException()%>  </span></i></div></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><div class="icon"><span class="mdi mdi-graduation-cap mt-2">  <%= vacancy.getException()%>  </span></div></td>
-                                                <td> <div class="icon"><span class="mdi mdi-translate mt-2 mr-1"> <%= vacancy.getException()%> </span></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td><div><i class="fa fa-list-alt mt-2" style="font-size: 15px"><span>  <%= vacancy.getException()%>  </span></i></div></td>
-                                                <td></td>
+                                                <td colspan="3">
+                                                    <div class="btn-group btn-space">
+                                                        <button class="btn btn-sm btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter"> 
+                                                            <a href="employerVacancyView.jsp?vid=<%= vacancy.getVacancyPublicId()%>">
+                                                                <div class="icon-sm">
+                                                                    <span class="mdi mdi-eye" style="color: white"></span>
+                                                                </div>
+                                                            </a>
+                                                        </button>
+                                                    </div>
+                                                </td>
                                             </tr>
 
                                         </tbody>
+                                        <%
+                                                    }
+                                                }
+                                            }
+                                        %>
                                     </table>
-
                                 </div>
-                                </div></a>
+                            </div>
                         </div>
-
                     </div>
-                    <%
-                    } else {
-                    %>
-                    <div class="col-lg-6">
-                        <div class="card card-border-color card-border-color-primary">
-                             <input type="hidden" name="id" value="<%= vacancy.getId() %>">
-                                  
-                            <a href="jobDetails.jsp?id=<%= vacancy.getId() %> "><div class="card-body">
-                                <div class="form-group row">
-                                    <div class="col-12">
-                                        <span class="splash-title pb-4"><%= vacancy.getTitle()%></span>
-                                    </div>
-                                    <table class="table table-sm table-hover table-striped">
-
-                                        <tbody>
-                                            
-                                            <tr>
-                                                <td><div class="icon"><span class="mdi mdi-case mt-2">  <%= vacancy.getJobDescription()%>  </span></div></td>
-                                                <td <div class="icon"><span class="mdi mdi-pin mt-2 "> <%= vacancy.getJobCity()%> </span></div></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><div><i class="fa fa-building mt-2" style="font-size: 15px"><span> <%= vacancy.getCompanyName()%>  </span></i></div></td>
-                                                <td ><div> <i class="fa fa-rupee mt-2 " style="font-size:15px"><span>  <%= vacancy.getMinSalary()%>-<%= vacancy.getMaxSalary()%> </span></i></div></td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><div class="icon"><span class="mdi mdi-graduation-cap mt-2">  <%= vacancy.getMinQualification()%>  </span></div></td>
-                                                <td> <div class="icon"><span class="mdi mdi-translate mt-2 mr-1"> <%= vacancy.getEnglishAccuracy()%> </span></div></td>
-                                            </tr>
-                                            <tr>
-                                                <td><div><i class="fa fa-list-alt mt-2" style="font-size: 15px"><span>  <%= vacancy.getExperience()%>  </span></i></div></td>
-                                                <td></td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                                 </div></a>
-                        </div>
-
-                    </div>
-                                                
-                                                
-                    <%
-                            }
-                        }
-                    %> 
-
-
-
-
                 </div>
             </div>
         </div>
-  
+        <%@include file="footer.jsp" %>
+    </body>
+</html>

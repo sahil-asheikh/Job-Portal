@@ -8,7 +8,6 @@ package com.qt.jobportal.controllers;
 import com.qt.jobportal.beans.TblSystemSetting;
 import com.qt.jobportal.models.SystemSettingModel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,16 +48,36 @@ public class SystemSettingController extends HttpServlet {
                 insertVac(request, response);
                 break;
 
+            case "addJobRole":
+                addJobRole(request, response);
+                break;
+
+            case "jobeRoleSkills":
+                jobeRoleSkills(request, response);
+                break;
+
         }
     }
 
     private void insert(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        boolean jobRoleAvail = model.checkJobRole(request.getParameter("txtJobRole"));
         beans.setJobRole(request.getParameter("txtJobRole"));
-        String jobskillList = request.getParameter("txtJobSkills");
-        String[] list = jobskillList.split(",");
-        beans.setJobSkills(Arrays.toString(list));
-        System.out.println(Arrays.toString(list));
-        msg = model.insert(beans);
+
+        if (jobRoleAvail) {
+
+            String jobskillList = request.getParameter("txtJobSkills") + model.selectSkills(request.getParameter("txtJobSkills"));
+            String[] list = jobskillList.split(",");
+            beans.setJobSkills(Arrays.toString(list));
+
+            msg = model.update(beans);
+        } else {
+
+            String jobskillList = request.getParameter("txtJobSkills");
+            String[] list = jobskillList.split(",");
+            beans.setJobSkills(Arrays.toString(list));
+
+            msg = model.insert(beans);
+        }
         response.sendRedirect("admin/candidateSetting.jsp?message=" + msg);
     }
 
@@ -106,9 +125,32 @@ public class SystemSettingController extends HttpServlet {
         String jobskillList = request.getParameter("txtJobSkills");
         String[] list = jobskillList.split(",");
         beans.setJobSkills(Arrays.toString(list));
-        System.out.println(Arrays.toString(list));
         msg = model.insert(beans);
         response.sendRedirect("admin/vacancySetting.jsp?message=" + msg);
 
     }
+
+    private void jobeRoleSkills(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        beans.setJobRole(request.getParameter("txtJobRole"));
+        beans.setJobSkills(model.selectSkills(request.getParameter("txtJobRole")) + ", " + request.getParameter("txtJobSkills"));
+        msg = model.update(beans);
+
+        response.sendRedirect("admin/candidateSetting.jsp?message=" + msg);
+    }
+
+    private void addJobRole(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        boolean checkJobRole = model.checkJobRole(request.getParameter("txtJobRole"));
+
+        if (checkJobRole) {
+            msg = "Job role is already added";
+        } else {
+            beans.setJobRole(request.getParameter("txtJobRole"));
+            msg = model.insert(beans);
+        }
+
+        response.sendRedirect("admin/candidateSetting.jsp?message=" + msg);
+    }
+
 }

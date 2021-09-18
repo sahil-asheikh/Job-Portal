@@ -5,7 +5,6 @@
  */
 package com.qt.jobportal.models;
 
-import com.qt.jobportal.beans.TblCandidate;
 import com.qt.jobportal.beans.TblCandidatePlan;
 import com.qt.jobportal.beans.tblSubscriptionCandidate;
 import com.qt.jobportal.commons.DatabaseExistance;
@@ -94,9 +93,9 @@ public class SubscriptionCandidateModel {
     public String delete(tblSubscriptionCandidate bn) {
         con = JobPortalDb.connectDb();
         try {
-            sql = "delete from " + TABLENAME + " where id = ?";
+            sql = "delete from " + TABLENAME + " where subscriptioncandidate_id = ?";
             cs = con.prepareCall(sql);
-            cs.setInt(1, bn.getId());
+            cs.setString(1, bn.getSubCandPublicId());
             int rows = cs.executeUpdate();
             if (rows >= 1) {
                 message = "Subscription Deleted ";
@@ -151,7 +150,47 @@ public class SubscriptionCandidateModel {
         con = JobPortalDb.connectDb();
         ArrayList<tblSubscriptionCandidate> arrayList = new ArrayList<>();
         try {
-            sql = "select * from " + TABLENAME + " limit 4 ";
+            sql = "select * from " + TABLENAME + " where visibility = 1 limit 4";
+            cs = con.prepareCall(sql);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                arrayList.add(new tblSubscriptionCandidate(
+                        rs.getRow(),
+                        rs.getInt("Id"),
+                        rs.getString("subscriptioncandidate_id"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getString("validity"),
+                        rs.getInt("per_apply_price"),
+                        rs.getString("suggestion"),
+                        rs.getInt("visibility"),
+                        rs.getString("createdAt"),
+                        rs.getString("modifiedAt")
+                )
+                );
+            }
+            if (arrayList.isEmpty()) {
+                arrayList.add(new tblSubscriptionCandidate(0, this.getClass().getName(), "No Data Found"));
+            }
+        } catch (SQLException e) {
+            arrayList.add(new tblSubscriptionCandidate(-1, this.getClass().getName(), e.getMessage()));
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return arrayList;
+    }
+    
+    public ArrayList<tblSubscriptionCandidate> selectAllCand() {
+        con = JobPortalDb.connectDb();
+        ArrayList<tblSubscriptionCandidate> arrayList = new ArrayList<>();
+        try {
+            sql = "select * from " + TABLENAME;
             cs = con.prepareCall(sql);
             rs = cs.executeQuery();
             while (rs.next()) {
@@ -444,6 +483,68 @@ public class SubscriptionCandidateModel {
             }
         }
         return deduction;
+    }
+
+    public boolean empSubLimit(String sid) {
+        System.out.println("EXECUTED");
+        int subLimit = 0;
+        boolean stat = false;
+        con = JobPortalDb.connectDb();
+        sql = "SELECT visibility FROM tblsubscriptioncandidate where visibility = 1";
+        try {
+            cs = con.prepareCall(sql);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                subLimit = subLimit + 1;
+            }
+            if (subLimit >= 4) {
+                stat = false;
+            } else {
+                stat = true;
+            }
+            subLimit = 0;
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return stat;
+    }
+
+    public String changeEmpSubscriptionVisibility(int status, String sid) {
+        con = JobPortalDb.connectDb();
+        sql = "UPDATE tblsubscriptioncandidate SET visibility = ? WHERE subscriptioncandidate_id = ?";
+        try {
+            cs = con.prepareCall(sql);
+            cs.setInt(1, status);
+            cs.setString(2, sid);
+            int i = cs.executeUpdate();
+            if (i >= 1) {
+                if (status == 1) {
+                    message = "Subscription is activated";
+                } else {
+                    message = "Subscription is deactivated";
+                }
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+
+        return message;
     }
 
 }

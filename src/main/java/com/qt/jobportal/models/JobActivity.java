@@ -460,7 +460,7 @@ public class JobActivity {
         con = JobPortalDb.connectDb();
         ArrayList<TblJobActivity> arrayList = new ArrayList<>();
         try {
-            sql = "select * from  tblemployertx  where employer_id= ? order by id DESC LIMIT 5";
+            sql = "select * from  tblemployertx where employer_id= ? order by id DESC LIMIT 5";
             cs = con.prepareCall(sql);
             cs.setString(1, id);
             rs = cs.executeQuery();

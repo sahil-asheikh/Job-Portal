@@ -1,6 +1,6 @@
 function confirmDelete() {
 
-    var check = confirm("Do you want to delete this job?");
+    var check = confirm("Do you want to delete this activity?");
     if (check == true) {
         return true;
     } else {

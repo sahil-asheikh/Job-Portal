@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="be-navbar-header"><a class="navbar-brand" href="index.html"></a>
         </div>
-        <div class="page-title"><span>Blank Page</span></div> ${param.message}
+        <div class="page-title"><span>Job Portal</span></div> ${param.message}
         <div class="be-right-navbar">
             <ul class="nav navbar-nav float-right be-user-nav">
                 <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><img src="../assets/img/avatar.png" alt="Avatar"><span class="user-name">Túpac Amaru</span></a>

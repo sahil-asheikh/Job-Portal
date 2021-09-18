@@ -8,6 +8,7 @@ package com.qt.jobportal.models;
 import com.qt.jobportal.beans.TblEmployer;
 import com.qt.jobportal.beans.TblEmployerDetails;
 import com.qt.jobportal.beans.TblSubscription;
+import com.qt.jobportal.beans.tblEmployerPlan;
 import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.GenerateOTP;
 import com.qt.jobportal.commons.JobPortalDb;
@@ -965,6 +966,47 @@ public class EmployerModel {
             }
         }
         return employerDetails;
+    }
+
+    public tblEmployerPlan selectEmployerPlanById(String eid) {
+        con = JobPortalDb.connectDb();
+        tblEmployerPlan employer = null;
+        try {
+            sql = "SELECT * FROM tblemployerplan where employer_id = ?";
+            cs = con.prepareCall(sql);
+            cs.setString(1, eid);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                employer = new tblEmployerPlan(
+                        rs.getRow(),
+                        rs.getInt("id"),
+                        rs.getString("employer_id"),
+                        null,
+                        rs.getString("plan_title"),
+                        rs.getInt("plan_amount"),
+                        rs.getInt("available_balance"),
+                        rs.getInt("job_post_deduction"),
+                        rs.getInt("response_deduction"),
+                        rs.getInt("validity_in_days"),
+                        rs.getString("start_date"),
+                        rs.getString("end_date"),
+                        rs.getString("plan_suggestion"),
+                        rs.getString("created_at"),
+                        rs.getString("modified_at")
+                );
+            }
+        } catch (SQLException e) {
+            employer = new tblEmployerPlan(-1, this.getClass().getName(), e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return employer;
     }
 
 }//Admin

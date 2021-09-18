@@ -35,15 +35,15 @@
         <%@include file="sidebar.jsp" %>
         <%-- content starts here --%>
         <div class="be-content">
-            <div class="main-content container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-border-color card-border-color-primary">
-                            <div class="card-header card-header-divider text-center">Basic Job Details</div>
-                            <div class="card-body">
-                                <form action="../VacancyController" method="get" name="frm">
+            <form action="../VacancyController" method="get" name="frm">
+                <div class="main-content container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-border-color card-border-color-primary">
+                                <div class="card-header card-header-divider text-center">Basic Job Details</div>
+                                <div class="card-body">
                                     <input type="hidden" name="action" value="insert">
-                                     <input type="hidden" name="employerId" value="<%= session.getAttribute("EmployerId")%>">
+                                    <input type="hidden" name="employerId" value="<%= session.getAttribute("EmployerId")%>">
                                     <div class="form-row">
                                         <div class="col-md-6">
                                             <div class="form-group pt-2">
@@ -98,179 +98,179 @@
                                             </div>
                                         </div>
                                     </div>                                    
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>  
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-border-color card-border-color-primary">
-                            <div class="card-body">
-                                <div class="card-header card-header-divider text-center">Additional Job Details</div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">Minimum Qualification</label>
-                                            <select class="form-control form-control-sm" id="slMinQualification" name="txtMinQualification">
-                                                <option selected disabled value="">Select Qualification...</option>
-                                                <option value="bca">B.C.A</option>
-                                                <option value="be">B.E</option>
-                                                <option value="bcom">B.Com</option>
-                                                <option value="diploma">Diploma</option>
-                                                <option value="bsc">B.Sc</option>
-                                            </select>
+                    </div>  
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-border-color card-border-color-primary">
+                                <div class="card-body">
+                                    <div class="card-header card-header-divider text-center">Additional Job Details</div>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Minimum Qualification</label>
+                                                <select class="form-control form-control-sm" id="slMinQualification" name="txtMinQualification">
+                                                    <option selected disabled value="">Select Qualification...</option>
+                                                    <option value="bca">B.C.A</option>
+                                                    <option value="be">B.E</option>
+                                                    <option value="bcom">B.Com</option>
+                                                    <option value="diploma">Diploma</option>
+                                                    <option value="bsc">B.Sc</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Experience</label>
+                                                <select class="form-control form-control-sm" id="slExperience" name="txtExperience">
+                                                    <option selected disabled value="">Experience</option>
+                                                    <option value="Fresher">Fresher</option>
+                                                    <option value="1 Years of Experience">1 Years of Experience</option>
+                                                    <option value="1-2 Years of Experience">1 - 2 Years of Experience</option>
+                                                    <option value="2-3 Years of Experience">2 - 3 Years of Experience</option>
+                                                    <option value="3-4 Years of Experience">3 - 4 Years of Experience</option>
+                                                    <option value="4-5  Years of Experience">5 Years of Experience</option>
+                                                    <option value="More Than five years">More Than five years</option>
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Experience</label>
-                                             <select class="form-control form-control-sm" id="slExperience" name="txtExperience">
-                                               <option selected disabled value="">Experience</option>
-                                               <option value="Fresher">Fresher</option>
-                                               <option value="1 Years of Experience">1 Years of Experience</option>
-                                               <option value="1-2 Years of Experience">1 - 2 Years of Experience</option>
-                                               <option value="2-3 Years of Experience">2 - 3 Years of Experience</option>
-                                               <option value="3-4 Years of Experience">3 - 4 Years of Experience</option>
-                                               <option value="4-5  Years of Experience">5 Years of Experience</option>
-                                               <option value="More Than five years">More Than five years</option>
-                                             </select>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">English Accuracy</label>
+                                                <select class="form-control form-control-sm" id="EnglishAccuracy" name="txtEnglishAccuracy">
+                                                    <option selected disabled value="">Select Accuracy...</option>
+                                                    <option value="Basic">Basic</option>
+                                                    <option value="Intermediate">Intermediate</option>
+                                                    <option value="fluent">Fluent</option>
+                                                </select>
+                                            </div>  
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">English Accuracy</label>
-                                            <select class="form-control form-control-sm" id="EnglishAccuracy" name="txtEnglishAccuracy">
-                                                <option selected disabled value="">Select Accuracy...</option>
-                                                <option value="Basic">Basic</option>
-                                                <option value="Intermediate">Intermediate</option>
-                                                <option value="fluent">Fluent</option>
-                                            </select>
-                                        </div>  
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="">Skill Set</label>
-                                            <select class="tags form-control form-control-sm" multiple="" id="slSkillSet" name="txtSkillSet">
-                                                <option value="">option 1</option>
-                                                <option value="java">option 2</option>
-                                                <option value="">option 3</option>
-                                            </select>  
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="">Skill Set</label>
+                                                <select class="tags form-control form-control-sm" multiple="" id="slSkillSet" name="txtSkillSet">
+<!--                                                    <option disabled="" value="">Write skill sets</option>-->
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="txtJobDescription">Job Description</label>
-                                            <textarea rows="3" class="form-control form-control-sm" id="txtJobDescription" name="txtJobDescription"></textarea>                                              
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group row">
-                                            <label class="col-12 col-sm-3 col-form-label text-sm-left pt-4">Gender</label>
-                                            <div class="col-12 col-sm-8 col-lg-6">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="custom-control custom-radio custom-radio-icon custom-control-inline">
-                                                        <input class="custom-control-input" name="rdGender" type="radio" value="female" checked=""><span class="custom-control-label"><i class="mdi mdi-female"></i></span>
-                                                    </label>
-                                                    <label class="custom-control custom-radio custom-radio-icon custom-control-inline">
-                                                        <input class="custom-control-input" name="rdGender" type="radio" value="male"><span class="custom-control-label"><i class="mdi mdi-male-alt"></i></span>
-                                                    </label>
-                                                </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtJobDescription">Job Description</label>
+                                                <textarea rows="3" class="form-control form-control-sm" id="txtJobDescription" name="txtJobDescription"></textarea>                                              
                                             </div>
                                         </div>
 
+                                        <div class="col-md-6">
+                                            <div class="form-group row">
+                                                <label class="col-12 col-sm-3 col-form-label text-sm-left pt-4">Gender</label>
+                                                <div class="col-12 col-sm-8 col-lg-6">
+                                                    <div class="form-check form-check-inline">
+                                                        <label class="custom-control custom-radio custom-radio-icon custom-control-inline">
+                                                            <input class="custom-control-input" name="rdGender" type="radio" value="female" checked=""><span class="custom-control-label"><i class="mdi mdi-female"></i></span>
+                                                        </label>
+                                                        <label class="custom-control custom-radio custom-radio-icon custom-control-inline">
+                                                            <input class="custom-control-input" name="rdGender" type="radio" value="male"><span class="custom-control-label"><i class="mdi mdi-male-alt"></i></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-border-color card-border-color-primary">
+                                <div class="card-body">
+                                    <div class="form-row pt-2">
+                                        <div class="col-md-6">
+                                            <label for="">Job Timings</label>
+                                            <textarea class="form-control form-control-sm" id="txtJobTimings" placeholder=" Ex:9:30 am - 6:30pm | Monday to Saturday" name="txtJobTiming"></textarea>
+                                        </div>
+                                        <div class="col-md-6">                                         
+                                            <label for="">Interview Details</label>
+                                            <textarea class="form-control form-control-sm" id="txtInterviewDetails" placeholder="Ex:11:00 am - 4:00pm | Monday to Saturday" name="txtInterviewDetail"></textarea>                                               
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card card-border-color card-border-color-primary">
+                                <div class="card-header card-header-divider text-center">About Your Company</div>
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtCompanyName">Company Name</label>
+                                                <input class="form-control form-control-sm" id="txtCompanyName" type="text" name="txtCompanyName" placeholder="Enter Company Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtContactPerson">Contact Person</label>
+                                                <input class="form-control form-control-sm" id="txtContactPerson" type="text" name="txtContactPerson" placeholder="Enter Contact Person Name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtPhoneNumber">Phone Number</label>
+                                                <input class="form-control form-control-sm" id="txtPhoneNumber" type="number" name="txtPhoneNumber" placeholder="Enter Phone Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtEmailId">Email Id</label>
+                                                <input class="form-control form-control-sm" id="txtEmailId" type="email" name="txtEmailId" placeholder="Enter Email Id">
+                                            </div>
+                                        </div>
                                     </div>
 
+                                    <div class="form-row">
+                                        <div class="col-md-6 offset-0">
+                                            <div class="form-group">
+                                                <label for="txtJobAddress">Job Address</label>
+                                                <textarea class="form-control form-control-sm" id="txtJobAddress" name="txtJobAddress"></textarea>                                        
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="row pt-3">
+                                        <div class="col-lg-6 pb-4 pb-lg-0">
+                                            <div class="be-checkbox custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="check1" name="chkTerm">
+                                                <label class="custom-control-label" for="check1">I Accept Terms And Conditions and Privacy Policy.*</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="text-right">
+                                                <button class="btn btn-space btn-primary" type="submit" onclick="return vacancyValidation();"  >Submit</button>
+                                                <button class="btn btn-space btn-secondary">Cancel </button> ${param.message}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <!--</form>-->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-border-color card-border-color-primary">
-                            <div class="card-body">
-                                <div class="form-row pt-2">
-                                    <div class="col-md-6">
-                                        <label for="">Job Timings</label>
-                                        <textarea class="form-control form-control-sm" id="txtJobTimings" placeholder=" Ex:9:30 am - 6:30pm | Monday to Saturday" name="txtJobTiming"></textarea>
-                                    </div>
-                                    <div class="col-md-6">                                         
-                                        <label for="">Interview Details</label>
-                                        <textarea class="form-control form-control-sm" id="txtInterviewDetails" placeholder="Ex:11:00 am - 4:00pm | Monday to Saturday" name="txtInterviewDetail"></textarea>                                               
-                                    </div>
-                                </div>  
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card card-border-color card-border-color-primary">
-                            <div class="card-header card-header-divider text-center">About Your Company</div>
-                            <div class="card-body">
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="txtCompanyName">Company Name</label>
-                                            <input class="form-control form-control-sm" id="txtCompanyName" type="text" name="txtCompanyName" placeholder="Enter Company Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="txtContactPerson">Contact Person</label>
-                                            <input class="form-control form-control-sm" id="txtContactPerson" type="text" name="txtContactPerson" placeholder="Enter Contact Person Name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="txtPhoneNumber">Phone Number</label>
-                                            <input class="form-control form-control-sm" id="txtPhoneNumber" type="number" name="txtPhoneNumber" placeholder="Enter Phone Number">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="txtEmailId">Email Id</label>
-                                            <input class="form-control form-control-sm" id="txtEmailId" type="email" name="txtEmailId" placeholder="Enter Email Id">
-                                        </div>
-                                    </div>
-                                </div>
+            </form>
 
-                                <div class="form-row">
-                                    <div class="col-md-6 offset-0">
-                                        <div class="form-group">
-                                            <label for="txtJobAddress">Job Address</label>
-                                            <textarea class="form-control form-control-sm" id="txtJobAddress" name="txtJobAddress"></textarea>                                        
-                                        </div>
-                                    </div>
-                                </div>                                    
-                                <div class="row pt-3">
-                                    <div class="col-lg-6 pb-4 pb-lg-0">
-                                        <div class="be-checkbox custom-control custom-checkbox">
-                                            <input class="custom-control-input" type="checkbox" id="check1" name="chkTerm">
-                                            <label class="custom-control-label" for="check1">I Accept Terms And Conditions and Privacy Policy.*</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <p class="text-right">
-                                            <button class="btn btn-space btn-primary" type="submit" onclick="return vacancyValidation();"  >Submit</button>
-                                            <button class="btn btn-space btn-secondary">Cancel </button> ${param.message}
-                                        </p>
-                                    </div>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <%-- content ends here --%>
 
             <nav class="be-right-sidebar">
@@ -480,7 +480,7 @@
 
         <%@include file="footer.jsp" %>
 
-         <script language="javascript">print_state("sts");</script>
+        <script language="javascript">print_state("sts");</script>
 
         <script src="../assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
         <script src="../assets/lib/jquery.nestable/jquery.nestable.js" type="text/javascript"></script>
@@ -491,11 +491,11 @@
         <script src="../assets/lib/bootstrap-slider/bootstrap-slider.min.js" type="text/javascript"></script>
         <script src="../assets/lib/bs-custom-file-input/bs-custom-file-input.js" type="text/javascript"></script>
         <script type="text/javascript">
-                                                $(document).ready(function () {
-                                                    //-initialize the javascript
-                                                    App.init();
-                                                    App.formElements();
-                                                });
+            $(document).ready(function () {
+                //-initialize the javascript
+                App.init();
+                App.formElements();
+            });
         </script>
     </body>
 

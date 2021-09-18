@@ -11,8 +11,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-         
         <%@include file="head.jsp" %>
+        <script src="../assets/myjs/sweetAlertDelete.js"></script>
+        <script>
+            function candidateViewDetails(id) {
+
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        document.getElementById("showData").innerHTML =
+                                this.responseText;
+                    }
+                };
+                xhttp.open("GET", "candidateViewDetail.jsp?id=" + id, true);
+                xhttp.send();
+
+            }
+        </script>
     </head>
     <body>
         <%
@@ -57,7 +72,7 @@
                                                 <th>State</th>
                                                 <th>City</th>
                                                 <th>Address</th>
-                                                <th>Subscription</th>
+                                                <!--<th>Subscription</th>-->
                                                 <th>Balance</th>
                                                 <th>Qualification</th>
                                                 <th>Job Role</th>
@@ -82,37 +97,45 @@
                                             %>
 
                                             <tr>
-                                                <td><%=  candidateBean.getSerialNo()%></td>
-                                                <td><%=  candidateBean.getFullName()%></td>
-                                                <td><%=  candidateBean.getPhone_No()%></td>
-                                                <td><%=  candidateBean.getState()%></td>
-                                                <td><%=  candidateBean.getCity()%></td>
-                                                <td><%= candidateBean.getAddress()%></td>
-                                                <td><%=  candidateBean.getSubscriptionId()%></td>
-                                                <td><%=  candidateBean.getBalance()%></td>
-                                                <td><%=  candidateBean.getQualification()%></td>
-                                                <td><%=  candidateBean.getJobRole()%></td>
+                                                <td><%= candidateBean.getSerialNo()%></td>
                                                 <td>
-                                                    <div class="btn-group btn-space">         
-                                                        <button class="btn btn-secondary btn-sm btn-primary" type="button" data-toggle="modal" data-target="#exampleModalCenter"> 
-                                                          <a href="candidateView.jsp?cid=<%= candidateBean.getCandPublicId()%>">
-                                                            
+                                                    <%= (candidateBean.getFullName() == null || candidateBean.getFullName() == "null" || candidateBean.getFullName() == "") ? "Haven't added" : candidateBean.getFullName()%>
+                                                </td>
+                                                <td>
+                                                    <%= (candidateBean.getPhone_No() == null || candidateBean.getPhone_No() == "null" || candidateBean.getPhone_No() == "") ? "Haven't added" : candidateBean.getPhone_No()%>
+                                                </td>
+                                                <td>
+                                                    <%= (candidateBean.getState() == null || candidateBean.getState() == "null" || candidateBean.getState() == "") ? "Haven't added" : candidateBean.getState()%>
+                                                </td>
+                                                <td>
+                                                    <%= (candidateBean.getCity() == null || candidateBean.getCity() == "null" || candidateBean.getCity() == "") ? "Haven't added" : candidateBean.getCity()%>
+                                                </td>
+                                                <td>
+                                                    <%= (candidateBean.getAddress() == null || candidateBean.getAddress() == "null" || candidateBean.getAddress() == "") ? "Haven't added" : candidateBean.getAddress()%>
+                                                </td>
+                                                <!--<td><%//  candidateBean.getSubscriptionId()%></td>-->
+                                                <td>
+                                                    <%= (candidateBean.getBalance() == 0) ? "Zero balance" : candidateBean.getBalance()%>
+                                                </td>
+                                                <td>
+                                                    <%= (candidateBean.getQualification() == null || candidateBean.getQualification() == "null" || candidateBean.getQualification() == "") ? "Haven't added" : candidateBean.getQualification()%>
+                                                </td>
+                                                <td>
+                                                    <%= (candidateBean.getJobRole() == null || candidateBean.getJobRole() == "null" || candidateBean.getJobRole() == "") ? "Haven't added" : candidateBean.getJobRole()%>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group btn-space">
+                                                        <a class="btn btn-secondary btn-sm btn-primary mr-1"  href="#" data-toggle="modal" data-target="#exampleModal" onclick="candidateViewDetails('<%= candidateBean.getCandPublicId() %>')">
+                                                        <!--<a class="btn btn-secondary btn-sm btn-primary mr-1"  href="candidateView.jsp?cid=<%= candidateBean.getCandPublicId()%>">-->
                                                             <div class="icon-sm">
                                                                 <span class="mdi mdi-eye"></span>
                                                             </div>
-                                                          </a>
-                                                        </button>
+                                                        </a>
 
-                                                        <button class="btn btn-secondary btn-sm btn-warning " type="button">
-                                                            <a href="candidateUpdate.jsp?cid=<%= candidateBean.getCandPublicId()%>">
-                                                                <div class="icon-sm">
-                                                                    <span class="mdi mdi-edit"></span>
-                                                                </div>
-                                                            </a>
-                                                        </button>
-
-                                                        <a class="btn btn-secondary btn-sm btn-danger" href="../CandidateController?action=delete&cid=<%= candidateBean.getCandPublicId()%>">
-                                                            <span class="mdi mdi-delete"></span>
+                                                        <a class="btn btn-secondary btn-sm btn-danger" href="../CandidateController?action=delete&cid=<%= candidateBean.getCandPublicId()%>" onclick="return confirmDelete();">
+                                                            <div class="icon-sm">
+                                                                <span class="mdi mdi-delete"></span>
+                                                            </div>
                                                         </a>
 
                                                     </div>
@@ -129,9 +152,31 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"> <b></b></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="showData">
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- //Modal -->
+
         <script src="../assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
         <script src="../assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
         <script src="../assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
@@ -151,11 +196,11 @@
         <script src="../assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
         <script src="../assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
         <script type="text/javascript">
-            $(document).ready(function () {
-                //-initialize the javascript
-                App.init();
-                App.dataTables();
-            });
+                                                            $(document).ready(function () {
+                                                                //-initialize the javascript
+                                                                App.init();
+                                                                App.dataTables();
+                                                            });
         </script>
 
 

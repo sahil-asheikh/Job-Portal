@@ -10,13 +10,12 @@ package com.qt.jobportal.beans;
  * @author Nikita
  */
 public class TblSystemSetting {
-     private int serialNo;
 
+    private int serialNo;
     private int id;
     private String jobSkills;
     private String jobRole;
-   
-      private String location;
+    private String location;
     private String exception;
 
     public TblSystemSetting() {
@@ -28,7 +27,6 @@ public class TblSystemSetting {
         this.exception = exception;
     }
 
-    
     public TblSystemSetting(int serialNo, int id, String jobSkills, String jobRole) {
         this.serialNo = serialNo;
         this.id = id;
@@ -36,10 +34,6 @@ public class TblSystemSetting {
         this.jobRole = jobRole;
     }
 
-    
-    
-    
-    
     public int getSerialNo() {
         return serialNo;
     }
@@ -87,7 +81,5 @@ public class TblSystemSetting {
     public void setException(String exception) {
         this.exception = exception;
     }
-    
-    
 
 }

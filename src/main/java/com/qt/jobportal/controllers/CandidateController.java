@@ -62,7 +62,7 @@ public class CandidateController extends HttpServlet {
             case "logout":
                 HttpSession session = request.getSession();
                 session.invalidate();
-                response.sendRedirect("candidateLogin.jsp");
+                response.sendRedirect("index.jsp");
                 break;
             case "passwordUpdate":
                 passwordUpdate(request, response);
@@ -223,7 +223,7 @@ public class CandidateController extends HttpServlet {
 
             beans.setCandPublicId(request.getParameter("cid"));
             msg = model.delete(beans);
-            response.sendRedirect("candidate/favCompany.jsp?message=" + msg);
+            response.sendRedirect("admin/candidateShow.jsp?message=" + msg);
         }
     }
 
@@ -508,39 +508,32 @@ public class CandidateController extends HttpServlet {
         String candidateID = request.getParameter("candidateId");
         String subscriptionId = request.getParameter("subscriptionId");
         int i = 0;
-//        ArrayList<TblCandidatePlan> subscriptionCand = SubscriptionCandidateModel.selectSubscriptionPlan(subscriptionId);
         TblCandidatePlan subscriptionCandidate = SubscriptionCandidateModel.selectSubscriptionPlan(subscriptionId);
-
-        System.out.println("For Loop Before START");
-
-//        for (TblCandidatePlan subscriptionCandidate : subscriptionCand) {
-        System.out.println("For Loop START");
 
         String plan_title = subscriptionCandidate.getPlanTitle();
         int plan_amount = subscriptionCandidate.getPlanAmout();
         String validity_in_days = subscriptionCandidate.getValidityInDays();
         int availableBalance = SubscriptionCandidateModel.getBalance(candidateID) + plan_amount;
         String start_date = LocalDate.now().toString();
-        String end_date = null;
+        String end_date = LocalDate.now().plusDays(Integer.parseInt(validity_in_days)).toString();
 
-        switch (validity_in_days) {
-//        switch (subscriptionCandidate.get(2).toString()) {
-            case "3 month":
-                end_date = LocalDate.now().plusMonths(3).toString();
-                break;
-            case "4 month":
-                end_date = LocalDate.now().plusMonths(4).toString();
-                break;
-            case "6 month":
-                end_date = LocalDate.now().plusMonths(6).toString();
-                break;
-            case "12 month":
-                end_date = LocalDate.now().plusMonths(12).toString();
-                break;
-            default:
-                end_date = "00-00-0000";
-                break;
-        }
+//        switch (validity_in_days) {
+//            case "3 month":
+//                end_date = LocalDate.now().plusMonths(3).toString();
+//                break;
+//            case "4 month":
+//                end_date = LocalDate.now().plusMonths(4).toString();
+//                break;
+//            case "6 month":
+//                end_date = LocalDate.now().plusMonths(6).toString();
+//                break;
+//            case "12 month":
+//                end_date = LocalDate.now().plusMonths(12).toString();
+//                break;
+//            default:
+//                end_date = "00-00-0000";
+//                break;
+//        }
         int per_apply_deduction = subscriptionCandidate.getPerApplyDeduction();
         String plan_suggestion = subscriptionCandidate.getPlanSuggestion();
 
@@ -558,9 +551,7 @@ public class CandidateController extends HttpServlet {
 
         i = SubscriptionCandidateModel.purchaseSubscription(getPlan, subscriptionId, availableBalance);
 
-        System.out.println("For Loop END");
 //        }
-
         if (i == 1) {
             msg = "Your plan has been purchased";
         } else {

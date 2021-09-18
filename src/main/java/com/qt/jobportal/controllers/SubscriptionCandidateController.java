@@ -9,7 +9,6 @@ import com.qt.jobportal.beans.tblSubscriptionCandidate;
 import com.qt.jobportal.commons.Utils;
 import com.qt.jobportal.models.SubscriptionCandidateModel;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "SubscriptionCandidateController", urlPatterns = {"/SubscriptionCandidateController"})
 public class SubscriptionCandidateController extends HttpServlet {
+
     SubscriptionCandidateModel model = new SubscriptionCandidateModel();
     tblSubscriptionCandidate beans = new tblSubscriptionCandidate();
     String msg = null;
@@ -50,11 +50,14 @@ public class SubscriptionCandidateController extends HttpServlet {
             case "delete":
                 subscriptionCandDelete(request, response);
                 break;
-             case "logout":
+            case "visibility":
+                updateCandSubVisibility(request, response);
+                break;
+            case "logout":
                 HttpSession session = request.getSession();
                 session.invalidate();
                 response.sendRedirect("adminLogin.jsp");
-               
+
             default:
                 break;
         }
@@ -100,11 +103,10 @@ public class SubscriptionCandidateController extends HttpServlet {
     }// </editor-fold>
 
     private void subscriptionCandInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
-       
-         String publicId = Utils.generatePublicId(30);
+
+        String publicId = Utils.generatePublicId(30);
         beans.setSubCandPublicId(publicId);
-       
-        
+
         beans.setTitle(request.getParameter("txtTitle"));
         beans.setPrice(Integer.parseInt(request.getParameter("txtPrice")));
         beans.setValidity(request.getParameter("txtValidity"));
@@ -112,9 +114,9 @@ public class SubscriptionCandidateController extends HttpServlet {
         beans.setSuggestion(request.getParameter("txtSuggestion"));
         beans.setVisibility(Integer.parseInt(request.getParameter("txtVisibility")));
 
-        msg=model.insert(beans);
-        response.sendRedirect("admin/subscriptionCandidate.jsp?message=" + msg);
-}
+        msg = model.insert(beans);
+        response.sendRedirect("admin/subscriptionCandidateSelect.jsp?message=" + msg);
+    }
 
     private void subscriptionCandUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
         beans.setId(Integer.parseInt(request.getParameter("id")));
@@ -127,13 +129,36 @@ public class SubscriptionCandidateController extends HttpServlet {
 
         msg = model.update(beans);
         response.sendRedirect("admin/subscriptionCandidateSelect.jsp?message=" + msg);
- }
+    }
 
     private void subscriptionCandDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-       beans.setSubCandPublicId(request.getParameter("sid"));
+        beans.setSubCandPublicId(request.getParameter("sid"));
 
         msg = model.delete(beans);
         response.sendRedirect("admin/subscriptionCandidateSelect.jsp?message=" + msg);
- }
+    }
+
+    private void updateCandSubVisibility(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            String sid = request.getParameter("sid");
+            int status = Integer.parseInt(request.getParameter("status"));
+            boolean subscriptionLimit = model.empSubLimit(sid);
+
+            if (status == 1) {
+                if (subscriptionLimit) {
+                    msg = model.changeEmpSubscriptionVisibility(status, sid);
+                } else {
+                    msg = "You already have 4 subscription active";
+                }
+            } else {
+                msg = model.changeEmpSubscriptionVisibility(status, sid);
+            }
+
+        } catch (Exception e) {
+            msg = e.getMessage();
+        } finally {
+            response.sendRedirect("admin/subscriptionCandidateSelect.jsp?message=" + msg);
+        }
+    }
 
 }

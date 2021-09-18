@@ -20,7 +20,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author Zeeshan
  */
-
 @WebServlet(name = "SubscriptionController", urlPatterns = {"/SubscriptionController"})
 public class SubscriptionController extends HttpServlet {
 
@@ -42,11 +41,13 @@ public class SubscriptionController extends HttpServlet {
             case "delete":
                 subscriptionDelete(request, response);
                 break;
-             case "logout":
+            case "visibility":
+                subscriptionVisibility(request, response);
+                break;
+            case "logout":
                 HttpSession session = request.getSession();
                 session.invalidate();
                 response.sendRedirect("adminLogin.jsp");
-               
             default:
                 break;
         }
@@ -92,12 +93,10 @@ public class SubscriptionController extends HttpServlet {
 
     private void subscriptionInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-         String publicId = Utils.generatePublicId(30);
-         beans.setSubscription_id(publicId);
-       
-        
+        String publicId = Utils.generatePublicId(30);
+        beans.setSubscription_id(publicId);
+
         beans.setTitle(request.getParameter("txtTitle"));
-        
         beans.setPrice(Integer.parseInt(request.getParameter("txtPrice")));
         beans.setValidity_in_days(Integer.parseInt(request.getParameter("txtValidity")));
         beans.setActive_job_limit(Integer.parseInt(request.getParameter("txtActiveJobLimit")));
@@ -107,11 +106,11 @@ public class SubscriptionController extends HttpServlet {
         beans.setDatabaseLimit(Integer.parseInt(request.getParameter("txtDatabaseLimit")));
         beans.setCallLimit(Integer.parseInt(request.getParameter("txtPhoneCallLimit")));
         beans.setSuggestion(request.getParameter("txtSuggestion"));
-        beans.setJob_post_deduction(50);
-        beans.setResponse_deduction(10);
+        beans.setJob_post_deduction(Integer.parseInt(request.getParameter("txtJobPostDeduction")));
+        beans.setResponse_deduction(Integer.parseInt(request.getParameter("txtResponseDeduction")));
 
         msg = model.insert(beans);
-        response.sendRedirect("admin/subscription.jsp?message=" + msg);
+        response.sendRedirect("admin/subscriptionSelect.jsp?message=" + msg);
 
     }
 
@@ -121,15 +120,12 @@ public class SubscriptionController extends HttpServlet {
         beans.setTitle(request.getParameter("txtTitle"));
         beans.setPrice(Integer.parseInt(request.getParameter("txtPrice")));
         beans.setValidity_in_days(Integer.parseInt(request.getParameter("txtValidity")));
-        beans.setActive_job_limit(Integer.parseInt(request.getParameter("txtActiveJobLimit")));
-        beans.setResponseLimit(Integer.parseInt(request.getParameter("txtResponseLimit")));
-        beans.setDatabaseLimit(Integer.parseInt(request.getParameter("txtDatabaseLimit")));
-        beans.setCallLimit(Integer.parseInt(request.getParameter("txtPhoneCallLimit")));
         beans.setSuggestion(request.getParameter("txtSuggestion"));
-        beans.setVisibility(Integer.parseInt(request.getParameter("txtVisibility")));
+        beans.setJob_post_deduction(Integer.parseInt(request.getParameter("txtJobDeduction")));
+        beans.setResponse_deduction(Integer.parseInt(request.getParameter("txtResponseDeduction")));
 
         msg = model.update(beans);
-        response.sendRedirect("subscriptionSelect.jsp?message=" + msg);
+        response.sendRedirect("admin/subscriptionSelect.jsp?message=" + msg);
 
     }
 
@@ -139,6 +135,31 @@ public class SubscriptionController extends HttpServlet {
 
         msg = model.delete(beans);
         response.sendRedirect("admin/subscriptionSelect.jsp?message=" + msg);
+
+    }
+
+    private void subscriptionVisibility(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        try {
+            String sid = request.getParameter("sid");
+            int status = Integer.parseInt(request.getParameter("status"));
+            boolean subscriptionLimit = model.empSubLimit(sid);
+
+            if (status == 1) {
+                if (subscriptionLimit) {
+                    msg = model.changeEmpSubscriptionVisibility(status, sid);
+                } else {
+                    msg = "You already have 4 subscription active";
+                }
+            } else {
+                msg = model.changeEmpSubscriptionVisibility(status, sid);
+            }
+
+        } catch (Exception e) {
+            msg = e.getMessage();
+        } finally {
+            response.sendRedirect("admin/subscriptionSelect.jsp?message=" + msg);
+        }
 
     }
 

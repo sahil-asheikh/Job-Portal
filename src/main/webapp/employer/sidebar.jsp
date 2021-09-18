@@ -21,7 +21,6 @@
 <%
     EmployerModel emm = new EmployerModel();
     TblEmployer empB = emm.selectById(String.valueOf(session.getAttribute("EmployerId")));
-
 %>
 
  ${param.session.getAttribute("EmployerName")}

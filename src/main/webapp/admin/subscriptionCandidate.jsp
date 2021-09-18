@@ -8,13 +8,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
+        <link rel="stylesheet" type="text/css" href="../assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/datatables/datatables.net-bs4/css/dataTables.bootstrap4.css"/>
         <link rel="stylesheet" type="text/css" href="../assets/lib/datatables/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css"/>
         <link rel="stylesheet" href="../assets/css/app.css" type="text/css"/>
 
-         <script src="../assets/myjs/cities.js"></script>
+        <script src="../assets/myjs/cities.js"></script>
 
         <link rel="stylesheet" href="../assets/mycss/sweetalert.css" type="text/css"/>
         <script src="../assets/myjs/sweetalert.js" type="text/javascript"></script>
@@ -22,9 +22,9 @@
 
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- </head>
+    </head>
     <body>
-         <div class="be-wrapper">
+        <div class="be-wrapper">
             <%@include file="navbar.jsp" %>
 
             <%@include file="sidebar.jsp" %>
@@ -53,8 +53,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label for="txtValidity">Validity</label>
-                                                    <input class="form-control form-control-sm" id="txtValidity" type="text" name="txtValidity" placeholder="Enter Validity">
+                                                    <label for="txtValidity">Validity in days</label>
+                                                    <input class="form-control form-control-sm" id="txtValidity" type="number" name="txtValidity" placeholder="Enter Validity in days">
                                                 </div>
                                             </div>
                                         </div>
@@ -68,40 +68,11 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="">Suggestion</label>
-                                                    <input class="form-control form-control-sm" id="txtResponseLimit" type="text" name="txtSuggestion" placeholder="Enter Response Limit">
+                                                    <textarea class="form-control" name="txtSuggestion" placeholder="Enter about subscription pack" rows="3"></textarea>
                                                 </div> 
                                             </div>
                                         </div> 
-                                       
-                                         <div class="form-row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label >Visibility</label>
-                                                    <input class="form-control form-control-sm"  type="text" name="txtVisibility" placeholder="Enter visibility">
-                                                </div> 
-                                            </div>
-                                            
-                                        </div>
-<!--                                        <div class="form-group">
-                                            <label for="txtSuggestion">Suggestion</label>
-                                            <input class="form-control form-control-sm" id="txtSuggestion" type="text" name="txtSuggestion" placeholder="Enter Suggestion">
-                                        </div> 
-                                        <div class="form-group">
-                                            <label for="txttxtField1">Field 1</label>
-                                            <input class="form-control form-control-sm" id="txtField1" type="text" name="txtField1" value="sample" placeholder="Enter Field 1">
-                                        </div> 
-                                        <div class="form-group">
-                                            <label for="txtField2">Field 2</label>
-                                            <input class="form-control form-control-sm" id="txtField2" type="text" name="txtField2" value="sample" placeholder="Enter Field 2">
-                                        </div> 
-                                        <div class="form-group">
-                                            <label for="txtField3">Field 3</label>
-                                            <input class="form-control form-control-sm" id="txtField3" type="text" name="txtField3" value="sample" placeholder="Enter Field 3">
-                                        </div> 
-                                        <div class="form-group">
-                                            <label for="txtVisibility">Visibility</label>
-                                            <input class="form-control form-control-sm" id="txtVisibility" type="text" name="txtVisibility" placeholder="Enter Visibility">
-                                        </div>-->
+                                        <input class="form-control form-control-sm"  type="hidden" name="txtVisibility" value="0">
                                         <div class="row pt-3">
                                             <div class="col-sm-6">
                                                 <p class="text-right">
@@ -121,7 +92,7 @@
             <%-- content ends here --%>
         </div>
         <%@include file="footer.jsp" %>
-        
+
 
 
         <script src="../assets/lib/datatables/datatables.net/js/jquery.dataTables.js" type="text/javascript"></script>
@@ -138,13 +109,13 @@
         <script src="../assets/lib/datatables/datatables.net-responsive/js/dataTables.responsive.min.js" type="text/javascript"></script>
         <script src="../assets/lib/datatables/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js" type="text/javascript"></script>
         <script type="text/javascript">
-                                                    $(document).ready(function () {
-                                                        //-initialize the javascript
-                                                      
-                                                        App.formElements();
-                                                    });
+                                                        $(document).ready(function () {
+                                                            //-initialize the javascript
+
+                                                            App.formElements();
+                                                        });
         </script>
 
     </body>
 </html>
-  
+
