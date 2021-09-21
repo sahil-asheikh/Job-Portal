@@ -1009,4 +1009,38 @@ public class EmployerModel {
         return employer;
     }
 
+    public boolean checkEmployerBalance(String eid) {
+        boolean avail = false;
+        con = JobPortalDb.connectDb();
+        sql = "select tblemployer.balance, tblemployerplan.response_deduction from tblemployer inner join tblemployerplan on tblemployer.employer_id = ?";
+
+        try {
+            cs = con.prepareCall(sql);
+            cs.setString(1, eid);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                if (rs.getInt(2) >= rs.getInt(1)) {
+                    avail = false;
+                } else {
+                    avail = true;
+                }
+                System.out.println("BAL: " + rs.getInt(1));
+                System.out.println("BAL: " + rs.getInt(2));
+                System.out.println("STAT: " + avail);
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+
+        return avail;
+    }
+
 }//Admin

@@ -58,68 +58,68 @@ public class Vacancy {
             switch (existance.doCheckExistanceOf(TABLENAME, null)) {
                 case "exist":
                     try {
-                        System.out.println(vacancy.getJobDescription());
-                        Utils util = new Utils();
+                    System.out.println(vacancy.getJobDescription());
+                    Utils util = new Utils();
 
-                        int balance = util.fetchBalance(vacancy.getEmployerId(), "tblemployer");
-                        System.out.println(balance);
-                        if (balance >= 50) {
-                            sql = "insert into tblvacancy ( "
-                                    + "vacancy_id,title, min_sal, max_sal, no_of_opening,"
-                                    + "job_in_state, job_in_city, job_in_area, job_address,"
-                                    + "job_description, min_qualification, experience, gender,"
-                                    + "english_accuracy, skill_set, job_timing, interview_details,"
-                                    + "company_name, contact_person, phone_no, email_id,Employer_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                            cs = con.prepareCall(sql);
-                            cs.setString(1, vacancy.getVacancyPublicId());
-                            cs.setString(2, vacancy.getTitle());
-                            cs.setInt(3, vacancy.getMinSalary());
-                            cs.setInt(4, vacancy.getMaxSalary());
-                            cs.setInt(5, vacancy.getNoOfOpening());
-                            cs.setString(6, vacancy.getJobState());
-                            cs.setString(7, vacancy.getJobCity());
-                            cs.setString(8, vacancy.getJobArea());
-                            cs.setString(9, vacancy.getJobAddress());
-                            cs.setString(10, vacancy.getJobDescription());
-                            cs.setString(11, vacancy.getMinQualification());
-                            cs.setString(12, vacancy.getExperience());
-                            cs.setString(13, vacancy.getGender());
-                            cs.setString(14, vacancy.getEnglishAccuracy());
-                            cs.setString(15, vacancy.getSkillSet());
-                            cs.setString(16, vacancy.getJobTiming());
-                            cs.setString(17, vacancy.getInterviewDetails());
-                            cs.setString(18, vacancy.getCompanyName());
-                            cs.setString(19, vacancy.getContactPerson());
-                            cs.setString(20, vacancy.getPhoneNo());
-                            cs.setString(21, vacancy.getEmailId());
-                            cs.setString(22, vacancy.getEmployerId());
-                            int rows = cs.executeUpdate();
-                            if (rows >= 1) {
-                                String sql1 = "call spEmployerJobPost(?,?,?)";
-                                cs = con.prepareCall(sql1);
-                                cs.setString(1, vacancy.getEmployerId());
-                                cs.setInt(2, 50);   // Deduction 50 rs
-                                cs.setInt(3, 1);    // Post new job
-                                cs.executeUpdate();
-                                message = "<span class=\"text-success font-bold\">Job Added </span>";
+                    int balance = util.fetchBalance(vacancy.getEmployerId(), "tblemployer");
+                    System.out.println(balance);
+                    if (balance >= 50) {
+                        sql = "insert into tblvacancy ( "
+                                + "vacancy_id,title, min_sal, max_sal, no_of_opening,"
+                                + "job_in_state, job_in_city, job_in_area, job_address,"
+                                + "job_description, min_qualification, experience, gender,"
+                                + "english_accuracy, skill_set, job_timing, interview_details,"
+                                + "company_name, contact_person, phone_no, email_id,Employer_id) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        cs = con.prepareCall(sql);
+                        cs.setString(1, vacancy.getVacancyPublicId());
+                        cs.setString(2, vacancy.getTitle());
+                        cs.setInt(3, vacancy.getMinSalary());
+                        cs.setInt(4, vacancy.getMaxSalary());
+                        cs.setInt(5, vacancy.getNoOfOpening());
+                        cs.setString(6, vacancy.getJobState());
+                        cs.setString(7, vacancy.getJobCity());
+                        cs.setString(8, vacancy.getJobArea());
+                        cs.setString(9, vacancy.getJobAddress());
+                        cs.setString(10, vacancy.getJobDescription());
+                        cs.setString(11, vacancy.getMinQualification());
+                        cs.setString(12, vacancy.getExperience());
+                        cs.setString(13, vacancy.getGender());
+                        cs.setString(14, vacancy.getEnglishAccuracy());
+                        cs.setString(15, vacancy.getSkillSet());
+                        cs.setString(16, vacancy.getJobTiming());
+                        cs.setString(17, vacancy.getInterviewDetails());
+                        cs.setString(18, vacancy.getCompanyName());
+                        cs.setString(19, vacancy.getContactPerson());
+                        cs.setString(20, vacancy.getPhoneNo());
+                        cs.setString(21, vacancy.getEmailId());
+                        cs.setString(22, vacancy.getEmployerId());
+                        int rows = cs.executeUpdate();
+                        if (rows >= 1) {
+                            String sql1 = "call spEmployerJobPost(?,?,?)";
+                            cs = con.prepareCall(sql1);
+                            cs.setString(1, vacancy.getEmployerId());
+                            cs.setInt(2, 50);   // Deduction 50 rs
+                            cs.setInt(3, 1);    // Post new job
+                            cs.executeUpdate();
+                            message = "<span class=\"text-success font-bold\">Job Added </span>";
 
-                            }
-                        } else {
-                            message = "<span class=\"text-danger font-bold\">Insuffient Balance </span>";
+                        }
+                    } else {
+                        message = "<span class=\"text-danger font-bold\">Insuffient Balance </span>";
 
+                    }
+                } catch (SQLException e) {
+                    message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
+                } finally {
+                    try {
+                        if (con != null) {
+                            con.close();
                         }
                     } catch (SQLException e) {
-                        message = "Unable to Add because of : " + e.getMessage() + " | At : " + this.getClass().getName();
-                    } finally {
-                        try {
-                            if (con != null) {
-                                con.close();
-                            }
-                        } catch (SQLException e) {
-                            message = e.getMessage();
-                        }
+                        message = e.getMessage();
                     }
-                    break;
+                }
+                break;
                 case "not_exist":
                     create();
                     break Task;
@@ -490,14 +490,28 @@ public class Vacancy {
         return vaccancyCount;
     }
 
-    public ArrayList<TblVacancy> searchByCategory(String category) {
+    public ArrayList<TblVacancy> searchByCategory(String category, int pg, int limit) {
         con = JobPortalDb.connectDb();
         ArrayList<TblVacancy> arrayList = new ArrayList<>();
+        int minLim = (pg - 1) * limit;
+        int maxLim = limit;
         try {
             System.out.println(category);
-            sql = "select * from " + TABLENAME + " where title like '" + category + "' ";
-            System.out.println(sql);
-            cs = con.prepareCall(sql);
+
+            if (category.equals("%allJobs%")) {
+                sql = "select * from " + TABLENAME + " limit ?, ? ";
+                cs = con.prepareCall(sql);
+                cs.setInt(1, minLim);
+                cs.setInt(2, maxLim);
+            } else {
+                sql = "select * from " + TABLENAME + " where title like ? limit ?, ?";
+                cs = con.prepareCall(sql);
+                cs.setString(1, category);
+                cs.setInt(2, minLim);
+                cs.setInt(3, maxLim);
+            }
+            System.out.println("SQL LIMIT: " + sql);
+
             rs = cs.executeQuery();
             while (rs.next()) {
                 arrayList.add(new TblVacancy(
@@ -546,6 +560,40 @@ public class Vacancy {
             }
         }
         return arrayList;
+    }
+
+    public float totalJobs(String category) {
+        con = JobPortalDb.connectDb();
+
+        float totalRecords = 0.0f;
+        System.out.println("CATEGORY: " + category);
+        try {
+            if (category.equals("allJobs")) {
+                sql = "select count(*) from " + TABLENAME;
+                cs = con.prepareCall(sql);
+            } else {
+                sql = "select count(*) from " + TABLENAME + " where title like ?";
+                cs = con.prepareCall(sql);
+                cs.setString(1, "%" + category + "%");
+            }
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                totalRecords = rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+
+            e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return totalRecords;
     }
 
     public ArrayList<TblVacancy> searchByCity(String jobCity) {
@@ -672,19 +720,19 @@ public class Vacancy {
         }
         return arrayList;
     }
-    
+
     public String jobVisibility(TblVacancy vacancy) {
         con = JobPortalDb.connectDb();
         try {
-                sql = "UPDATE tblvacancy SET job_status = ? WHERE vacancy_id = ?";
-                cs = con.prepareCall(sql);
-                cs.setInt(1, vacancy.getJobStatus());
-                cs.setString(2, vacancy.getVacancyPublicId());
-                int rows = cs.executeUpdate();
+            sql = "UPDATE tblvacancy SET job_status = ? WHERE vacancy_id = ?";
+            cs = con.prepareCall(sql);
+            cs.setInt(1, vacancy.getJobStatus());
+            cs.setString(2, vacancy.getVacancyPublicId());
+            int rows = cs.executeUpdate();
 
-                if (rows >= 1) {
-                    message = "Visibility has been changed";
-                }
+            if (rows >= 1) {
+                message = "Visibility has been changed";
+            }
         } catch (SQLException e) {
             message = "Unable to visibility because of : " + e.getMessage() + " | At : " + this.getClass().getName();
         } finally {

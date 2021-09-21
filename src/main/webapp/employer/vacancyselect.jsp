@@ -27,6 +27,8 @@
     </head>
     <body>
         <%
+            EmployerModel empMod = new EmployerModel();
+            boolean checkBalanceStatus = empMod.checkEmployerBalance(session.getAttribute("EmployerId").toString());
             Vacancy vacmod = new Vacancy();
             ArrayList<TblVacancy> vacc = vacmod.selectByEmployerId("" + session.getAttribute("EmployerId"));
         %>
@@ -100,8 +102,9 @@
                                                 <td>
                                                     <div class="btn-group btn-space">
                                                         <%
-                                                            int vidStatus = vacancy.getJobStatus();
-                                                            if (vidStatus == 1) {
+                                                            if (checkBalanceStatus) {
+                                                                int vidStatus = vacancy.getJobStatus();
+                                                                if (vidStatus == 1) {
                                                         %>
                                                         <div class="row align-middle">
                                                             <form action="../VacancyController" method="post">
@@ -160,6 +163,29 @@
                                                                 <p class="font-weight-bold text-justify">DEACTIVATED</p>
                                                             </div>
                                                         </span>
+                                                        <%
+                                                            }
+                                                        } else {
+                                                        %>
+                                                        <div class="row align-middle">
+                                                            <button class="btn btn-success btn-space" type="submit" name="action" value="visibility" disabled="">
+                                                                <div class="icon-sm">
+                                                                    <span class="mdi mdi-check" style="color: white"></span>
+                                                                </div>
+                                                            </button>
+
+                                                            <button class="btn btn-danger btn-space" type="submit" name="action" value="visibility" disabled="">
+                                                                <div class="icon-sm">
+                                                                    <span class="mdi mdi-close" style="color: white"></span>
+                                                                </div>
+                                                            </button>
+
+                                                            <span class="text-danger ">
+                                                                <div class="icon-sm">
+                                                                    <p class="font-weight-bold text-justify">INSUFFICIENT BALANCE</p>
+                                                                </div>
+                                                            </span>
+                                                        </div>
                                                         <%
                                                             }
                                                         %>

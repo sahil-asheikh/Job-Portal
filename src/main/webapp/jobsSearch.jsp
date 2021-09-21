@@ -4,6 +4,8 @@
     Author     : win8.1
 --%>
 
+<%@page import="com.qt.jobportal.commons.Utils"%>
+<%@page import="com.qt.jobportal.models.EmployerModel"%>
 <%@page import="com.qt.jobportal.beans.TblVacancy"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.qt.jobportal.models.Vacancy"%>
@@ -123,14 +125,16 @@
     <body>
 
         <%
+
+            int limit = Integer.parseInt(Utils.empty(request.getParameter("limit")) ? "20" : request.getParameter("limit"));
+            int pg = Integer.parseInt(Utils.empty(request.getParameter("pg")) ? "1" : request.getParameter("pg"));
+            String title = Utils.empty(request.getParameter("title")) ? "alljobs" : request.getParameter("title");
+
             Vacancy vacmod = new Vacancy();
-            ArrayList<TblVacancy> vacc = vacmod.select();
-
-            // TblVacancy vac = vacmod.searchByCity(request.getParameter("city"));
-
+            ArrayList<TblVacancy> vacc = vacmod.searchByCategory("%" + (title) + "%", pg, limit);
         %>
-        <div class="container">
 
+        <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
@@ -154,8 +158,8 @@
                                                                 <label>Location</label> 
                                                             </i>
                                                         </a>
-                                                        <%                                                        if (session.getAttribute("CandidateId") == "null" || session.getAttribute("CandidateId") == null) {
-                                                                //response.sendRedirect("../index.jsp?msg=Login Frist");
+                                                        <%
+                                                            if (session.getAttribute("CandidateId") == "null" || session.getAttribute("CandidateId") == null) {
                                                         %>
                                                         <a class="" href="candidateLogin.jsp">
                                                             <i class="icon mdi mdi-account-add" >
@@ -184,9 +188,7 @@
                                         </div>
                                     </form>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
 
@@ -195,7 +197,8 @@
                             <div class="col-lg-2">
                                 <div class="card categoryH">
                                     <div class="card-body ">
-                                        <a href="#" onclick="searchByCategory('Developer')">
+                                        <!--<a href="#" onclick="searchByCategory('Developer')">-->
+                                        <a href="jobsSearch.jsp?title=Developer&pg=1&limit=<%= limit%>">
                                             <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                                 <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-code pt-2 "></i></center></span>
                                                     <h4 class="text-center text-light"> <span class="text-dark">Developer</span></h4>
@@ -209,7 +212,8 @@
                             <div class="col-lg-2">
                                 <div class="card categoryH">
                                     <div class="card-body ">
-                                        <a href="#" onclick="searchByCategory('Technology')">
+                                        <!--<a href="#" onclick="searchByCategory('Technology')">-->
+                                        <a href="jobsSearch.jsp?title=Technology&pg=1&limit=<%= limit%>">
                                             <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                                 <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-laptop pt-2 "></i></center></span>
                                                     <h4 class="text-center text-light"><span class="text-dark">Technology</span></h4>
@@ -223,7 +227,8 @@
                             <div class="col-lg-2">
                                 <div class="card categoryH">
                                     <div class="card-body ">
-                                        <a href="#" onclick="searchByCategory('Marketing')">
+                                        <!--<a href="#" onclick="searchByCategory('Marketing')">-->
+                                        <a href="jobsSearch.jsp?title=Marketing&pg=1&limit=<%= limit%>">
                                             <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                                 <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-bar-chart pt-2 "></i></center></span>
                                                     <h4 class="text-center text-light"><span class="text-dark">Marketing</span></h4>
@@ -237,7 +242,8 @@
                             <div class="col-lg-2">
                                 <div class="card categoryH">
                                     <div class="card-body ">
-                                        <a href="#" onclick="searchByCategory('Medical')">
+                                        <!--<a href="#" onclick="searchByCategory('Medical')">-->
+                                        <a href="jobsSearch.jsp?title=Medical&pg=1&limit=<%= limit%>">
                                             <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                                 <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-medkit pt-2 "></i></center></span>
                                                     <h4 class="text-center text-light"><span class="text-dark">Medical</span></h4>
@@ -251,7 +257,8 @@
                             <div class="col-lg-2">
                                 <div class="card categoryH">
                                     <div class="card-body ">
-                                        <a href="#" onclick="searchByCategory('Government')">
+                                        <!--<a href="#" onclick="searchByCategory('Government')">-->
+                                        <a href="jobsSearch.jsp?title=Government&pg=1&limit=<%= limit%>">
                                             <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                                 <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-university pt-2 "></i></center></span>
                                                     <h4 class="text-center text-light"><span class="text-dark">Government</span></h4>
@@ -265,7 +272,8 @@
                             <div class="col-lg-2">
                                 <div class="card categoryH">
                                     <div class="card-body ">
-                                        <a href="jobsSearch.jsp">
+                                        <!--<a href="#" onclick="searchByCategory('')">-->
+                                        <a href="jobsSearch.jsp?title=allJobs&pg=1&limit=<%= limit%>">
                                             <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                                 <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-th-large pt-2 "></i></center></span>
                                                     <h4 class="text-center text-light"><span class="text-dark">All Jobs</span></h4>
@@ -277,111 +285,121 @@
                                 </div>
                             </div>
                         </div>
-
                     </section>
 
                     <div id="dyamicJobs">
                         <div class="row">
-
-
                             <%  for (TblVacancy vacancy : vacc) {
                                     if (vacancy.getSerialNo() == -1 || vacancy.getSerialNo() == 0) {
                             %>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="card card-border-color card-border-color-primary">
-                                    <a href="jobDetails.jsp"> <div class="card-body">
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <span class="splash-title pb-4"><%= vacancy.getException()%></span>
-                                                </div>
-                                                <table class="table table-sm table-hover table-striped">
-
-                                                    <tbody>
-                                                    <input type="hidden" name="id" value="<%= vacancy.getId()%>">
-
-                                                    <tr>
-                                                        <td><div class="icon"><span class="mdi mdi-case mt-2" ><%= vacancy.getException()%></span></div></td>
-                                                        <td><div class="icon"><span class="mdi mdi-pin mt-2 "> <%= vacancy.getException()%> </span></div></td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td><div><i class="fa fa-building mt-2" style="font-size: 15px"><span>  <%= vacancy.getException()%>  </span></i></div></td>
-                                                        <td ><div> <i class="fa fa-rupee mt-2 " style="font-size:15px"><span>  <%= vacancy.getException()%>  </span></i></div></td>
-
-                                                    </tr>
-                                                    <tr>
-                                                        <td><div class="icon"><span class="mdi mdi-graduation-cap mt-2">  <%= vacancy.getException()%>  </span></div></td>
-                                                        <td> <div class="icon"><span class="mdi mdi-translate mt-2 mr-1"> <%= vacancy.getException()%> </span></div></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td><div><i class="fa fa-list-alt mt-2" style="font-size: 15px"><span>  <%= vacancy.getException()%>  </span></i></div></td>
-                                                        <td></td>
-                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-
-                                            </div>
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <span class="splash-title font-weight-bold"><%= vacancy.getException()%></span>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
-                            <%
-                            } else {
-                            %>
-                            <div class="col-lg-6">
-                                <div class="card card-border-color card-border-color-primary">
-                                    <!--<input type="hidden" name="id" value="<%= vacancy.getId()%>">-->
-
-                                    <a href="jobDetails.jsp?id=<%= vacancy.getVacancyPublicId()%> "><div class="card-body">
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <span class="splash-title pb-4"><%= vacancy.getTitle()%></span>
-                                                </div>
-                                                <table class="table table-sm table-hover table-striped">
-
-                                                    <tbody>
-
-                                                        <tr>
-                                                            <td><div><h3><small><i class="fa fa-building mt-2"></i> <%= vacancy.getCompanyName()%></small></h3></div></td>
-                                                            <td <div><h3><small><i class="mdi mdi-pin mt-2 "> </i><%= vacancy.getJobCity()%></small></h3></div></td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div><h3><small> <i class="fa fa-list-alt mt-2 "> </i><%= vacancy.getExperience()%></small></h3></div></td>
-                                                            <td><div><h3><small> <i class="fa fa-rupee mt-2 "> </i><%= vacancy.getMinSalary()%>-<%= vacancy.getMaxSalary()%></small></h3></div></td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td><div><h3><small><i class="mdi mdi-graduation-cap mt-2"></i> <%= vacancy.getMinQualification()%></small></h3></div></td>
-                                                            <td> <div><h3><small><i class="mdi mdi-translate mt-2 mr-1"></i> <%= vacancy.getEnglishAccuracy()%></small></h3></div></td>
-                                                        </tr>
-                                                        <tr>
-
-                                                            <td colspan="2">  <div><h3><small><i class="mdi mdi-case mt-2"> </i> <%= vacancy.getJobDescription()%></small></h3></div></td>
-
-                                                        </tr>
-
-                                                    </tbody>
-                                                </table>
-
+                        </div>
+                        <%
+                        } else {
+                            EmployerModel empMod = new EmployerModel();
+                            boolean checkBalanceStatus = empMod.checkEmployerBalance(vacancy.getEmployerId());
+                            if (checkBalanceStatus) {
+                        %>
+                        <div class="col-lg-6">
+                            <div class="card card-border-color card-border-color-primary">
+                                <a href="jobDetails.jsp?id=<%= vacancy.getVacancyPublicId()%> "><div class="card-body">
+                                        <div class="form-group row">
+                                            <div class="col-12">
+                                                <span class="splash-title pb-4"><%= vacancy.getTitle()%></span>
                                             </div>
-                                        </div></a>
-                                </div>
+                                            <table class="table table-sm table-hover table-striped">
+                                                <tbody>
 
+                                                    <tr>
+                                                        <td><div><h3><small><i class="fa fa-building mt-2"></i> <%= vacancy.getCompanyName()%></small></h3></div></td>
+                                                        <td <div><h3><small><i class="mdi mdi-pin mt-2 "> </i><%= vacancy.getJobCity()%></small></h3></div></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><div><h3><small> <i class="fa fa-list-alt mt-2 "> </i><%= vacancy.getExperience()%></small></h3></div></td>
+                                                        <td><div><h3><small> <i class="fa fa-rupee mt-2 "> </i><%= vacancy.getMinSalary()%>-<%= vacancy.getMaxSalary()%></small></h3></div></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><div><h3><small><i class="mdi mdi-graduation-cap mt-2"></i> <%= vacancy.getMinQualification()%></small></h3></div></td>
+                                                        <td> <div><h3><small><i class="mdi mdi-translate mt-2 mr-1"></i> <%= vacancy.getEnglishAccuracy()%></small></h3></div></td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td colspan="2">  <div><h3><small><i class="mdi mdi-case mt-2"> </i> <%= vacancy.getJobDescription()%></small></h3></div></td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-
-
-                            <%
+                        </div>
+                        <%
                                     }
                                 }
-                            %> 
-
-
-
-
-                        </div>
+                            }
+                        %>
                     </div>
+                    <%
+                        float totalPage_fl = vacmod.totalJobs(title) / limit;
+                        int totalPage = Math.round(totalPage_fl);
+                        if (totalPage_fl > totalPage) {
+                            totalPage++;
+                        }
+                        if (totalPage != 0) {
+                    %>
+                    <nav aria-label="...">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a style="pointer-events: <%= pg == 0 || pg == 1 ? "none" : ""%>;" class="page-link <%= pg == 0 || pg == 1 ? "text-secondary" : ""%>" href="jobsSearch.jsp?title=<%= title%>&pg=<%= pg - 1%>&limit=<%= limit%>" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <%
+                                for (int i = 1; i <= totalPage; i++) {
+                            %>
+                            <li class="page-item">
+                                <%
+                                    if (i == pg) {
+                                %>
+                                <a class="page-link text-light bg-primary" href="jobsSearch.jsp?title=<%= title%>&pg=<%= i%>&limit=<%= limit%>"><%= i%></a>
+                                <%
+                                } else {
+                                %>
+                                <a class="page-link" href="jobsSearch.jsp?title=<%= title%>&pg=<%= i%>&limit=<%= limit%>"><%= i%></a>
+                                <%
+                                    }
+                                %>
+                            </li>
+                            <%
+                                }
+                            %>
+                            <li class="page-item">
+                                <a style="pointer-events: <%= pg == totalPage ? "none" : ""%>; " class="page-link" href="jobsSearch.jsp?title=<%= title%>&pg=<%= pg + 1%>&limit=<%= limit%>">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <%
+                    } else {
+                    %>
+                    <nav aria-label="...">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                            <li class="page-item disabled"><span class="page-link">Next</span></li>
+                        </ul>
+                    </nav>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
         </div>
@@ -443,7 +461,6 @@
                 <div class="modal-header">
                     <button class="close modal-close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
                 </div>
-
                 <form>
                     <div class="row">
                         <div class="col-sm-6 offset-3">
@@ -454,14 +471,10 @@
                             <center><button class="btn btn-primary btn-space modal-close" type="button" data-dismiss="modal">Submit</button></center>
                         </div>
                     </div>
-
                 </form>
-
-
             </div>
         </div>
         <div class="modal-footer"></div>
-
 
         <div class="modal-overlay"></div>
         <div class="modal-container modal-effect-4" id="md-flipVLOCATION">
@@ -476,49 +489,44 @@
                         <div class="col-sm-6 offset-3">
                             <select class=" form-control"  onchange="print_city('state', this.selectedIndex);" id="sts" name ="txtState" required >
                             </select>
-
                             <br>
                             <select id ="state" class="form-control" name="txtCity" required></select>
                             <br>
                             <center><button class="btn btn-primary btn-space modal-close" type="button" data-dismiss="modal">Submit</button></center>
                         </div>
-
-
+                    </div>
                 </form>
-
             </div>
         </div>
-    </div>
-    <div class="modal-footer"></div>
+        <div class="modal-footer"></div>
 
 
-    <div class="modal-overlay"></div>
-</div> 
-<!--footer start here-->
-<%@include file="footer.jsp" %>
-<!--footer Wrapper End -->
+        <div class="modal-overlay"></div>
+        <!--footer start here-->
+        <%@include file="footer.jsp" %>
+        <!--footer Wrapper End -->
 
-<script language="javascript">print_state("sts");</script>
+        <script language="javascript">print_state("sts");</script>
 
 
-<script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
-<script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
-<script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
-<script src="assets/js/app.js" type="text/javascript"></script>
-<script src="assets/lib/jquery.niftymodals/js/jquery.niftymodals.js" type="text/javascript"></script>
-<script type="text/javascript">
-    $.fn.niftyModal('setDefaults', {
-        overlaySelector: '.modal-overlay',
-        contentSelector: '.modal-content',
-        closeSelector: '.modal-close',
-        classAddAfterOpen: 'modal-show'
-    });
+        <script src="assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
+        <script src="assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="assets/js/app.js" type="text/javascript"></script>
+        <script src="assets/lib/jquery.niftymodals/js/jquery.niftymodals.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $.fn.niftyModal('setDefaults', {
+                overlaySelector: '.modal-overlay',
+                contentSelector: '.modal-content',
+                closeSelector: '.modal-close',
+                classAddAfterOpen: 'modal-show'
+            });
 
-    $(document).ready(function () {
-        //-initialize the javascript
-        App.init();
-    });
-</script>
+            $(document).ready(function () {
+                //-initialize the javascript
+                App.init();
+            });
+        </script>
 
-</body>
+    </body>
 </html>

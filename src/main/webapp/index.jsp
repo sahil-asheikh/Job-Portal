@@ -27,7 +27,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <link rel="shortcut icon" href="assets/img/logo-fav.png">
-        <title>Job Protal</title>
+        <title>Job Portal</title>
         <link rel="stylesheet" type="text/css" href="assets/lib/perfect-scrollbar/css/perfect-scrollbar.css"/>
         <link rel="stylesheet" type="text/css" href="assets/lib/material-design-icons/css/material-design-iconic-font.min.css"/>
         <link rel="stylesheet" href="assets/css/app.css" type="text/css"/>
@@ -153,15 +153,13 @@
                     <div class="col-lg-12">
                         <div class="tab-container">
                             <div class="container card mt-3 p-2">
-                            <div class="row">
-                                <div class="col-6">
-                                    <a href="candidateLogin.jsp" class="btn btn-lg btn-block btn-info mt-3 mb-3 text-light">Candidate Login</a>
-                                     <i class="fa fa-user"></i>New Candidate :
-                                     <a href="candidate/candidateSignUp.jsp" > Registration</a> 
-
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="candidateLogin.jsp" class="btn btn-lg btn-block btn-info mt-3 mb-3 text-light">Candidate Login</a>
+                                        <i class="fa fa-user"></i>New Candidate :
+                                        <a href="#candidatePlan">Candidate Subscription</a>
                                     </div>
                                     <div class="col-6">
-
                                         <a href="employerLogin.jsp" class="btn btn-lg btn-block btn-info mt-3 mb-3 text-light">Employer Login</a>
                                         <i class="fa fa-building"></i> New Company :
                                         <a href="#companyPlan">Employer Subscription</a>
@@ -178,7 +176,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=Developer" onclick="searchByCategory('Developer')">
+                                <a href="jobsSearch.jsp?title=Developer&pg=1&limit=20" onclick="searchByCategory('Developer')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-code pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"> <span class="text-dark">Developer</span></h4>
@@ -192,7 +190,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp" onclick="searchByCategory('Technology')">
+                                <a href="jobsSearch.jsp?title=Technology&pg=1&limit=20" onclick="searchByCategory('Technology')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-laptop pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Technology</span></h4>
@@ -206,7 +204,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp" onclick="searchByCategory('Marketing')">
+                                <a href="jobsSearch.jsp?title=Marketing&pg=1&limit=20" onclick="searchByCategory('Marketing')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-bar-chart pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Marketing</span></h4>
@@ -220,7 +218,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp" onclick="searchByCategory('Medical')">
+                                <a href="jobsSearch.jsp?title=Medical&pg=1&limit=20" onclick="searchByCategory('Medical')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-medkit pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Medical</span></h4>
@@ -234,7 +232,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp" onclick="searchByCategory('Government')">
+                                <a href="jobsSearch.jsp?title=Government&pg=1&limit=20" onclick="searchByCategory('Government')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-university pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Government</span></h4>
@@ -248,7 +246,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp">
+                                <a href="jobsSearch.jsp?title=allJobs&pg=1&limit=20" onclick="searchByCategory('')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-th-large pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">All Jobs</span></h4>
@@ -261,8 +259,6 @@
                     </div>
                 </div>
             </section>
-            <!--Jobs card start here-->
-            <!--Jobs card ends here-->
 
             <!-- counter jobs,company,candidates,members-->
             <section>
@@ -447,51 +443,51 @@
         <div class="container">
             <div class="card">
                 <div class="card-body">
-                        <form action="NotifyController" method="post">
-                            <div class="row" id="notify">
-                                <div class="col-sm-1">
-                                    <i class="fa fa-bell p-2" style="font-size:30px"></i>
-                                </div>
-                                <div class="col-sm-11  pt-2 pb-2">
-                                    <a href="#" class="text-dark">Get Jobs Notifications
-                                        Free Subscribe Our Newsletter Now</a> <span>${param.message}</span>
+                    <form action="NotifyController" method="post">
+                        <div class="row" id="notify">
+                            <div class="col-sm-1">
+                                <i class="fa fa-bell p-2" style="font-size:30px"></i>
+                            </div>
+                            <div class="col-sm-11  pt-2 pb-2">
+                                <a href="#" class="text-dark">Get Jobs Notifications
+                                    Free Subscribe Our Newsletter Now</a> <span>${param.message}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+
+                                <div class="form-group">
+                                    <input type="hidden" name="action" value="insert" >
+                                    <input type="text"  name="txtName" class="form-control mt-3" id="comment" placeholder="Enter Your Name" required="">
                                 </div>
                             </div>
-                               <div class="row">
-                                <div class="col-sm-3">
-                                    
-                                        <div class="form-group">
-                                            <input type="hidden" name="action" value="insert" >
-                                            <input type="text"  name="txtName" class="form-control mt-3" id="comment" placeholder="Enter Your Name" required="">
-                                        </div>
+                            <div class="col-sm-3">
+
+                                <div class="form-group">
+                                    <input type="email" name="txtEmail" class="form-control mt-3" id="comment" placeholder="Enter Your Email" required="">
                                 </div>
-                                <div class="col-sm-3">
-                                   
-                                        <div class="form-group">
-                                            <input type="email" name="txtEmail" class="form-control mt-3" id="comment" placeholder="Enter Your Email" required="">
-                                        </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group row pt-1 mt-2 ml-1">
+                                    <select class="form-control" name="sltCategory" required="">
+                                        <option disabled>Select your Category</option>
+                                        <option value="All Jobs">All jobs</option>
+                                        <option value="Developer">Developer</option>
+                                        <option value="Technology">Technology</option>
+                                        <option value="Marketing">Marketing</option>
+                                        <option value="Government">Government</option>
+                                        <option value="Medical">Medical</option>
+                                    </select>
                                 </div>
-                                <div class="col-sm-3">
-                                            <div class="form-group row pt-1 mt-2 ml-1">
-                                                <select class="form-control" name="sltCategory" required="">
-                                                        <option disabled>Select your Category</option>
-                                                        <option value="All Jobs">All jobs</option>
-                                                        <option value="Developer">Developer</option>
-                                                        <option value="Technology">Technology</option>
-                                                        <option value="Marketing">Marketing</option>
-                                                        <option value="Government">Government</option>
-                                                        <option value="Medical">Medical</option>
-                                                    </select>
-                                            </div>
-                                </div>
-                        <div class="col-sm-3">
-                            <input class="btn btn-lg btn-primary btn-block mt-3" type="submit" value="Notify Me">
-                        </div>
-                           </div>  
-                       </form>
-                     </div>
-               </div>
-                    </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="btn btn-lg btn-primary btn-block mt-3" type="submit" value="Notify Me">
+                            </div>
+                        </div>  
+                    </form>
+                </div>
+            </div>
+        </div>
         <!--footer start here-->
         <%@include file="footer.jsp" %>
         <!--footer Wrapper End -->
