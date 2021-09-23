@@ -65,44 +65,59 @@ public class Utils {
         return generatedRandomString(length);
     }
 
-    // 
-    public int fetchBalance(String id, String TABLENAME) {
-        int balance = 0;
-        con = JobPortalDb.connectDb();
-        try {
-
-            sql = "select balance from " + TABLENAME + " where employer_id = ?";
-            cs = con.prepareCall(sql);
-            cs.setString(1, id);
-            rs = cs.executeQuery();
-            while (rs.next()) {
-                balance = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("bal : " + balance);
-        return balance;
-    }
-
-    public int fetchBalanceCand(String id, String TABLENAME) {
-        int balance = 0;
-        con = JobPortalDb.connectDb();
-        try {
-
-            sql = "select balance from " + TABLENAME + " where candidate_id = ?";
-
-            cs = con.prepareCall(sql);
-            cs.setString(1, id);
-            rs = cs.executeQuery();
-            while (rs.next()) {
-                balance = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        System.out.println("bal : " + balance);
-        return balance;
-    }
+//    public int fetchBalance1(String id, String TABLENAME) {
+//        int balance = 0;
+//        con = JobPortalDb.connectDb();
+//        try {
+//
+//            sql = "select balance from " + TABLENAME + " where employer_id = ?";
+//            cs = con.prepareCall(sql);
+//            cs.setString(1, id);
+//            rs = cs.executeQuery();
+//            while (rs.next()) {
+//                balance = rs.getInt(1);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//        System.out.println("bal : " + balance);
+//        return balance;
+//    }
+//
+//    public int fetchBalanceCand1(String id, String TABLENAME) {
+//        int balance = 0;
+//        con = JobPortalDb.connectDb();
+//        try {
+//
+//            sql = "select balance from " + TABLENAME + " where candidate_id = ?";
+//
+//            cs = con.prepareCall(sql);
+//            cs.setString(1, id);
+//            rs = cs.executeQuery();
+//            while (rs.next()) {
+//                balance = rs.getInt(1);
+//            }
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        } finally {
+//            try {
+//                if (con != null) {
+//                    con.close();
+//                }
+//            } catch (SQLException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//        System.out.println("bal : " + balance);
+//        return balance;
+//    }
 
 }

@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -230,27 +231,34 @@ public class CandidateController extends HttpServlet {
     private void candidateLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         beans.setPhone_No(request.getParameter("txtPhoneNo"));
         beans.setPassword(request.getParameter("txtPassword"));
-        int status = model.doLogin(beans, request);
-        switch (status) {
-            case -1:
-                msg = "Please Register Yourself";
-                break;
-            case 0:
-                msg = "You are Blocked! Please Contact to admin";
-                break;
-            case 1:
-                msg = "Login Successfully";
-                break;
-            case 2:
-                msg = "You have Entered wrong password";
-                break;
+
+        int checkCandDelete = model.checkCandDeletePhone(request.getParameter("txtPhoneNo"));
+        
+        if (checkCandDelete == 0) {
+            msg = "Account not found";
+        } else {
+            int status = model.doLogin(beans, request);
+            switch (status) {
+                case -1:
+                    msg = "Please Register Yourself";
+                    break;
+                case 0:
+                    msg = "You are Blocked! Please Contact to admin";
+                    break;
+                case 1:
+                    msg = "Login Successfully";
+                    break;
+                case 2:
+                    msg = "You have Entered wrong password";
+                    break;
+            }
         }
+
         String pageName = request.getParameter("page");
         if (pageName == null) {
             response.sendRedirect("candidateLogin.jsp?msg=" + msg);
         } else {
-            response.sendRedirect(pageName + "?msg=" + msg);
-
+            response.sendRedirect(pageName + "?msg=" + msg);    
         }
     }
 
@@ -362,9 +370,8 @@ public class CandidateController extends HttpServlet {
             } else {
                 msg = "Please upload File";
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while saving your resume";
+        } catch (IOException | ServletException e) {
+            msg = "an error occurred while saving your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("CandidateId") + "&message=" + msg);
         }
@@ -407,8 +414,7 @@ public class CandidateController extends HttpServlet {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while deleting your resume";
+            msg = "an error occurred while deleting your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("CandidateId") + "&message=" + msg);
         }
@@ -488,9 +494,8 @@ public class CandidateController extends HttpServlet {
                 msg = "Something went wrong Check";
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while deleting your resume";
+        } catch (IOException | ServletException e) {
+            msg = "an error occurred while deleting your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("CandidateId") + "&message=" + msg);
         }
@@ -517,23 +522,6 @@ public class CandidateController extends HttpServlet {
         String start_date = LocalDate.now().toString();
         String end_date = LocalDate.now().plusDays(Integer.parseInt(validity_in_days)).toString();
 
-//        switch (validity_in_days) {
-//            case "3 month":
-//                end_date = LocalDate.now().plusMonths(3).toString();
-//                break;
-//            case "4 month":
-//                end_date = LocalDate.now().plusMonths(4).toString();
-//                break;
-//            case "6 month":
-//                end_date = LocalDate.now().plusMonths(6).toString();
-//                break;
-//            case "12 month":
-//                end_date = LocalDate.now().plusMonths(12).toString();
-//                break;
-//            default:
-//                end_date = "00-00-0000";
-//                break;
-//        }
         int per_apply_deduction = subscriptionCandidate.getPerApplyDeduction();
         String plan_suggestion = subscriptionCandidate.getPlanSuggestion();
 
@@ -579,8 +567,7 @@ public class CandidateController extends HttpServlet {
             msg = candidateModal.insertSummary(candidate);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while deleting your resume";
+            msg = "an error occurred while deleting your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
         }
@@ -603,8 +590,7 @@ public class CandidateController extends HttpServlet {
             msg = candidateModal.updateJobRole(candidate);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while deleting your resume";
+            msg = "an error occurred while deleting your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
         }
@@ -629,8 +615,7 @@ public class CandidateController extends HttpServlet {
             msg = candidateModal.updateEduDetails(candidate);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while deleting your resume";
+            msg = "an error occurred while deleting your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
         }
@@ -655,8 +640,7 @@ public class CandidateController extends HttpServlet {
             msg = candidateModal.updateExperinceDetails(candidate);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred while deleting your resume";
+            msg = "an error occurred while deleting your resume::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
         }
@@ -682,9 +666,8 @@ public class CandidateController extends HttpServlet {
             candidate.setSkillSet(skill);
             candidate.setCandPublicId(cid);
             msg = CandidateModel.updateSkills(candidate);
-        } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred";
+        } catch (SQLException e) {
+            msg = "an error occurred::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
         }
@@ -694,7 +677,7 @@ public class CandidateController extends HttpServlet {
     private void savePersonalDetails(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String cid = request.getParameter("id");
-        int age = Integer.parseInt(request.getParameter("age").toString());
+        int age = Integer.parseInt(request.getParameter("age"));
         String gender = request.getParameter("gender");
         String state = request.getParameter("txtState");
         String city = request.getParameter("txtCity");
@@ -716,8 +699,7 @@ public class CandidateController extends HttpServlet {
             msg = candidateModel.updatePersonalDetails(candidate);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            msg = "an error occurred";
+            msg = "an error occurred::" + e.getMessage();
         } finally {
             response.sendRedirect("candidate/profile.jsp?id=" + request.getParameter("id") + "&message=" + msg);
         }

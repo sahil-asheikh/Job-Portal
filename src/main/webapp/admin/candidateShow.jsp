@@ -81,16 +81,22 @@
                                         </thead>
                                         <tbody>
                                             <%   for (TblCandidate candidateBean : candidate) {
-                                                    if (candidateBean.getSerialNo() == -1) {
+                                                    if (candidateBean.getAuthentication() == -1) {
                                             %>
                                             <tr>
-                                                <td colspan="13"><%= candidateBean.getException()%></td>
+                                                <!--<td colspan="13"><%= candidateBean.getException()%></td>-->
                                             </tr>
                                             <%
-                                            } else if (candidateBean.getSerialNo() == 0) {
+                                            } else if (candidateBean.getAuthentication() == 0) {
                                             %>
                                             <tr>
-                                                <td colspan="13"><%= candidateBean.getException()%></td>
+                                                <!--<td colspan="13"><%= candidateBean.getException()%></td>-->
+                                            </tr>
+                                            <%
+                                            } else if (candMol.checkCandDelete(candidateBean.getCandPublicId()) == 0) {
+                                            %>
+                                            <tr>
+                                                <!--<td colspan="13"><%= candidateBean.getException()%></td>-->
                                             </tr>
                                             <%
                                             } else {
@@ -125,7 +131,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group btn-space">
-                                                        <a class="btn btn-secondary btn-sm btn-primary mr-1"  href="#" data-toggle="modal" data-target="#exampleModal" onclick="candidateViewDetails('<%= candidateBean.getCandPublicId() %>')">
+                                                        <a class="btn btn-secondary btn-sm btn-primary mr-1"  href="#" data-toggle="modal" data-target="#exampleModal" onclick="candidateViewDetails('<%= candidateBean.getCandPublicId()%>')">
                                                         <!--<a class="btn btn-secondary btn-sm btn-primary mr-1"  href="candidateView.jsp?cid=<%= candidateBean.getCandPublicId()%>">-->
                                                             <div class="icon-sm">
                                                                 <span class="mdi mdi-eye"></span>

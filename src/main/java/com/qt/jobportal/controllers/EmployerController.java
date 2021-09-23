@@ -135,7 +135,7 @@ public class EmployerController extends HttpServlet {
     }
 
     protected void employerDelete(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        if (request.getParameter("eid") == null || request.getParameter("eid").equals("")) {
+        if (request.getParameter("eid") == null || request.getParameter("eid").equals("") || "".equals(request.getParameter("eid"))) {
             msg = "Id should not be empty!";
         } else {
             employer.setCompanyPublicId(request.getParameter("eid"));
@@ -147,22 +147,26 @@ public class EmployerController extends HttpServlet {
     private void employerLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
         employer.setPhoneNo(request.getParameter("txtPhoneNo"));
         employer.setPassword(request.getParameter("txtPassword"));
-        int status = em.doLogin(employer, request);
+        int checkCandDelete = em.checkEmployerDeletePhone(request.getParameter("txtPhoneNo"));
 
-        switch (status) {
-            case -1:
-                msg = "please register yourself";
-                break;
-            case 0:
-                msg = "You are blocked ! Please contact to admin";
-                break;
-            case 1:
-                msg = "Login Succesfully";
-                break;
-            case 2:
-                msg = "You have entered wrong password";
-                break;
-
+        if (checkCandDelete == 0) {
+            msg = "Account not found";
+        } else {
+            int status = em.doLogin(employer, request);
+            switch (status) {
+                case -1:
+                    msg = "please register yourself";
+                    break;
+                case 0:
+                    msg = "You are blocked ! Please contact to admin";
+                    break;
+                case 1:
+                    msg = "Login Succesfully";
+                    break;
+                case 2:
+                    msg = "You have entered wrong password";
+                    break;
+            }
         }
         response.sendRedirect("employerLogin.jsp?msg=" + msg);
     }

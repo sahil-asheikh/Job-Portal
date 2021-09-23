@@ -28,7 +28,6 @@ public class AdminController extends HttpServlet {
             case "updatePassword":
                 updatePassword(request, response);
                 break;
-
             case "login":
                 adminLogin(request, response);
                 break;

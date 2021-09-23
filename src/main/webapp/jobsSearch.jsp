@@ -125,10 +125,9 @@
     <body>
 
         <%
-
-            int limit = Integer.parseInt(Utils.empty(request.getParameter("limit")) ? "20" : request.getParameter("limit"));
+            int limit = Integer.parseInt(Utils.empty(request.getParameter("limit")) ? "10" : request.getParameter("limit"));
             int pg = Integer.parseInt(Utils.empty(request.getParameter("pg")) ? "1" : request.getParameter("pg"));
-            String title = Utils.empty(request.getParameter("title")) ? "alljobs" : request.getParameter("title");
+            String title = Utils.empty(request.getParameter("title")) ? "allJobs" : request.getParameter("title");
 
             Vacancy vacmod = new Vacancy();
             ArrayList<TblVacancy> vacc = vacmod.searchByCategory("%" + (title) + "%", pg, limit);

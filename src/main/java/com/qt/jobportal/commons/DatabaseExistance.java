@@ -50,7 +50,7 @@ public class DatabaseExistance {
     }
 
     public static void main(String[] args) {
-        DatabaseExistance existance = new DatabaseExistance();
-        System.out.println(existance.doCheckExistanceOf("tblkeys", null));
+//        DatabaseExistance existance = new DatabaseExistance();
+//        System.out.println(existance.doCheckExistanceOf("tblkeys", null));
     }
 }

@@ -34,7 +34,7 @@ public class TblAdmin {
 
     }
 
-    public TblAdmin(int serialNo, int id,String admin_id, String name, String phoneNo, String emailId, String password, int authentication, int attempts, String createdAt, String modifiedAt) {
+    public TblAdmin(int serialNo, int id, String admin_id, String name, String phoneNo, String emailId, String password, int authentication, int attempts, String createdAt, String modifiedAt) {
         this.serialNo = serialNo;
         this.id = id;
         this.admin_id = admin_id;

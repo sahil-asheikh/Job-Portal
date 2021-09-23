@@ -1,6 +1,5 @@
 package com.qt.jobportal.models;
 
-import com.google.protobuf.Method;
 import com.qt.jobportal.beans.TblAdmin;
 import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.JobPortalDb;
@@ -9,7 +8,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 

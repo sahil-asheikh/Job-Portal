@@ -26,8 +26,8 @@ public class JobPortalDb {
             + "maxPoolSize=10&"
             + "idleConnectionTestPeriod=3600&"
             + "testConnectionOnCheckIn=true";
-      private static final String LOCAL_DB_USER = "jp-manager";
-      private static final String LOCAL_DB_PASS = "Job@1234";
+    private static final String LOCAL_DB_USER = "jp-manager";
+    private static final String LOCAL_DB_PASS = "Job@1234";
 //    private static final String LOCAL_DB_USER = "root";
 //    private static final String LOCAL_DB_PASS = "admin";
 
@@ -45,7 +45,7 @@ public class JobPortalDb {
     }
 
     public static void main(String[] args) throws SQLException {
-        connectDb();
+//        connectDb();
     }
 
 }

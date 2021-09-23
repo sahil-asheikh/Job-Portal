@@ -636,14 +636,14 @@ public class JobActivity {
                 message = "Error while deleting activity...";
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             message = e.getMessage();
         } finally {
             try {
                 if (con != null) {
                     con.close();
                 }
-            } catch (Exception e) {
+                } catch (SQLException e) {
                 message = e.getMessage();
             }
         }

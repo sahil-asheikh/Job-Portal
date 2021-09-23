@@ -170,7 +170,6 @@ public class CandidateModel {
             } catch (SQLException e) {
                 message = e.getMessage();
             }
-
         }
         return message;
     }
@@ -178,7 +177,8 @@ public class CandidateModel {
     public String delete(TblCandidate bn) {
         con = JobPortalDb.connectDb();
         try {
-            sql = "delete from " + TABLENAME + " where candidate_id = ?";
+//            sql = "delete from " + TABLENAME + " where candidate_id = ?";
+            sql = "UPDATE tblcandidate SET is_delete = 0 where candidate_id = ?";
             cs = con.prepareCall(sql);
             cs.setString(1, bn.getCandPublicId());
             int rows = cs.executeUpdate();
@@ -197,6 +197,55 @@ public class CandidateModel {
             }
         }
         return message;
+    }
+
+    public int checkCandDelete(String cid) {
+        con = JobPortalDb.connectDb();
+        sql = "select is_delete from tblcandidate where candidate_id = ?";
+        int check = 0;
+        try {
+            cs = con.prepareCall(sql);
+            cs.setString(1, cid);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                check = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return check;
+    }
+
+    public int checkCandDeletePhone(String phone) {
+        con = JobPortalDb.connectDb();
+        sql = "select is_delete from tblcandidate where phone_no = '" + phone + "'";
+        int check = 0;
+        try {
+            cs = con.prepareCall(sql);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                check = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return check;
     }
 
     public ArrayList<TblCandidate> select() {
@@ -1367,7 +1416,7 @@ public class CandidateModel {
             ps.setString(1, fileName);
             ps.setString(2, userPublicId);
             stat = ps.executeUpdate();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -1402,10 +1451,10 @@ public class CandidateModel {
                 if (con != null) {
                     con.close();
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return status;
@@ -1692,7 +1741,7 @@ public class CandidateModel {
                 msg = "Skills are not saved becaues of some internal problem";
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             try {
@@ -1761,6 +1810,60 @@ public class CandidateModel {
             }
         }
         return status;
+    }
+
+    public int fetchBalanceCand(String id, String TABLENAME) {
+        int balance = 0;
+        con = JobPortalDb.connectDb();
+        try {
+
+            sql = "select balance from " + TABLENAME + " where candidate_id = ?";
+
+            cs = con.prepareCall(sql);
+            cs.setString(1, id);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                balance = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        System.out.println("bal : " + balance);
+        return balance;
+    }
+
+    public boolean checkCandidateData(String cid) {
+        boolean avail = false;
+        con = JobPortalDb.connectDb();
+        sql = "SELECT candidate_id FROM tblcandidate where candidate_id = ?";
+        try {
+            cs = con.prepareCall(sql);
+            cs.setString(1, cid);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                avail = true;
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+
+        return avail;
     }
 
 }

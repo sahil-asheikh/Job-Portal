@@ -105,9 +105,10 @@ public class EmployerModel {
     public String delete(TblEmployer employer) {
         con = JobPortalDb.connectDb();
         try {
-            sql = "delete from " + TABLENAME + " where id = ?";
+//            sql = "delete from " + TABLENAME + " where employer_id = ?";
+            sql = "UPDATE tblemployer SET is_delete = 0 where employer_id = ?";
             cs = con.prepareCall(sql);
-            cs.setInt(1, employer.getId());
+            cs.setString(1, employer.getCompanyPublicId());
             int rows = cs.executeUpdate();
             if (rows >= 1) {
                 message = "Employer Deleted Successfully";
@@ -125,6 +126,56 @@ public class EmployerModel {
         }
         return message;
     }//deleemployer()
+
+    public int checkEmployerDelete(String eid) {
+        con = JobPortalDb.connectDb();
+        sql = "select is_delete from tblemployer where employer_id = ?";
+        int check = 0;
+        try {
+            cs = con.prepareCall(sql);
+            cs.setString(1, eid);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                check = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return check;
+    }
+
+    public int checkEmployerDeletePhone(String phone) {
+        con = JobPortalDb.connectDb();
+        sql = "select is_delete from tblemployer where phone_no = ?";
+        int check = 0;
+        try {
+            cs = con.prepareCall(sql);
+            cs.setString(1, phone);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                check = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            message = e.getMessage();
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                message = e.getMessage();
+            }
+        }
+        return check;
+    }
 
     public String update(TblEmployer employer) {
         con = JobPortalDb.connectDb();
@@ -352,6 +403,7 @@ public class EmployerModel {
             if (rs.next()) {
                 status = rs.getInt(1);
             }
+            System.out.println("EMP STAT: " + status);
         } catch (SQLException e) {
             System.out.println("Exception : " + e.getMessage());
         } finally {
@@ -1041,6 +1093,33 @@ public class EmployerModel {
         }
 
         return avail;
+    }
+
+    public int fetchBalance(String id, String TABLENAME) {
+        int balance = 0;
+        con = JobPortalDb.connectDb();
+        try {
+
+            sql = "select balance from " + TABLENAME + " where employer_id = ?";
+            cs = con.prepareCall(sql);
+            cs.setString(1, id);
+            rs = cs.executeQuery();
+            while (rs.next()) {
+                balance = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        System.out.println("bal : " + balance);
+        return balance;
     }
 
 }//Admin

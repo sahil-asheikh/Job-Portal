@@ -95,7 +95,6 @@
                                     <table class="table table-striped table-hover table-fw-widget" id="table3">
                                         <thead>
                                             <tr>
-
                                                 <th>Company Name</th>
                                                 <th>Contact Person</th>
                                                 <th>Phone Number </th>
@@ -108,21 +107,23 @@
 
 
                                         <%  for (TblEmployer employer : employers) {
-                                                if (employer.getSerialNo() == -1) {
+                                                if (employer.getAuthentication() == -1) {
 
                                         %>
                                         <tr>
-                                            <td>
-                                                <%=  employer.getException()%>
-                                            </td>  
-
+                                            <!--<td><%=  employer.getException()%></td>-->
                                             <%
-                                            } else if (employer.getSerialNo() == 0) {
+                                            } else if (employer.getAuthentication() == 0) {
 
                                             %>
                                         </tr>
                                         <tr>
-                                            <td> <%=  employer.getException()%>   </td>
+<!--                                            <td><%=  employer.getException()%></td>-->
+                                            <%
+                                            } else if (employerMod.checkEmployerDelete(employer.getCompanyPublicId()) == 0) {
+                                            %>
+                                        <tr>
+<!--                                            <td colspan="13"><%= employer.getException()%></td>-->
                                         </tr>
                                         <%
                                         } else {

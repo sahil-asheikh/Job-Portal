@@ -10,11 +10,12 @@ package com.qt.jobportal.beans;
  * @author Zoya
  */
 public class TblNotify {
+
     private int serialNo;
     private int id;
     private String notifyPublicId;
     private String Name;
-     private String emailId;
+    private String emailId;
     private String jobCategory;
     private String createdAt;
     private String modifiedAt;
@@ -23,7 +24,7 @@ public class TblNotify {
 
     public TblNotify(int serialNo, String notifyPublicId, String Name, String emailId, String jobCategory, String createdAt, String modifiedAt) {
         this.serialNo = serialNo;
-        
+
         this.notifyPublicId = notifyPublicId;
         this.Name = Name;
         this.emailId = emailId;
@@ -53,8 +54,6 @@ public class TblNotify {
     public void setException(String exception) {
         this.exception = exception;
     }
-   
-   
 
     public TblNotify() {
     }
@@ -66,8 +65,6 @@ public class TblNotify {
     public void setNotifyPublicId(String notifyPublicId) {
         this.notifyPublicId = notifyPublicId;
     }
-
-   
 
     public int getSerialNo() {
         return serialNo;
@@ -125,7 +122,4 @@ public class TblNotify {
         this.jobCategory = jobCategory;
     }
 
-  
-
-   
 }

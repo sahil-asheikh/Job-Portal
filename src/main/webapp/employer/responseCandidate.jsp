@@ -31,13 +31,10 @@
 
     ArrayList<TblJobActivity> beans = jobAct.selectByEmployer(String.valueOf(session.getAttribute("EmployerId")));
 
-
 %>
-system.out.print(<%= session.getAttribute("EmployerId")%>)
 <div class="be-wrapper">
 
     <%@include file="navbar.jsp" %>
-
     <%@include file="sidebar.jsp" %>
     <%-- content starts here --%>
     <div class="be-content">
@@ -89,11 +86,11 @@ system.out.print(<%= session.getAttribute("EmployerId")%>)
                                     </tr>
                                     <%
                                     } else {
+                                        CandidateModel candidate = new CandidateModel();
+                                        if (candidate.checkCandidateData(trBean.getCandidateId())) {
                                     %>
-
                                     <tbody>
                                         <%
-                                            CandidateModel candidate = new CandidateModel();
                                             TblCandidate beanCandidate = candidate.selectById(trBean.getCandidateId());
                                         %>
 
@@ -115,25 +112,10 @@ system.out.print(<%= session.getAttribute("EmployerId")%>)
                                             </button>
                                         </div>
                                     </td>
-
-
-                                    <%
-//                                        if (trBean.getActivity() == 1) {
-                                    %>
-                                    <!--<td>Applied for Job</td>-->
-                                    <%
-//                                    } else if (trBean.getActivity() == 2) {
-                                    %>
-                                    <!--<td>Saved Jobs</td>-->
-                                    <%//                                    } else {
-                                    %>
-                                    <!--<td>Favourite Jobs</td>-->
-                                    <%//                                        }
-                                    %>
-
-
                                     </tbody>
-                                    <%                                            }
+                                    <%
+                                                }
+                                            }
                                         }
                                     %>
 

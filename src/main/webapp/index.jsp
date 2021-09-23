@@ -4,6 +4,7 @@
     Author     : win8.1
 --%>
 
+<%@page import="com.qt.jobportal.commons.Utils"%>
 <%@page import="com.qt.jobportal.models.CandidateModel"%>
 <%@page import="com.qt.jobportal.beans.tblSubscriptionCandidate"%>
 <%@page import="com.qt.jobportal.models.SubscriptionCandidateModel"%>
@@ -136,6 +137,10 @@
     </head>
     <body>
         <%
+            int limit = Integer.parseInt(Utils.empty(request.getParameter("limit")) ? "10" : request.getParameter("limit"));
+            int pg = Integer.parseInt(Utils.empty(request.getParameter("pg")) ? "1" : request.getParameter("pg"));
+            String title = Utils.empty(request.getParameter("title")) ? "allJobs" : request.getParameter("title");
+
             Subscription subMol = new Subscription();
             ArrayList<TblSubscription> subscription = subMol.select();
 
@@ -176,7 +181,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=Developer&pg=1&limit=20" onclick="searchByCategory('Developer')">
+                                <a href="jobsSearch.jsp?title=Developer&pg=<%= pg%>&limit=<%= limit%>" onclick="searchByCategory('Developer')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-code pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"> <span class="text-dark">Developer</span></h4>
@@ -190,7 +195,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=Technology&pg=1&limit=20" onclick="searchByCategory('Technology')">
+                                <a href="jobsSearch.jsp?title=Technology&pg=<%= pg%>&limit=<%= limit%>" onclick="searchByCategory('Technology')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-laptop pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Technology</span></h4>
@@ -204,7 +209,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=Marketing&pg=1&limit=20" onclick="searchByCategory('Marketing')">
+                                <a href="jobsSearch.jsp?title=Marketing&pg=<%= pg%>&limit=<%= limit%>" onclick="searchByCategory('Marketing')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-bar-chart pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Marketing</span></h4>
@@ -218,7 +223,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=Medical&pg=1&limit=20" onclick="searchByCategory('Medical')">
+                                <a href="jobsSearch.jsp?title=Medical&pg=<%= pg%>&limit=<%= limit%>" onclick="searchByCategory('Medical')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-medkit pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Medical</span></h4>
@@ -232,7 +237,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=Government&pg=1&limit=20" onclick="searchByCategory('Government')">
+                                <a href="jobsSearch.jsp?title=Government&pg=<%= pg%>&limit=<%= limit%>" onclick="searchByCategory('Government')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-university pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">Government</span></h4>
@@ -246,7 +251,7 @@
                     <div class="col-lg-2">
                         <div class="card categoryH">
                             <div class="card-body ">
-                                <a href="jobsSearch.jsp?title=allJobs&pg=1&limit=20" onclick="searchByCategory('')">
+                                <a href="jobsSearch.jsp?title=allJobs&pg=<%= pg%>&limit=<%= limit%>" onclick="searchByCategory('')">
                                     <div class="jp_top_jobs_category_wrapper jp_job_cate_left_border jp_job_cate_left_border_bottom">
                                         <div class="jp_top_jobs_category"> <span class="display-4 text-info"><center><i class="fa fa-th-large pt-2 "></i></center></span>
                                             <h4 class="text-center text-light"><span class="text-dark">All Jobs</span></h4>

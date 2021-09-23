@@ -319,8 +319,7 @@
                                                         <div class="modal-content">
 
                                                             <%
-                                                                Utils util = new Utils();
-                                                                int balance = util.fetchBalanceCand(beanCandidate.getCandPublicId(), "tblcandidate");
+                                                                int balance = candidate.fetchBalanceCand(beanCandidate.getCandPublicId(), "tblcandidate");
                                                                 if (balance >= 20) {
                                                             %>
                                                             <div class="modal-header">

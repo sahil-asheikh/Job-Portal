@@ -9,7 +9,6 @@ import com.qt.jobportal.beans.TblVacancy;
 import com.qt.jobportal.commons.DatabaseExistance;
 import com.qt.jobportal.commons.JobPortalDb;
 import com.qt.jobportal.commons.Utils;
-import static com.qt.jobportal.models.EmployerModel.TABLENAME;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -50,6 +49,9 @@ public class Vacancy {
     }
 
     public String insert(TblVacancy vacancy) {
+        EmployerModel empModel = new EmployerModel();
+        int balance = empModel.fetchBalance(vacancy.getEmployerId(), "tblemployer");
+
         con = JobPortalDb.connectDb();
         Task:
         if (null == existance.doCheckExistanceOf(TABLENAME, null)) {
@@ -59,9 +61,6 @@ public class Vacancy {
                 case "exist":
                     try {
                     System.out.println(vacancy.getJobDescription());
-                    Utils util = new Utils();
-
-                    int balance = util.fetchBalance(vacancy.getEmployerId(), "tblemployer");
                     System.out.println(balance);
                     if (balance >= 50) {
                         sql = "insert into tblvacancy ( "

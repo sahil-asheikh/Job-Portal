@@ -203,13 +203,11 @@
                                                         </button>
                                                     </div>
                                                     <div class="btn-group btn-space">
-                                                        <button class="btn btn-sm btn-warning  " type="button">
-                                                            <a href="vacancyupdate.jsp?vid=<%= vacancy.getVacancyPublicId()%>">
-                                                                <div class="icon-sm">
-                                                                    <span class="mdi mdi-edit" style="color: white"></span>
-                                                                </div>
-                                                            </a>
-                                                        </button>
+                                                        <a class="btn btn-sm btn-warning" href="vacancyupdate.jsp?vid=<%= vacancy.getVacancyPublicId()%>">
+                                                            <div class="icon-sm">
+                                                                <span class="mdi mdi-edit" style="color: white"></span>
+                                                            </div>
+                                                        </a>
                                                     </div>
                                                     <div class="btn-group btn-space">
                                                         <a class="btn btn-secondary btn-sm btn-danger" href="../VacancyController?action=delete&vid=<%= vacancy.getVacancyPublicId()%>" onclick="return confirmDelete();">
