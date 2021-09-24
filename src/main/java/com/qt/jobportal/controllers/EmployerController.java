@@ -149,7 +149,7 @@ public class EmployerController extends HttpServlet {
         employer.setPassword(request.getParameter("txtPassword"));
         int checkCandDelete = em.checkEmployerDeletePhone(request.getParameter("txtPhoneNo"));
 
-        if (checkCandDelete == 0) {
+        if (checkCandDelete == 1) {
             msg = "Account not found";
         } else {
             int status = em.doLogin(employer, request);

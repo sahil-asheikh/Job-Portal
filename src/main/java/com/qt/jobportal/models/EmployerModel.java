@@ -106,7 +106,7 @@ public class EmployerModel {
         con = JobPortalDb.connectDb();
         try {
 //            sql = "delete from " + TABLENAME + " where employer_id = ?";
-            sql = "UPDATE tblemployer SET is_delete = 0 where employer_id = ?";
+            sql = "UPDATE tblemployer SET is_delete = 1 where employer_id = ?";
             cs = con.prepareCall(sql);
             cs.setString(1, employer.getCompanyPublicId());
             int rows = cs.executeUpdate();

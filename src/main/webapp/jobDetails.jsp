@@ -26,7 +26,6 @@
             CandidateModel candidate = new CandidateModel();
             TblCandidate beanCandidate = candidate.selectById(String.valueOf(session.getAttribute("CandidateId")));
             boolean validCandidateChecked = CandidateModel.checkValidCandidate(String.valueOf(session.getAttribute("CandidateId")));
-
         %>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -245,7 +244,6 @@
                                             <br>
 
                                             <%
-                                                System.out.println("CANDIDATE STATUS: " + validCandidateChecked);
                                                 if (validCandidateChecked) {
                                             %>
                                             <center>

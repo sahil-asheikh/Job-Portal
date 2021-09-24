@@ -81,7 +81,6 @@ public class CandidateModel {
                     cs = con.prepareCall(sql);
 
                     cs.setString(1, bn.getCandPublicId());
-                    System.out.println(bn.getCandPublicId());
                     cs.setString(2, bn.getSubscriptionId());
                     cs.setInt(3, bn.getBalance());
                     cs.setString(4, bn.getFullName());
@@ -178,7 +177,7 @@ public class CandidateModel {
         con = JobPortalDb.connectDb();
         try {
 //            sql = "delete from " + TABLENAME + " where candidate_id = ?";
-            sql = "UPDATE tblcandidate SET is_delete = 0 where candidate_id = ?";
+            sql = "UPDATE tblcandidate SET is_delete = 1 where candidate_id = ?";
             cs = con.prepareCall(sql);
             cs.setString(1, bn.getCandPublicId());
             int rows = cs.executeUpdate();
@@ -389,7 +388,6 @@ public class CandidateModel {
                 );
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             bean = new TblCandidate(-1, this.getClass().getName(), e.getMessage());
         } finally {
             try {
@@ -455,7 +453,6 @@ public class CandidateModel {
                 );
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
             beanDetails = new TblCandidateDetails(-1, this.getClass().getName(), e.getMessage());
         } finally {
             try {
@@ -484,7 +481,7 @@ public class CandidateModel {
                 return 2;
             }
         } catch (SQLException e) {
-            System.out.println("Exception At : " + this.getClass().getName() + " | " + e.getMessage());
+            message = "Exception At : " + this.getClass().getName() + " | " + e.getMessage();
         } finally {
             try {
                 if (con != null) {
@@ -588,7 +585,7 @@ public class CandidateModel {
                 status = rs.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println("Exception : " + e.getMessage());
+            message = "Exception : " + e.getMessage();
         } finally {
             try {
                 if (con != null) {
@@ -613,7 +610,6 @@ public class CandidateModel {
                 if (phone.equals(rs.getString("phone_no")) && password.equals(rs.getString("password"))) {
                     status = 1;
                     session.setAttribute("CandidateId", rs.getString("candidate_id"));
-                    System.out.println("cid" + rs.getString("candidate_id"));
                     session.setAttribute("CandidateName", rs.getString("fullName"));
                     resetLoginCount(rs.getInt("Id"));
                 } else {
@@ -622,14 +618,14 @@ public class CandidateModel {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("com.imantimes.portal.qaswatech.models.LoginModel.doVerifyCredentials() : " + e.getMessage());
+            message = "com.imantimes.portal.qaswatech.models.LoginModel.doVerifyCredentials() : " + e.getMessage();
         } finally {
             try {
                 if (con != null) {
                     con.close();
                 }
             } catch (SQLException e) {
-                System.out.println("com.qt.jobportal.models.EmployerModel.doVerifyCredentials() : " + e.getMessage());
+                message = "com.qt.jobportal.models.EmployerModel.doVerifyCredentials() : " + e.getMessage();
             }
         }
         return status;
@@ -728,7 +724,6 @@ public class CandidateModel {
                 message = e.getMessage();
             }
         }
-        System.out.println("Pass : " + pass);
         return pass;
     }
 
@@ -943,7 +938,6 @@ public class CandidateModel {
     }
 
     public String candSignUp(TblCandidate bn) {
-        System.out.println("We are here");
         con = JobPortalDb.connectDb();
         Task:
         if (null == existance.doCheckExistanceOf(TABLENAME, null)) {
@@ -956,7 +950,6 @@ public class CandidateModel {
                     sql = "insert into " + TABLENAME + "( candidate_id, fullName, phone_no, emailId, password) values (?,?,?,?,?)";
                     cs = con.prepareCall(sql);
                     cs.setString(1, bn.getCandPublicId());
-                    System.out.println(bn.getCandPublicId());
                     cs.setString(2, bn.getFullName());
                     cs.setString(3, bn.getPhone_No());
                     cs.setString(4, bn.getEmailId());
@@ -1002,10 +995,8 @@ public class CandidateModel {
             rs = cs.executeQuery();
             if (rs.next() == false) {
                 result = false;
-                System.out.println("is EMPTY OR NULL");
             } else {
                 result = true;
-                System.out.println("NNOOTTTTT EMPTY OR NULL");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -93,7 +93,6 @@
                                         <%
                                             TblCandidate beanCandidate = candidate.selectById(trBean.getCandidateId());
                                         %>
-
                                     <td><%=  trBean.getSerialNo()%></td>
                                     <td><%=   trBean.getJobTitle()%></td>
                                     <td><%=  beanCandidate.getFullName()%></td>
@@ -114,7 +113,10 @@
                                     </td>
                                     </tbody>
                                     <%
-                                                }
+                                    } else {
+                                    %>
+                                    <td colspan="13"><%= trBean.getException()%></td>
+                                    <%
                                             }
                                         }
                                     %>

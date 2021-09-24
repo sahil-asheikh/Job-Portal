@@ -234,7 +234,7 @@ public class CandidateController extends HttpServlet {
 
         int checkCandDelete = model.checkCandDeletePhone(request.getParameter("txtPhoneNo"));
         
-        if (checkCandDelete == 0) {
+        if (checkCandDelete == 1) {
             msg = "Account not found";
         } else {
             int status = model.doLogin(beans, request);

@@ -227,7 +227,6 @@ public class AdminModel {
             } catch (SQLException e) {
                 message = e.getMessage();
             }
-
         }
     }
 
